@@ -102,7 +102,7 @@ ButtonPanel button {
 }
 
 .card-view:hover {
-  transform: scale(1.3);
+  /* transform: scale(1.3); */
   transition: 0.1s ease-in-out;
   z-index: 99;
   -webkit-border-radius: 10px;
@@ -116,10 +116,16 @@ ButtonPanel button {
 .card,
 .modal-content {
   background-color: transparent !important;
+  align-items: center;
 }
 
 .modal,
 .modal-content {
   align-content: center;
   max-width: 100%;
+}
+
+.card-view:active {
+  transform: translateY(5%);
+  transform: scale(0.98);
 }
