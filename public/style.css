@@ -1,21 +1,125 @@
+.player-card-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.player-card-button {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal {
+  color: black;
+}
+
+.container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
 body {
-  font-family: sans-serif;
+  font-family: 'IM Fell English SC';
 }
 
-a {
-  text-decoration: none;
+.App {
+  text-align: center;
 }
 
-label {
-  display: block;
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
 }
 
-nav a {
-  display: inline-block;
-  margin: 1em;
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
 }
 
-form div {
-  margin: 1em;
-  display: inline-block;
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@font-face {
+  font-family: 'IM Fell English SC';
+  src: url('http://fonts.googleapis.com/css?family=IM+Fell+English+SC');
+}
+
+body {
+  background-image: url('http://staticdelivery.nexusmods.com/mods/161/images/90-1-1352053070.jpg');
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-family: 'IM Fell English SC';
+}
+
+ButtonPanel .flexContainer {
+  display: flex;
+  justify-content: space-around;
+}
+
+ButtonPanel button {
+  margin: 50px;
+}
+
+.container {
+  margin-top: 2em;
+  display: flex;
+  align-items: space-between;
+  width: auto;
+}
+
+.chat-log {
+  padding: 5px;
+  height: fit-content;
+  background-color: rgba(211, 211, 211, 0.6);
+  border: gray 3px solid;
+}
+
+.monster-view {
+  border-radius: 2em;
+}
+
+.card-view {
+  border-radius: 1em;
+  transform: scale(1);
+  transition: 0.1s ease-in-out;
+}
+
+.card-view:hover {
+  transform: scale(1.3);
+  transition: 0.1s ease-in-out;
+  z-index: 99;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
+  -moz-box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
+  box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
+}
+
+.card,
+.modal-content {
+  background-color: transparent !important;
+}
+
+.modal,
+.modal-content {
+  align-content: center;
+  max-width: 100%;
 }
