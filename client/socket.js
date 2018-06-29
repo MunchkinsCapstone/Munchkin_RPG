@@ -5,8 +5,8 @@ const socket = io(window.location.origin)
 socket.on('connect', () => {
   console.log('Connected!')
 
-  socket.on('button One', () => {
-    console.log('WE connected')
+  socket.on('roomAdded', payload => {
+    console.log('WE connected', payload)
   })
 
   socket.on('button2', str => {

@@ -5,12 +5,12 @@ class Lobby extends Component {
   constructor() {
     super()
     this.state = {
-      room: {
-        users: [],
-        status: false,
-        name: '',
-        max: 4
-      },
+      //   room: {
+      //     users: [],
+      //     status: false,
+      //     name: '',
+      //     max: 4
+      //   },
       newRoom: '',
       numberOfRooms: []
     }
@@ -20,11 +20,13 @@ class Lobby extends Component {
 
   handleSubmit(evt) {
     evt.preventDefault()
-    // console.log(evt.target.newRoom.value)
-    const newRoom = evt.target.newRoom.value
-    console.log(newRoom, 'we got here')
 
-    // this.setState({numberOfRoom: [...numberOfRoom, ]})
+    const newRoom = evt.target.newRoom.value
+    this.setState({newRoom: ''})
+    this.setState({numberOfRooms: [...this.state.numberOfRooms, newRoom]})
+    const payload = this.state
+    socket.emit('roomAdded', payload)
+    console.log(this.state, 'inside of LobbyJS')
   }
 
   handleChange(evt) {
@@ -32,12 +34,10 @@ class Lobby extends Component {
 
     const roomToBe = evt.target.value
     this.setState({newRoom: roomToBe})
-    // console.log(this.state.newRoom)
   }
 
   render() {
-    // const { users, status } = this.state;
-    const {room, numberOfRooms} = this.state
+    const {numberOfRooms} = this.state
     return (
       <div>
         <h1>Welcome to the Lobby</h1>
@@ -46,8 +46,8 @@ class Lobby extends Component {
             {numberOfRooms.length ? (
               <div>
                 <ul>
-                  {numberOfRooms.map(room => (
-                    <li>
+                  {numberOfRooms.map((room, idx) => (
+                    <li key={idx}>
                       {room} : Number of Players {room.length}
                     </li>
                   ))}
