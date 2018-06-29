@@ -1,12 +1,6 @@
 import React, {Component} from 'react'
 import socket from '../socket'
 
-const dummyData = {
-  users: ['ray', 'oz'],
-  status: false,
-  name: 'SocketRoom'
-}
-
 class Lobby extends Component {
   constructor() {
     super()
@@ -15,9 +9,10 @@ class Lobby extends Component {
         users: [],
         status: false,
         name: '',
-        max: 4,
-        newRoom: ''
-      }
+        max: 4
+      },
+      newRoom: '',
+      numberOfRooms: []
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -25,56 +20,57 @@ class Lobby extends Component {
 
   handleSubmit(evt) {
     evt.preventDefault()
-    // this.setState({[evt.target.name]: evt.target.value})
+    // console.log(evt.target.newRoom.value)
+    const newRoom = evt.target.newRoom.value
+    console.log(newRoom, 'we got here')
+
+    // this.setState({numberOfRoom: [...numberOfRoom, ]})
   }
 
   handleChange(evt) {
-    console.log('typing')
     evt.preventDefault()
-    // console.log('typing', evt.target)
 
-    // this.setState({newRoom: evt.target.value})
-    // console.log('-state-', this.state.newRoom)
+    const roomToBe = evt.target.value
+    this.setState({newRoom: roomToBe})
+    // console.log(this.state.newRoom)
   }
 
   render() {
     // const { users, status } = this.state;
-    const {users, status, name} = dummyData
+    const {room, numberOfRooms} = this.state
     return (
       <div>
         <h1>Welcome to the Lobby</h1>
         <div>
-          {!status && (
-            <div>
-              <h2>{name}</h2>
-              <ul>
-                {users.map((user, idx) => (
-                  <div>
-                    <li key={idx}>{user}</li>
-                  </div>
-                ))}
-              </ul>
-            </div>
-          )}
-
+          <div>
+            {numberOfRooms.length ? (
+              <div>
+                <ul>
+                  {numberOfRooms.map(room => (
+                    <li>
+                      {room} : Number of Players {room.length}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <div>
+                <h1>No Rooms Create a Room to Play</h1>
+              </div>
+            )}
+          </div>
           <div>
             <form onSubmit={this.handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="name">Create Room</label>
+              <div>
+                <label htmlFor="newRoom">Create Room</label>
                 <input
-                  //   value={this.state.room.name}
-                  //   onChange={this.handleChange}
-                  className="form-control"
                   type="text"
-                  name="roomName"
-                  placeholder="Enter room name"
+                  name="newRoom"
+                  value={this.state.newRoom}
+                  onChange={this.handleChange}
                 />
               </div>
-              <div className="form-group">
-                <button type="submit" className="btn btn-default">
-                  Create Room
-                </button>
-              </div>
+              <button>Create Room</button>
             </form>
           </div>
         </div>
