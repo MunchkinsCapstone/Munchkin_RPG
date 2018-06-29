@@ -12,7 +12,7 @@ class Lobby extends Component {
       //     max: 4
       //   },
       newRoom: '',
-      numberOfRooms: []
+      allRooms: []
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -20,7 +20,6 @@ class Lobby extends Component {
 
   handleSubmit(evt) {
     evt.preventDefault()
-
     const newRoom = evt.target.newRoom.value
     this.setState({newRoom: ''})
     this.setState({numberOfRooms: [...this.state.numberOfRooms, newRoom]})
@@ -37,16 +36,16 @@ class Lobby extends Component {
   }
 
   render() {
-    const {numberOfRooms} = this.state
+    const {allRooms} = this.state
     return (
       <div>
         <h1>Welcome to the Lobby</h1>
         <div>
           <div>
-            {numberOfRooms.length ? (
+            {allRooms.length ? (
               <div>
                 <ul>
-                  {numberOfRooms.map((room, idx) => (
+                  {allRooms.map((room, idx) => (
                     <li key={idx}>
                       {room} : Number of Players {room.length}
                     </li>
