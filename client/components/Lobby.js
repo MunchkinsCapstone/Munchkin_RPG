@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import socket from '../socket'
 
 class Lobby extends Component {
@@ -21,10 +21,22 @@ class Lobby extends Component {
   handleSubmit(evt) {
     evt.preventDefault()
     const newRoom = evt.target.newRoom.value
-    this.setState({newRoom: ''})
-    this.setState({numberOfRooms: [...this.state.numberOfRooms, newRoom]})
+    // this.setState({ newRoom: '' })
+    // console.log('newRoom', newRoom)
+    // let listWithAddedRooms = this.state.allRooms.concat(newRoom)
+    // console.log('listwithaddedrooms', listWithAddedRooms)
+    // this.setState({ newRoom: '', allRooms: listWithAddedRooms })
+    // console.log('afer state', this.state)
+    this.setState({ newRoom: newRoom })
     const payload = this.state
-    socket.emit('roomAdded', payload)
+    // console.log('payload after state', this.state)
+    socket.emit('roomMade', payload)
+    socket.on('get rooms', data => {
+      console.log('---------------')
+      console.log('data', data)
+      this.setState({ allRooms: data })
+      console.log('after rooms', this.state.allRooms)
+    })
     console.log(this.state, 'inside of LobbyJS')
   }
 
@@ -32,11 +44,21 @@ class Lobby extends Component {
     evt.preventDefault()
 
     const roomToBe = evt.target.value
-    this.setState({newRoom: roomToBe})
+    console.log('handleChange', roomToBe)
+    this.setState({ newRoom: roomToBe })
+  }
+
+  componentDidMount() {
+    console.log('before mount state', this.state)
+    // socket.on('get rooms', (rooms) => {
+    //   this.setState({ allRooms: rooms })
+    // })
+    this.setState({ allRooms: ['ray', 'ed', 'jean'] })
+    console.log('after state in mount', this.state)
   }
 
   render() {
-    const {allRooms} = this.state
+    const { allRooms } = this.state
     return (
       <div>
         <h1>Welcome to the Lobby</h1>
@@ -53,10 +75,10 @@ class Lobby extends Component {
                 </ul>
               </div>
             ) : (
-              <div>
-                <h1>No Rooms Create a Room to Play</h1>
-              </div>
-            )}
+                <div>
+                  <h1>No Rooms Create a Room to Play</h1>
+                </div>
+              )}
           </div>
           <div>
             <form onSubmit={this.handleSubmit}>
