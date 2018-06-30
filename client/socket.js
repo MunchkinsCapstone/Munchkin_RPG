@@ -7,7 +7,7 @@ const socket = io(window.location.origin)
 socket.on('connect', () => {
   console.log('Connected!')
   // socket.on('get rooms', (rooms) => {
-  //   this.setState({ allRooms: rooms })
+  //   console.log('hearing from socket client', rooms)
   // })
 
 

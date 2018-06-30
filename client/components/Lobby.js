@@ -18,6 +18,8 @@ class Lobby extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
+
+
   handleSubmit(evt) {
     evt.preventDefault()
     const newRoom = evt.target.newRoom.value
@@ -27,38 +29,41 @@ class Lobby extends Component {
     // console.log('listwithaddedrooms', listWithAddedRooms)
     // this.setState({ newRoom: '', allRooms: listWithAddedRooms })
     // console.log('afer state', this.state)
-    this.setState({ newRoom: newRoom })
+    this.setState({ newRoom: newRoom, allRooms: [newRoom] })
     const payload = this.state
-    // console.log('payload after state', this.state)
+    console.log('payload after state', this.state)
     socket.emit('roomMade', payload)
     socket.on('get rooms', data => {
-      console.log('---------------')
-      console.log('data', data)
+      console.log('rooms received from server socket', data)
       this.setState({ allRooms: data })
-      console.log('after rooms', this.state.allRooms)
+      console.log('after setting state..', this.state)
     })
-    console.log(this.state, 'inside of LobbyJS')
   }
 
   handleChange(evt) {
     evt.preventDefault()
 
     const roomToBe = evt.target.value
-    console.log('handleChange', roomToBe)
     this.setState({ newRoom: roomToBe })
   }
 
   componentDidMount() {
-    console.log('before mount state', this.state)
+    // console.log('before mount state', this.state)
     // socket.on('get rooms', (rooms) => {
     //   this.setState({ allRooms: rooms })
     // })
-    this.setState({ allRooms: ['ray', 'ed', 'jean'] })
-    console.log('after state in mount', this.state)
+    socket.on('initalRoom', (rooms) => {
+      this.setState({ allRooms: rooms })
+    })
+    // this.setState({ allRooms: ['ray', 'ed', 'jean'] })
+    // console.log('after state in mount', this.state)
   }
 
+
   render() {
+    console.log('<><><><><><><><><><>><>>>><><><><><>')
     const { allRooms } = this.state
+    console.log('render this.state', allRooms)
     return (
       <div>
         <h1>Welcome to the Lobby</h1>
@@ -69,7 +74,8 @@ class Lobby extends Component {
                 <ul>
                   {allRooms.map((room, idx) => (
                     <li key={idx}>
-                      {room} : Number of Players {room.length}
+                      {console.log('allRooms map', allRooms)}
+                      ROOM NAME: {room}
                     </li>
                   ))}
                 </ul>

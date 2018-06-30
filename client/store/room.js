@@ -1,19 +1,16 @@
-// import socket from 'socket.io-client'
+import socket from '.././socket'
 
 //Action Types
 
 const CREATE_ROOM = 'CREATE_ROOM'
 const JOIN_ROOM = 'JOIN_ROOM'
 //Action Creator
-export function createRoom(socket, roomName, user) {
+export function createRoom(roomName, user) {
   return {
     type: CREATE_ROOM,
     roomName,
     user
   }
-  // socket.on('roomMade', () => {
-  //   socket.broadcast.emit()
-  // })
 }
 
 export function joinRoom(user) {
