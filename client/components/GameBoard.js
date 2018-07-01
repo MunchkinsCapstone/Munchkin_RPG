@@ -18,7 +18,7 @@ export default class GameBoard extends Component {
           isActive: false
         }
       },
-      players: ['Yang', 'Oz', 'Graham', 'Raymond', 'Josh', 'Dan']
+      players: ['Yang', 'Oz', 'Graham', 'Raymond']
     }
     this.startGame = this.startGame.bind(this)
     this.endTurn = this.endTurn.bind(this)
@@ -27,6 +27,8 @@ export default class GameBoard extends Component {
     this.flee = this.flee.bind(this)
     this.lootRoom = this.lootRoom.bind(this)
     this.discard = this.discard.bind(this)
+    this.equip = this.equip.bind(this)
+    this.unequip = this.unequip.bind(this)
   }
 
   startGame() {
@@ -86,6 +88,23 @@ export default class GameBoard extends Component {
     })
   }
 
+  equip = (player, cardIdx) => {
+    const {game} = this.state
+    const item = player.hand[cardIdx]
+    player.equip(cardIdx)
+    this.setState({
+      game
+    })
+  }
+
+  unequip = (player, ___, item) => {
+    const {game} = this.state
+    player.unequip(item)
+    this.setState({
+      game
+    })
+  }
+
   render() {
     const {game} = this.state
     return (
@@ -100,6 +119,8 @@ export default class GameBoard extends Component {
                     player={player}
                     game={game}
                     discard={this.discard}
+                    equip={this.equip}
+                    unequip={this.unequip}
                   />
                 )
               })}
