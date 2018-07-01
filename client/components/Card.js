@@ -13,43 +13,69 @@ class Card extends React.Component {
 
   handleClick = event => {
     this.setState({anchorEl: event.currentTarget})
-    // this.props.discard(this.props.cardIdx);
   }
 
   handleClose = () => {
     this.setState({anchorEl: null})
   }
 
-  discardCard = () => {
+  discard = () => {
     const {player, discard, cardIdx} = this.props
     discard(player, cardIdx)
     this.handleClose()
   }
 
+  toggleEquip = () => {
+    const {toggleEquip, player, cardIdx, card} = this.props
+    toggleEquip(player, cardIdx, card)
+    this.handleClose()
+  }
+
   render() {
     const {anchorEl} = this.state
+    const {card, equipped} = this.props
     const imageUrl = '/cardImages/' + this.props.card.imageUrl
-    const {discard, cardIdx, player} = this.props
 
     return (
-      <div className="card" style={{width: '25%'}}>
-        <img
-          className="card-img-top card-view"
-          src={imageUrl}
-          alt="Card"
-          aria-owns={anchorEl ? 'simple-menu' : null}
-          aria-haspopup="true"
-          onClick={this.handleClick}
-        />
+      <div className="card">
+        <div className="card-view">
+          <img
+            className="card-img-top"
+            src={imageUrl}
+            alt="Card"
+            aria-owns={anchorEl ? 'simple-menu' : null}
+            aria-haspopup="true"
+            onClick={this.handleClick}
+          />
+          {!equipped && (
+            <button
+              type="button"
+              className="btn-danger discard-button"
+              onClick={this.discard}
+            >
+              discard
+            </button>
+          )}
+          {(card.type === 'Equipment' ||
+            card.type === 'Race' ||
+            card.type === 'Class') && (
+            <button
+              type="button"
+              className="btn-primary equip-button"
+              onClick={this.toggleEquip}
+            >
+              {equipped ? 'unequip' : 'equip'}
+            </button>
+          )}
+        </div>
         <Menu
           id="simple-menu"
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
-          <MenuItem onClick={this.handleClose}>Use</MenuItem>
-          {/* <MenuItem onClick={this.handleClose}>Trade</MenuItem> */}
-          <MenuItem onClick={this.discardCard}>Discard</MenuItem>
+          <MenuItem onClick={this.toggleEquip}>Use</MenuItem>
+          <MenuItem onClick={this.discard}>Discard</MenuItem>
         </Menu>
       </div>
     )

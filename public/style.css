@@ -114,12 +114,12 @@ ButtonPanel button {
 .card-view {
   border-radius: 1em;
   transform: scale(1);
-  transition: 0.1s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
 
 .card-view:hover {
-  /* transform: scale(1.3); */
-  transition: 0.1s ease-in-out;
+  transform: scale(1.3);
+  transition: 0.2s ease-in-out;
   z-index: 99;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -143,5 +143,165 @@ ButtonPanel button {
 
 .card-view:active {
   transform: translateY(5%);
-  transform: scale(0.98);
+  transform: scale(1.28);
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@font-face {
+  font-family: 'IM Fell English SC';
+  src: url('http://fonts.googleapis.com/css?family=IM+Fell+English+SC');
+}
+
+body {
+  background-image: url('http://staticdelivery.nexusmods.com/mods/161/images/90-1-1352053070.jpg');
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-family: 'IM Fell English SC';
+}
+
+ButtonPanel .flexContainer {
+  display: flex;
+  justify-content: space-around;
+}
+
+ButtonPanel button {
+  margin: 50px;
+}
+
+.container {
+  margin-top: 2em;
+  display: flex;
+  flex-direction: row;
+  align-items: space-between;
+  width: fit-content;
+}
+
+.chat-log {
+  padding: 5px;
+  height: fit-content;
+  background-color: rgba(211, 211, 211, 0.6);
+  border: gray 3px solid;
+}
+
+.monster-view {
+  border-radius: 2em;
+}
+
+.card-view {
+  border-radius: 1em;
+  transform: scale(1);
+  transition: 0.2s ease-in-out;
+}
+
+.card-view:hover {
+  transform: scale(1.5) translateY(1em);
+  transition: 0.2s ease-in-out;
+  z-index: 99;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
+  -moz-box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
+  box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
+  cursor: pointer;
+}
+
+.card-view:active {
+  transform: scale(1.4) translateY(1.2em);
+}
+
+.card,
+.modal-content {
+  background-color: transparent !important;
+  align-items: center;
+}
+
+.modal,
+.modal-content {
+  align-content: center;
+  max-width: 100%;
+}
+
+.card {
+  width: 10em;
+  margin: 0.01em;
+  margin-bottom: 1em;
+}
+
+.discard-button {
+  cursor: pointer;
+  opacity: 0;
+  size: fit-content;
+  transform: scale(0.75);
+  display: flex;
+  align-content: center;
+  border-radius: 0.2em;
+  position: absolute;
+  right: -0.5em;
+  top: -0.25em;
+}
+
+.card-view:hover .discard-button {
+  opacity: 0.5;
+}
+
+.discard-button:hover {
+  opacity: 1 !important;
+}
+
+.equip-button {
+  border-radius: 0.2em;
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px forestgreen solid;
+}
+
+.card-view:hover .equip-button {
+  opacity: 0.5;
+}
+
+.equip-button:hover {
+  opacity: 1 !important;
+}
+
+.player-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
