@@ -24,18 +24,24 @@ const Hand = props => {
         <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="container">
-              {hand.map((card, index) => {
-                return (
-                  <Card
-                    key={`hand-${index}`}
-                    card={card}
-                    discard={discard}
-                    toggleEquip={equip}
-                    cardIdx={index}
-                    player={player}
-                  />
-                )
-              })}
+              {hand.length ? (
+                hand.map((card, index) => {
+                  return (
+                    <Card
+                      key={`hand-${index}`}
+                      card={card}
+                      discard={discard}
+                      toggleEquip={equip}
+                      cardIdx={index}
+                      player={player}
+                    />
+                  )
+                })
+              ) : (
+                <div style={{backgroundColor: 'white'}}>
+                  <h1>You have no cards in your hand!</h1>
+                </div>
+              )}
             </div>
           </div>
         </div>
