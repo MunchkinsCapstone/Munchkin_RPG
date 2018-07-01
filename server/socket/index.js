@@ -13,7 +13,7 @@ module.exports = io => {
       console.log('rooms in server', rooms)
       io.sockets.emit('get rooms', rooms)
       // console.log('payload', payload)
-      // socket.broadcast.emit('roomAdded', payload)
+      // socket.broadcast.emit('get rooms', rooms)
       // console.log('payload', payload.numberOfRooms)
     })
 

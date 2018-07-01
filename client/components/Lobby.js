@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import socket from '../socket'
+// import { connect } from 'react-redux'
 
 class Lobby extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       //   room: {
       //     users: [],
@@ -14,6 +15,7 @@ class Lobby extends Component {
       newRoom: '',
       allRooms: []
     }
+    console.log('props.', this.props)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
