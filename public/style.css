@@ -1,17 +1,16 @@
-ul{
-  width:300px
+ul {
+  width: 300px;
 }
 
-li{
+li {
   color: white;
   list-style: none;
   border: 1px solid white;
   padding: 5px;
   margin: 5px;
-  
 }
 li:hover {
-   background:pink;
+  background: pink;
 }
 
 .player-card-top {

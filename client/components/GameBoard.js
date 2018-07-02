@@ -29,6 +29,7 @@ export default class GameBoard extends Component {
     this.discard = this.discard.bind(this)
     this.equip = this.equip.bind(this)
     this.unequip = this.unequip.bind(this)
+    this.cast = this.cast.bind(this)
   }
 
   startGame() {
@@ -105,6 +106,14 @@ export default class GameBoard extends Component {
     })
   }
 
+  cast = (player, cardIdx, target) => {
+    const {game} = this.state
+    player.cast(cardIdx, target)
+    this.setState({
+      game
+    })
+  }
+
   render() {
     const {game} = this.state
     return (
@@ -121,6 +130,7 @@ export default class GameBoard extends Component {
                     discard={this.discard}
                     equip={this.equip}
                     unequip={this.unequip}
+                    cast={this.cast}
                   />
                 )
               })}
