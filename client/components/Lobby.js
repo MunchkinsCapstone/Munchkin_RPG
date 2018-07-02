@@ -37,12 +37,13 @@ class Room extends Component {
 
   render() {
     const {room} = this.props
-    console.log(this.props.room, 'PROPS_____________')
+
+    console.log('room in lobby component', room.length, room[0])
     return (
       <div>
         <h1>GAMEROOM</h1>
-        {/* <div>{room.map((user, idx) => <li key={idx}>{user}</li>)}</div> */}
-        <li>{this.props.room[0]}</li>
+        <div />
+        {/* <ul>{room.map((user, idx) => <li key={idx}>{user}</li>)}</ul> */}
         <div>
           <div />
           <div>
@@ -59,6 +60,7 @@ class Room extends Component {
               <button>START GAME</button>
             </form>
           </div>
+          {<h1>{room[0]}</h1>}
         </div>
       </div>
     )
@@ -66,6 +68,7 @@ class Room extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log('map state')
   return {
     user: state.user,
     room: state.room

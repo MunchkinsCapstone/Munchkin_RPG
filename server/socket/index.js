@@ -13,10 +13,10 @@ module.exports = io => {
     // socket.broadcast.emit('roomAdded', payload)
     // console.log('payload', payload.numberOfRooms)
     // })
-    console.log(rooms)
     socket.on('new player', payload => {
       // console.log(payload, 'recieved from server side <><><><>')
       rooms.push(payload)
+      console.log('rooms in socket', rooms)
       io.sockets.emit('room updated', rooms)
     })
 
