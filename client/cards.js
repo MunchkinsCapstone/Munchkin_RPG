@@ -953,7 +953,6 @@ const curses = [
       player.class = null
     }
   }),
-  new Curse('Lose a Level', 'LoseALevel1.jpeg', player => {}),
   new Curse(
     'Lose the Footgear You Are Wearing',
     'LoseFootgear.jpeg',

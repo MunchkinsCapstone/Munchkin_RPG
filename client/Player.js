@@ -49,7 +49,7 @@ class Player {
 
   lose(card) {
     this.unequip(card)
-    this.discard(0)
+    this.discard(this.hand.indexOf(card))
   }
 
   gift(cardIdx, recipient) {
@@ -131,6 +131,7 @@ class Player {
     if (!item) return null
     if (item.name === 'Hireling') {
       this.hireling = null
+      this.allEquips.splice(this.allEquips.indexOf(item), 1)
     } else
       switch (item.type) {
         case 'Equipment':
@@ -144,18 +145,20 @@ class Player {
           } else {
             this.equipment[bodyPart] = null
           }
+          this.allEquips.splice(this.allEquips.indexOf(item), 1)
           break
         case 'Class':
+          this.allEquips.splice(this.allEquips.indexOf(item), 1)
           this.class = null
           break
         case 'Race':
+          this.allEquips.splice(this.allEquips.indexOf(item), 1)
           this.race = null
           break
         default:
           log('You cannot equip this item!')
       }
-    this.allEquips.splice(this.allEquips.indexOf(item), 1)
-    this.hand.unshift(item)
+    this.hand.push(item)
     item.remove(this)
     this.checkRequirements()
   }
