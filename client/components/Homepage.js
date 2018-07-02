@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
 import Login from './Login'
-
+import {Link} from 'react-router-dom'
 import firebase from 'firebase'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 
-const FIREBASE_API_KEY = process.env.REACT_APP_FIREBASE_API_KEY
+const REACT_APP_FIREBASE_API_KEY = 'AIzaSyAG8y7eEX8XaW5xZZbZm9QGmSvrpRnpVHg'
+
+const FIREBASE_API_KEY = REACT_APP_FIREBASE_API_KEY
 console.log('key', FIREBASE_API_KEY)
 
 firebase.initializeApp({
@@ -30,9 +32,10 @@ class HomePage extends Component {
 
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged(user => {
+      console.log('user', user)
       this.setState({isSignedin: !!user})
+      console.log('user after setState<><><><><><>', user)
       //deleted userName props in setState
-      // console.log('user', user.displayName);
     })
   }
   render() {
@@ -44,6 +47,7 @@ class HomePage extends Component {
           <span>
             <div>You are logged in!</div>
             <h1>WELCOME {firebase.auth().currentUser.displayName}</h1>
+            <Link to="/lobby">HEAD TO LOBBY</Link>
             {/* <h1>Welcome: {this.state.userName}</h1> */}
             <button onClick={() => firebase.auth().signOut()}>Sign out!</button>
           </span>

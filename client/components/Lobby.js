@@ -1,16 +1,11 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import socket from '../socket'
+import axios from 'axios'
 
 class Lobby extends Component {
   constructor() {
     super()
     this.state = {
-      //   room: {
-      //     users: [],
-      //     status: false,
-      //     name: '',
-      //     max: 4
-      //   },
       newRoom: '',
       allRooms: []
     }
@@ -18,24 +13,29 @@ class Lobby extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-
-
   handleSubmit(evt) {
     evt.preventDefault()
-    const newRoom = evt.target.newRoom.value
+    // const newRoom = evt.target.newRoom.value
+    let newRoomState = {
+      name: '',
+      players: []
+    }
+    newRoomState.name = evt.target.newRoom.value
+    // Burning Question: How can we control whether to init players array/name or update existing room?
+
     // this.setState({ newRoom: '' })
     // console.log('newRoom', newRoom)
     // let listWithAddedRooms = this.state.allRooms.concat(newRoom)
     // console.log('listwithaddedrooms', listWithAddedRooms)
     // this.setState({ newRoom: '', allRooms: listWithAddedRooms })
     // console.log('afer state', this.state)
-    this.setState({ newRoom: newRoom, allRooms: [newRoom] })
-    const payload = this.state
-    console.log('payload after state', this.state)
+    // this.setState({newRoom: newRoom.name, allRooms: [newRoom]})
+    const payload = newRoomState
+    console.log('payload after state', payload)
     socket.emit('roomMade', payload)
     socket.on('get rooms', data => {
       console.log('rooms received from server socket', data)
-      this.setState({ allRooms: data })
+      this.setState({newRoom: data})
       console.log('after setting state..', this.state)
     })
   }
@@ -44,7 +44,7 @@ class Lobby extends Component {
     evt.preventDefault()
 
     const roomToBe = evt.target.value
-    this.setState({ newRoom: roomToBe })
+    this.setState({newRoom: roomToBe})
   }
 
   componentDidMount() {
@@ -52,18 +52,23 @@ class Lobby extends Component {
     // socket.on('get rooms', (rooms) => {
     //   this.setState({ allRooms: rooms })
     // })
-    socket.on('initalRoom', (rooms) => {
-      this.setState({ allRooms: rooms })
-    })
-    // this.setState({ allRooms: ['ray', 'ed', 'jean'] })
-    // console.log('after state in mount', this.state)
+    // socket.on('initalRoom', rooms => {
+    //   this.setState({allRooms: rooms})
+    // })
+
+    axios
+      .get('/api/lobby')
+      .then(res => res.data)
+      .then(foundLobby => {
+        this.setState({allRooms: foundLobby})
+      })
+      .catch(err => console.error('Not found'))
   }
 
-
   render() {
-    console.log('<><><><><><><><><><>><>>>><><><><><>')
-    const { allRooms } = this.state
-    console.log('render this.state', allRooms)
+    console.log(this.state)
+    const {allRooms} = this.state
+    // console.log('render this.state', allRooms)
     return (
       <div>
         <h1>Welcome to the Lobby</h1>
@@ -75,16 +80,21 @@ class Lobby extends Component {
                   {allRooms.map((room, idx) => (
                     <li key={idx}>
                       {console.log('allRooms map', allRooms)}
-                      ROOM NAME: {room}
+                      ROOM NAME: {room.name}
+                      <ul>
+                        players:{' '}
+                        {room.players &&
+                          room.plays.map(player => <li>{player}</li>)}
+                      </ul>
                     </li>
                   ))}
-                </ul>
+                </ul>ß
               </div>
             ) : (
-                <div>
-                  <h1>No Rooms Create a Room to Play</h1>
-                </div>
-              )}
+              <div>
+                <h1>No Rooms Create a Room to Play</h1>
+              </div>
+            )}
           </div>
           <div>
             <form onSubmit={this.handleSubmit}>
@@ -98,6 +108,7 @@ class Lobby extends Component {
                 />
               </div>
               <button>Create Room</button>
+              <button>Refresh Room</button>
             </form>
           </div>
         </div>
