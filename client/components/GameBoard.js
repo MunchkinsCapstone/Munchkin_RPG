@@ -48,6 +48,12 @@ export default class GameBoard extends Component {
     })
   }
 
+  componendDidMount() {
+    const audioNode = document.getElementById('boardAudio')
+    console.log('Hello audio!!', audioNode)
+    audioNode.play()
+  }
+
   fight() {
     const {game} = this.state
     game.battle.resolve()
@@ -82,8 +88,7 @@ export default class GameBoard extends Component {
 
   discard(player, cardIdx) {
     const {game} = this.state
-    player.hand[cardIdx].discard()
-    player.hand.splice(cardIdx, 1)
+    player.discard(cardIdx)
     this.setState({
       game
     })
@@ -151,6 +156,9 @@ export default class GameBoard extends Component {
                   style={{width: '100%'}}
                   src="http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg"
                 />
+                <audio autoPlay loop id="boardAudio">
+                  <source src="./music/theJourney.mp3" type="audio/mp3" />
+                </audio>
               </div>
             )}
             <hr />

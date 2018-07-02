@@ -2,7 +2,8 @@ import React from 'react'
 
 const Battle = props => {
   const {battle} = props
-  const monster = battle.monsters[0]
+  const monster = battle.monster
+  const player = battle.player
   return (
     <div>
       <div className="row">
@@ -21,25 +22,14 @@ const Battle = props => {
           className="col-6"
           style={{backgroundColor: 'white', textAlign: 'center'}}
         >
-          <h3>PLAYER(S)</h3>
-          <h5>
-            Attack:{' '}
-            {battle.combatants.reduce(
-              (total, combatant) => total + combatant.attack,
-              0
-            )}
-          </h5>
-          <h5>Buff: 0</h5>
-          <h5>Debuff: 0</h5>
+          <h3>{player.name.toUpperCase()}</h3>
+          <h5>Attack: {player.attack}</h5>
+          <div style={{display: 'flex', flexDirection: 'row'}}>
+            <button className="btn btn-success">Buffs:</button>
+            <h5>{' ' + battle.buffs.getTotal('player')}</h5>
+          </div>
           <hr />
-          <h4>
-            TOTAL:{' '}
-            {battle.combatants.reduce(
-              (total, combatant) => total + combatant.attack,
-              0
-            )}
-          </h4>
-          <button className="btn btn-success">Add Buff</button>
+          <h4>TOTAL: {battle.getAttack('player')}</h4>
         </div>
         <div
           style={{
@@ -50,14 +40,18 @@ const Battle = props => {
           className="col-6"
         >
           <h3>{monster.name.toUpperCase()}</h3>
-          <h5>Level: {monster.level}</h5>
-          <h5>Buff: {monster.allBuffs}</h5>
-          <h5>Debuff: 0</h5>
+          <h5>Attack: {monster.attack}</h5>
+          <div style={{display: 'flex', flexDirection: 'row'}}>
+            <button className="btn btn-warning">Buffs:</button>
+            <h5>{' ' + battle.buffs.getTotal('monster')}</h5>
+          </div>
           <hr />
-          <h4>TOTAL: {monster.total}</h4>
-          <button className="btn btn-warning">Add Buff</button>
+          <h4>TOTAL: {battle.getAttack('monster')}</h4>
         </div>
       </div>
+      <audio autoPlay loop>
+        <source src="./music/BattleatTrintanVillage.mp3" typ="audio/mp3" />
+      </audio>
     </div>
   )
 }
