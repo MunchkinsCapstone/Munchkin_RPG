@@ -31,6 +31,14 @@ class Card extends React.Component {
     this.handleClose()
   }
 
+  cast = () => {
+    const {cast, player, cardIdx, card} = this.props
+    if (card.type === 'Boost') {
+      const target = player
+      cast(player, cardIdx, target)
+    }
+  }
+
   render() {
     const {anchorEl} = this.state
     const {card, equipped} = this.props
@@ -65,6 +73,15 @@ class Card extends React.Component {
               onClick={this.toggleEquip}
             >
               {equipped ? 'unequip' : 'equip'}
+            </button>
+          )}
+          {card.type === 'Boost' && (
+            <button
+              type="button"
+              className="btn-success equip-button"
+              onClick={this.cast}
+            >
+              use
             </button>
           )}
         </div>

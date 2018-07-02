@@ -6,7 +6,7 @@ class Card {
   }
 
   discard() {
-    decks[this.deck].graveYard.push(this)
+    decks[this.deck].graveYard.unshift(this)
   }
 }
 
@@ -100,7 +100,6 @@ class Curse extends Item {
     super(name, imageUrl, effect, remove)
     this.type = 'Curse'
     this.deck = 'doors'
-    this.bonus = 0
   }
 }
 
@@ -109,7 +108,14 @@ class Charm extends Item {
     super(name, imageUrl, effect, remove)
     this.type = 'Curse'
     this.deck = 'doors'
-    this.bonus = 0
+  }
+}
+
+class Boost extends Item {
+  constructor(name, imageUrl) {
+    super(name, imageUrl, player => player.levelUp())
+    this.type = 'Boost'
+    this.deck = 'treasures'
   }
 }
 
@@ -842,6 +848,17 @@ const races = [
   )
 ]
 
+const boosts = [
+  new Boost('1,000 Gold Pieces', '1000GoldPieces.jpeg'),
+  new Boost('Boil An Anthill', 'BoilAnAnthill.jpeg'),
+  new Boost('Bribe GM With Food', 'BribeGMWithFood.jpeg'),
+  new Boost('Convenient Addition Error', 'ConvenientAdditionError.jpeg'),
+  new Boost('Invoke Obscure Rules', 'InvokeObscureRules.jpeg'),
+  new Boost('Kill the Hireling', 'KillTheHireling.jpeg'),
+  new Boost('Potion of General Studliness', 'PotionOfGeneralStudliness.jpeg'),
+  new Boost('Whine at the GM', 'WhineAtGM.jpeg')
+]
+
 const classes = [
   new Class('Cleric', 'Cleric1.jpeg', () => {}, () => {}),
   new Class('Cleric', 'Cleric2.jpeg', () => {}, () => {}),
@@ -858,14 +875,6 @@ const classes = [
 ]
 
 const spells = [
-  new Spell('1,000 Gold Pieces', '1000GoldPieces.jpeg', user => user.levelUp()),
-  new Spell('Boil An Anthill', 'BoilAnAnthill.jpeg', user => user.levelUp()),
-  new Spell('Bribe GM With Food', 'BribeGMWithFood.jpeg', user =>
-    user.levelUp()
-  ),
-  new Spell('Convenient Addition Error', 'ConvenientAdditionError.jpeg', user =>
-    user.levelUp()
-  ),
   new Spell('Cotion of Ponfusion', 'CotionOfPonfusion.jpeg', target => {}),
   new Spell('Doppleganger', 'Doppleganger.jpeg', target => {}),
   new Spell(
@@ -885,12 +894,6 @@ const spells = [
   new Spell('Hoard', 'Hoard.jpeg', target => {}),
   new Spell('Instant Wall', 'InstantWall.jpeg', target => {}),
   new Spell('Invisibility Potion', 'InvisibilityPotion.jpeg', target => {}),
-  new Spell('Invoke Obscure Rules', 'InvokeObscureRules.jpeg', user =>
-    user.levelUp()
-  ),
-  new Spell('Kill the Hireling', 'KillTheHireling.jpeg', user =>
-    user.levelUp()
-  ),
   new Spell('Loaded Die', 'LoadedDie.jpeg', target => {}),
   new Spell('Magic Lamp', 'MagicLamp.jpeg', target => {}),
   new Spell('Magic Missile', 'MagicMissile1.jpeg', target => {}),
@@ -902,45 +905,86 @@ const spells = [
     target => {}
   ),
   new Spell('Pollymorph Potion', 'PollymorphPotion.jpeg', target => {}),
-  new Spell(
-    'Potion of General Studliness',
-    'PotionOfGeneralStudliness.jpeg',
-    target => {}
-  ),
   new Spell('Potion of Halitosis', 'PotionOfHalitosis.jpeg', target => {}),
   new Spell('Pretty Balloons', 'PrettyBalloons.jpeg', target => {}),
   new Spell('Sleep Potion', 'SleepPotion.jpeg', target => {}),
   new Spell('Steal a Level', 'StealALevel.jpeg', target => {}),
   new Spell('Transferral Potion', 'TransferralPotion.jpeg', target => {}),
   new Spell('Wand of Dowsing', 'WandOfDowsing.jpeg', target => {}),
-  new Spell('Whine at the GM', 'WhineAtGM.jpeg', user => user.levelUp()),
   new Spell('Wishing Ring', 'WishingRing1.jpeg', target => {}),
   new Spell('Wishing Ring', 'WishingRing2.jpeg', target => {}),
   new Spell('Yuppie Water', 'YuppieWater.jpeg', target => {})
 ]
 
 const curses = [
-  new Curse('Change Class', 'ChangeClass.jpeg'),
-  new Curse('Change Race', 'ChangeRace.jpeg'),
-  new Curse('Change Sex', 'ChangeSex.jpeg'),
-  new Curse('Chicken On Your Head', 'ChickenOnYourHead.jpeg'),
-  new Curse('Duck of Doom', 'DuckOfDoom.jpeg'),
-  new Curse('Income Tax', 'IncomeTax.jpeg'),
-  new Curse('Lose 1 Big Item', 'Lose1BigItem.jpeg'),
-  new Curse('Lose 1 Small Item', 'Lose1SmallItem1.jpeg'),
-  new Curse('Lose 1 Small Item', 'Lose1SmallItem2.jpeg'),
-  new Curse('Lose a Level', 'LoseALevel1.jpeg'),
-  new Curse('Lose a Level', 'LoseALevel2.jpeg'),
-  new Curse('Lose the Armor You Are Wearing', 'LoseArmor.jpeg'),
-  new Curse('Lose Your Class', 'LoseClass.jpeg'),
-  new Curse('Lose a Level', 'LoseALevel1.jpeg'),
-  new Curse('Lose the Footgear You Are Wearing', 'LoseFootgear.jpeg'),
-  new Curse('Lose the Headgear You Are Wearing', 'LoseHeadgear.jpeg'),
-  new Curse('Lose Your Race', 'LoseRace.jpeg'),
-  new Curse('Lose Two Cards', 'LoseTwoCards.jpeg'),
-  new Curse('Malign Mirror', 'MalignMirror.jpeg'),
-  new Curse('Truly Obnoxious Curse', 'TrulyObnoxiousCurse.jpeg'),
-  new Curse('Lose Your Class', 'LoseClass.jpeg')
+  new Curse('Change Class', 'ChangeClass.jpeg', player => {}),
+  new Curse('Change Race', 'ChangeRace.jpeg', player => {}),
+  new Curse('Change Sex', 'ChangeSex.jpeg', player => {}),
+  new Curse('Chicken On Your Head', 'ChickenOnYourHead.jpeg', player => {}),
+  new Curse('Duck of Doom', 'DuckOfDoom.jpeg', player => {}),
+  new Curse('Income Tax', 'IncomeTax.jpeg', player => {}),
+  new Curse('Lose 1 Big Item', 'Lose1BigItem.jpeg', player => {}),
+  new Curse('Lose 1 Small Item', 'Lose1SmallItem1.jpeg', player => {}),
+  new Curse('Lose 1 Small Item', 'Lose1SmallItem2.jpeg', player => {}),
+  new Curse('Lose a Level', 'LoseALevel1.jpeg', player => {
+    if (player.level > 1) player.level--
+  }),
+  new Curse('Lose a Level', 'LoseALevel2.jpeg', player => {
+    if (player.level > 1) player.level--
+  }),
+  new Curse('Lose the Armor You Are Wearing', 'LoseArmor.jpeg', player => {
+    const armor = player.equipment.torso
+    if (armor) {
+      armor.discard()
+      player.allEquips.splice(player.allEquips.indexOf(armor), 1)
+      player.equipment.torso = null
+    }
+  }),
+  new Curse('Lose Your Class', 'LoseClass.jpeg', player => {
+    const cl4ss = player.class
+    if (cl4ss) {
+      cl4ss.discard()
+      player.allEquips.splice(player.allEquips.indexOf(cl4ss), 1)
+      player.class = null
+    }
+  }),
+  new Curse('Lose a Level', 'LoseALevel1.jpeg', player => {}),
+  new Curse(
+    'Lose the Footgear You Are Wearing',
+    'LoseFootgear.jpeg',
+    player => {
+      const footgear = player.equipment.feet
+      if (footgear) {
+        footgear.discard()
+        player.allEquips.splice(player.allEquips.indexOf(footgear), 1)
+        player.equipment.feet = null
+      }
+    }
+  ),
+  new Curse(
+    'Lose the Headgear You Are Wearing',
+    'LoseHeadgear.jpeg',
+    player => {
+      const headgear = player.equipment.head
+      if (headgear) {
+        headgear.discard()
+        player.allEquips.splice(player.allEquips.indexOf(headgear), 1)
+        player.equipment.head = null
+      }
+    }
+  ),
+  new Curse('Lose Your Race', 'LoseRace.jpeg', player => {
+    const race = player.race
+    if (race) {
+      race.discard()
+      player.allEquips.splice(player.allEquips.indexOf(race), 1)
+      player.race = null
+    }
+  }),
+  new Curse('Lose Two Cards', 'LoseTwoCards.jpeg', player => {}),
+  new Curse('Malign Mirror', 'MalignMirror.jpeg', player => {}),
+  new Curse('Truly Obnoxious Curse', 'TrulyObnoxiousCurse.jpeg', player => {}),
+  new Curse('Lose Your Class', 'LoseClass.jpeg', player => {})
 ]
 
 const charms = [
@@ -966,7 +1010,7 @@ const doors = new Deck(
     .concat(curses)
     .concat(charms)
 )
-const treasures = new Deck(equipments.concat(spells))
+const treasures = new Deck(equipments.concat(spells).concat(boosts))
 
 const decks = {
   doors,

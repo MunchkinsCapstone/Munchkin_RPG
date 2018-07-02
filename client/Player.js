@@ -126,8 +126,13 @@ class Player {
 
   cast(cardIdx, target) {
     const card = this.hand[cardIdx]
-    if (card.type === 'Spell') {
+    if (
+      card.type === 'Spell' ||
+      card.type === 'Curse' ||
+      card.type === 'Boost'
+    ) {
       card.effect(target)
+      card.discard()
       this.hand.splice(cardIdx, 1)
     } else log('You cannot cast this item as a spell!')
   }

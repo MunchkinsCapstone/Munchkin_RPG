@@ -2,7 +2,7 @@ import React from 'react'
 import Card from './Card'
 
 const Hand = props => {
-  const {hand, player, discard, equip} = props
+  const {hand, player, discard, equip, cast} = props
   return (
     <div>
       <button
@@ -34,6 +34,7 @@ const Hand = props => {
                       toggleEquip={equip}
                       cardIdx={index}
                       player={player}
+                      cast={cast}
                     />
                   )
                 })
