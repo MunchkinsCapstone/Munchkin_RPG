@@ -31,17 +31,16 @@ class Card extends React.Component {
     this.handleClose()
   }
 
-  cast = () => {
-    const {cast, player, cardIdx, card} = this.props
-    if (card.type === 'Boost') {
-      const target = player
+  cast = target => {
+    return () => {
+      const {cast, player, cardIdx} = this.props
       cast(player, cardIdx, target)
     }
   }
 
   render() {
     const {anchorEl} = this.state
-    const {card, equipped} = this.props
+    const {card, equipped, player} = this.props
     const imageUrl = '/cardImages/' + this.props.card.imageUrl
 
     return (
@@ -69,21 +68,42 @@ class Card extends React.Component {
             card.type === 'Class') && (
             <button
               type="button"
-              className="btn-primary equip-button"
+              className="btn-primary use-button"
               onClick={this.toggleEquip}
             >
               {equipped ? 'unequip' : 'equip'}
             </button>
           )}
-          {card.type === 'Boost' && (
-            <button
-              type="button"
-              className="btn-success equip-button"
-              onClick={this.cast}
-            >
-              use
-            </button>
-          )}
+          {card.type === 'Boost' &&
+            card.requirement(player) && (
+              <button
+                type="button"
+                className="btn-success use-button"
+                onClick={this.cast(player)}
+              >
+                use
+              </button>
+            )}
+          {card.type === 'Buff' &&
+            player.game.battle.isActive && (
+              <div>
+                <button
+                  type="button"
+                  className="btn-success use-button"
+                  onClick={this.cast(player.game.battle.buffs.player)}
+                >
+                  buff player
+                </button>
+                <button
+                  type="button"
+                  className="btn-warning use-button"
+                  style={{top: '2em'}}
+                  onClick={this.cast(player.game.battle.buffs.monster)}
+                >
+                  buff monster
+                </button>
+              </div>
+            )}
         </div>
         <Menu
           id="simple-menu"

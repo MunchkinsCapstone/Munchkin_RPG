@@ -281,7 +281,7 @@ ButtonPanel button {
   opacity: 1 !important;
 }
 
-.equip-button {
+.use-button {
   border-radius: 0.2em;
   cursor: pointer;
   opacity: 0;
@@ -291,11 +291,11 @@ ButtonPanel button {
   border: 1px forestgreen solid;
 }
 
-.card-view:hover .equip-button {
+.card-view:hover .use-button {
   opacity: 0.5;
 }
 
-.equip-button:hover {
+.use-button:hover {
   opacity: 1 !important;
 }
 

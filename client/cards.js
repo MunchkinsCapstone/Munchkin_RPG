@@ -18,15 +18,10 @@ class Monster extends Card {
     this.type = 'Monster'
     this.badStuff = badStuff
     this.deck = 'doors'
-    this.buffs = []
   }
 
-  get allBuffs() {
-    return this.buffs.reduce((total, buff) => total + buff.bonus, 0)
-  }
-
-  get total() {
-    return this.level + this.allBuffs
+  get attack() {
+    return this.level
   }
 
   die() {
@@ -51,21 +46,13 @@ class Modifier extends Item {
 }
 
 class Equipment extends Item {
-  constructor(
-    name,
-    imageUrl,
-    bodyPart,
-    effect,
-    remove,
-    numHands,
-    restrictedTo,
-    restrictedFrom
-  ) {
+  constructor(name, imageUrl, bodyPart, effect, remove, numHands, requirement) {
     super(name, imageUrl, effect, remove)
     this.bodyPart = bodyPart
     this.type = 'Equipment'
     this.deck = 'treasures'
     this.numHands = numHands || 0
+    this.requirement = requirement
   }
 }
 
@@ -77,12 +64,21 @@ class Spell extends Item {
   }
 }
 
+class Buff extends Item {
+  constructor(name, imageUrl, bonus) {
+    super(name, imageUrl)
+    this.type = 'Buff'
+    this.deck = 'treasures'
+    this.effect = buffsArray => buffsArray.push(this)
+    this.bonus = bonus
+  }
+}
+
 class Class extends Item {
   constructor(name, imageUrl, effect, remove) {
     super(name, imageUrl, effect, remove)
     this.type = 'Class'
     this.deck = 'doors'
-    this.bonus = 0
   }
 }
 
@@ -91,7 +87,6 @@ class Race extends Item {
     super(name, imageUrl, effect, remove)
     this.type = 'Race'
     this.deck = 'doors'
-    this.bonus = 0
   }
 }
 
@@ -112,10 +107,22 @@ class Charm extends Item {
 }
 
 class Boost extends Item {
-  constructor(name, imageUrl) {
-    super(name, imageUrl, player => player.levelUp())
+  constructor(name, imageUrl, requirement) {
+    let effect = player => player.levelUp()
+    if (name === 'Kill the Hireling')
+      effect = player => {
+        const {hireling} = player.game
+        hireling.player.lose(hireling.card)
+        player.levelUp()
+      }
+    super(name, imageUrl, effect)
     this.type = 'Boost'
     this.deck = 'treasures'
+    this.requirement =
+      requirement ||
+      function() {
+        return true
+      }
   }
 }
 
@@ -280,7 +287,7 @@ const equipments = [
       user.bonus -= 3
     },
     0,
-    'Human'
+    player => !player.race
   ),
   new Equipment(
     'Boots of Butt-Kicking',
@@ -315,7 +322,7 @@ const equipments = [
       user.bonus -= 4
     },
     2,
-    'Elf'
+    player => !!player.race && player.race.name === 'Elf'
   ),
   new Equipment(
     'Broad Sword',
@@ -328,7 +335,7 @@ const equipments = [
       user.bonus -= 3
     },
     1,
-    'Female'
+    player => player.sex === 'Female'
   ),
   new Equipment(
     'Buckler of Swashing',
@@ -365,7 +372,7 @@ const equipments = [
       user.bonus -= 3
     },
     1,
-    'Cleric'
+    player => !!player.class && player.class.name === 'Cleric'
   ),
   new Equipment(
     'Cloak of Obscurity',
@@ -378,7 +385,7 @@ const equipments = [
       user.bonus -= 4
     },
     0,
-    'Thief'
+    player => !!player.class && player.class.name === 'Thief'
   ),
   new Equipment(
     'Dagger of Treachery',
@@ -391,7 +398,7 @@ const equipments = [
       user.bonus -= 3
     },
     1,
-    'Thief'
+    player => !!player.class && player.class.name === 'Thief'
   ),
   new Equipment(
     'Eleven-Foot Pole',
@@ -427,7 +434,7 @@ const equipments = [
       user.bonus -= 3
     },
     1,
-    'Male'
+    player => player.sex === 'Male'
   ),
   new Equipment(
     'Hammer of Kneecapping',
@@ -440,7 +447,7 @@ const equipments = [
       user.bonus -= 4
     },
     1,
-    'Dwarf'
+    player => !!player.race && player.race.name === 'Dwarf'
   ),
   new Equipment(
     'Helm of Courage',
@@ -498,8 +505,7 @@ const equipments = [
       user.allure = false
     },
     0,
-    null,
-    'Cleric'
+    player => !player.class || player.class.name !== 'Cleric'
   ),
   new Equipment(
     'Leather Armor',
@@ -523,7 +529,7 @@ const equipments = [
       user.bonus -= 1
     },
     0,
-    'Halfling'
+    player => !!player.race && player.race.name === 'Halfling'
   ),
   new Equipment(
     'Mace of Sharpness',
@@ -536,7 +542,7 @@ const equipments = [
       user.bonus -= 4
     },
     1,
-    'Cleric'
+    player => !!player.class && player.class.name === 'Cleric'
   ),
   new Equipment(
     'Mithril Armor',
@@ -549,8 +555,7 @@ const equipments = [
       user.bonus -= 3
     },
     0,
-    null,
-    'Wizard'
+    player => !player.class || player.class.name !== 'Wizard'
   ),
   new Equipment(
     'Pantyhose of Giant Strength',
@@ -563,8 +568,7 @@ const equipments = [
       user.bonus -= 3
     },
     0,
-    null,
-    'Warrior'
+    player => !player.class || player.class.name !== 'Warrior'
   ),
   new Equipment(
     'Pointy Hat of Power',
@@ -577,7 +581,7 @@ const equipments = [
       user.bonus -= 3
     },
     0,
-    'Wizard'
+    player => !!player.class && player.class.name === 'Wizard'
   ),
   new Equipment(
     'Rapier of Unfairness',
@@ -590,7 +594,7 @@ const equipments = [
       user.bonus -= 3
     },
     1,
-    'Elf'
+    player => !!player.race && player.race.name === 'Elf'
   ),
   new Equipment(
     'Rat on a Stick',
@@ -637,7 +641,7 @@ const equipments = [
       user.bonus -= 4
     },
     1,
-    'Warrior'
+    player => !!player.class && player.class.name === 'Warrior'
   ),
   new Equipment(
     'Short Wide Armor',
@@ -650,7 +654,7 @@ const equipments = [
       user.bonus -= 3
     },
     0,
-    'Dwarf'
+    player => !!player.race && player.race.name === 'Dwarf'
   ),
   new Equipment(
     'Singing & Dancing Sword',
@@ -663,8 +667,7 @@ const equipments = [
       user.bonus -= 2
     },
     0,
-    null,
-    'Thief'
+    player => !player.class || player.class.name !== 'Thief'
   ),
   new Equipment(
     'Slimy Armor',
@@ -711,7 +714,7 @@ const equipments = [
       user.bonus -= 5
     },
     1,
-    'Wizard'
+    player => !!player.class && player.class.name === 'Wizard'
   ),
   new Equipment(
     'Stepladder',
@@ -724,7 +727,7 @@ const equipments = [
       user.bonus -= 1
     },
     0,
-    'Halfling'
+    player => !!player.race && player.race.name === 'Halfling'
   ),
   new Equipment(
     'Swiss Army Polearm',
@@ -737,7 +740,7 @@ const equipments = [
       user.bonus -= 4
     },
     2,
-    'Human'
+    player => !player.race
   ),
   new Equipment(
     'Tuba of Charm',
@@ -854,9 +857,18 @@ const boosts = [
   new Boost('Bribe GM With Food', 'BribeGMWithFood.jpeg'),
   new Boost('Convenient Addition Error', 'ConvenientAdditionError.jpeg'),
   new Boost('Invoke Obscure Rules', 'InvokeObscureRules.jpeg'),
-  new Boost('Kill the Hireling', 'KillTheHireling.jpeg'),
+  new Boost(
+    'Kill the Hireling',
+    'KillTheHireling.jpeg',
+    player => player.game.hireling
+  ),
   new Boost('Potion of General Studliness', 'PotionOfGeneralStudliness.jpeg'),
-  new Boost('Whine at the GM', 'WhineAtGM.jpeg')
+  new Boost('Whine at the GM', 'WhineAtGM.jpeg'),
+  new Boost(
+    'Mutilate the Bodies',
+    'MutilateTheBodies.jpeg',
+    player => player.didKillMonster
+  )
 ]
 
 const classes = [
@@ -874,46 +886,39 @@ const classes = [
   new Class('Wizard', 'Wizard3.jpeg', () => {}, () => {})
 ]
 
-const spells = [
-  new Spell('Cotion of Ponfusion', 'CotionOfPonfusion.jpeg', target => {}),
-  new Spell('Doppleganger', 'Doppleganger.jpeg', target => {}),
-  new Spell(
+const buffs = [
+  new Buff('Cotion of Ponfusion', 'CotionOfPonfusion.jpeg', 3),
+  new Buff('Doppleganger', 'Doppleganger.jpeg', 0),
+  new Buff(
     'Electric Radioactive Acid Potion',
     'ElectricRadioactiveAcidPotion.jpeg',
-    target => {}
+    5
   ),
-  new Spell('Flaming Poison Potion', 'FlamingPoisonPotion.jpeg', target => {}),
+  new Buff('Flaming Poison Potion', 'FlamingPoisonPotion.jpeg', 3),
+  new Buff('Freezing Explosive Potion', 'FreezingExplosivePotion.jpeg', 3),
+  new Buff('Magic Missile', 'MagicMissile1.jpeg', 5),
+  new Buff('Magic Missile', 'MagicMissile2.jpeg', 5),
+  new Buff('Nasty Tasting Sports Drink', 'NastyTastingSportsDrink.jpeg', 2),
+  new Buff('Potion of Halitosis', 'PotionOfHalitosis.jpeg', 2),
+  new Buff('Pretty Balloons', 'PrettyBalloons.jpeg', 5),
+  new Buff('Sleep Potion', 'SleepPotion.jpeg', 2),
+  new Buff('Yuppie Water', 'YuppieWater.jpeg', 2)
+]
+
+const spells = [
   new Spell('Flask of Glue', 'FlaskOfGlue.jpeg', target => {}),
-  new Spell(
-    'Freezing Explosive Potion',
-    'FreezingExplosivePotion.jpeg',
-    target => {}
-  ),
   new Spell('Friendship Potion', 'FriendshipPotion.jpeg', target => {}),
-  new Spell('Doppleganger', 'Doppleganger.jpeg', target => {}),
   new Spell('Hoard', 'Hoard.jpeg', target => {}),
   new Spell('Instant Wall', 'InstantWall.jpeg', target => {}),
   new Spell('Invisibility Potion', 'InvisibilityPotion.jpeg', target => {}),
   new Spell('Loaded Die', 'LoadedDie.jpeg', target => {}),
   new Spell('Magic Lamp', 'MagicLamp.jpeg', target => {}),
-  new Spell('Magic Missile', 'MagicMissile1.jpeg', target => {}),
-  new Spell('Magic Missile', 'MagicMissile2.jpeg', target => {}),
-  new Spell('Mutilate the Bodies', 'MutilateTheBodies.jpeg', target => {}),
-  new Spell(
-    'Nasty Tasting Sports Drink',
-    'NastyTastingSportsDrink.jpeg',
-    target => {}
-  ),
   new Spell('Pollymorph Potion', 'PollymorphPotion.jpeg', target => {}),
-  new Spell('Potion of Halitosis', 'PotionOfHalitosis.jpeg', target => {}),
-  new Spell('Pretty Balloons', 'PrettyBalloons.jpeg', target => {}),
-  new Spell('Sleep Potion', 'SleepPotion.jpeg', target => {}),
   new Spell('Steal a Level', 'StealALevel.jpeg', target => {}),
   new Spell('Transferral Potion', 'TransferralPotion.jpeg', target => {}),
   new Spell('Wand of Dowsing', 'WandOfDowsing.jpeg', target => {}),
   new Spell('Wishing Ring', 'WishingRing1.jpeg', target => {}),
-  new Spell('Wishing Ring', 'WishingRing2.jpeg', target => {}),
-  new Spell('Yuppie Water', 'YuppieWater.jpeg', target => {})
+  new Spell('Wishing Ring', 'WishingRing2.jpeg', target => {})
 ]
 
 const curses = [
@@ -948,7 +953,6 @@ const curses = [
       player.class = null
     }
   }),
-  new Curse('Lose a Level', 'LoseALevel1.jpeg', player => {}),
   new Curse(
     'Lose the Footgear You Are Wearing',
     'LoseFootgear.jpeg',
@@ -1010,7 +1014,12 @@ const doors = new Deck(
     .concat(curses)
     .concat(charms)
 )
-const treasures = new Deck(equipments.concat(spells).concat(boosts))
+const treasures = new Deck(
+  equipments
+    .concat(spells)
+    .concat(boosts)
+    .concat(buffs)
+)
 
 const decks = {
   doors,

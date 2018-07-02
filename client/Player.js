@@ -3,8 +3,9 @@ const log = x => console.log(chalk.green(x))
 const {Race, Class, Equipment} = require('./cards')
 
 class Player {
-  constructor(name, game) {
+  constructor(name, sex, game) {
     this.name = name
+    this.sex = sex
     this.level = 1
     this.run = 0
     this.bonus = 0
@@ -22,12 +23,15 @@ class Player {
     }
     this.allEquips = []
     this.hand = []
+    this.checkRequirements = this.checkRequirements.bind(this)
     this.equip = this.equip.bind(this)
     this.unequip = this.unequip.bind(this)
     this.levelUp = this.levelUp.bind(this)
     this.die = this.die.bind(this)
     this.game = game
     this.inBattle = false
+    this.didKillMonster = false
+    this.hireling = null
   }
 
   get attack() {
@@ -38,90 +42,125 @@ class Player {
     this.hand.push(deck.draw())
   }
 
+  discard(cardIdx) {
+    this.hand[cardIdx].discard()
+    this.hand.splice(cardIdx, 1)
+  }
+
+  lose(card) {
+    this.unequip(card)
+    this.discard(this.hand.indexOf(card))
+  }
+
   gift(cardIdx, recipient) {
     const card = this.hand[cardIdx]
     this.hand.splice(cardIdx, 1)
     recipient.hand.push(card)
   }
 
+  checkRequirements() {
+    let i = 0
+    while (i < this.allEquips.length) {
+      let item = this.allEquips[i]
+      if (item.requirement && !item.requirement(this)) {
+        this.unequip(item)
+      } else i++
+    }
+  }
+
   equip(cardIdx) {
     const item = this.hand[cardIdx]
-    switch (item.type) {
-      case 'Equipment':
-        if (item.bodyPart === 'hands') {
-          if (this.equipment.numHands + item.numHands > 2) {
-            while (this.equipment.hands.length) {
-              this.unequip(this.equipment.hands[0])
+    if (item.name === 'Hireling') {
+      this.hireling = item
+      this.game.hireling = {player: this, card: item}
+      this.allEquips.push(item)
+      item.effect(this)
+      this.hand.splice(cardIdx, 1)
+    } else
+      switch (item.type) {
+        case 'Equipment':
+          if (!item.requirement || item.requirement(this)) {
+            if (item.bodyPart === 'hands') {
+              if (this.equipment.numHands + item.numHands > 2) {
+                while (this.equipment.hands.length) {
+                  this.unequip(this.equipment.hands[0])
+                }
+              }
+              this.equipment.hands.push(item)
+              this.allEquips.push(item)
+              this.equipment.numHands += item.numHands
+            } else if (item.bodyPart === 'misc') {
+              this.equipment.misc.push(item)
+              this.allEquips.push(item)
+            } else {
+              if (this.equipment[item.bodyPart]) {
+                this.unequip(this.equipment[item.bodyPart])
+              }
+              this.equipment[item.bodyPart] = item
+              this.allEquips.push(item)
             }
+            item.effect(this)
+            this.hand.splice(cardIdx, 1)
           }
-          this.equipment.hands.push(item)
-          this.allEquips.push(item)
-          this.equipment.numHands += item.numHands
-        } else if (item.bodyPart === 'misc') {
-          this.equipment.misc.push(item)
-          this.allEquips.push(item)
-        } else {
-          if (this.equipment[item.bodyPart]) {
-            this.unequip(this.equipment[item.bodyPart])
+          break
+        case 'Class':
+          if (this.class) {
+            this.unequip(this.class)
           }
-          this.equipment[item.bodyPart] = item
+          this.class = item
           this.allEquips.push(item)
-        }
-        item.effect(this)
-        this.hand.splice(cardIdx, 1)
-        break
-      case 'Class':
-        if (this.class) {
-          this.unequip(this.class)
-        }
-        this.class = item
-        this.allEquips.push(item)
-        item.effect(this)
-        this.hand.splice(cardIdx, 1)
-        break
-      case 'Race':
-        if (this.race) {
-          this.unequip(this.race)
-        }
-        this.race = item
-        this.allEquips.push(item)
-        item.effect(this)
-        this.hand.splice(cardIdx, 1)
-        break
-      default:
-        log('You cannot equip this item!')
-    }
+          item.effect(this)
+          this.hand.splice(cardIdx, 1)
+          break
+        case 'Race':
+          if (this.race) {
+            this.unequip(this.race)
+          }
+          this.race = item
+          this.allEquips.push(item)
+          item.effect(this)
+          this.hand.splice(cardIdx, 1)
+          break
+        default:
+          log('You cannot equip this item!')
+      }
+    this.checkRequirements()
   }
 
   unequip(item) {
     if (!item) return null
-    switch (item.type) {
-      case 'Equipment':
-        const {bodyPart} = item
-        if (bodyPart === 'hands' || bodyPart === 'misc') {
-          this.equipment[bodyPart].splice(
-            this.equipment[bodyPart].indexOf(item),
-            1
-          )
-          this.equipment.numHands -= item.numHands
-        } else {
-          this.equipment[bodyPart] = null
-        }
-        this.allEquips.splice(this.allEquips.indexOf(item), 1)
-        break
-      case 'Class':
-        this.class = null
-        this.allEquips.splice(this.allEquips.indexOf(item), 1)
-        break
-      case 'Race':
-        this.race = null
-        this.allEquips.splice(this.allEquips.indexOf(item), 1)
-        break
-      default:
-        log('You cannot equip this item!')
-    }
+    if (item.name === 'Hireling') {
+      this.hireling = null
+      this.allEquips.splice(this.allEquips.indexOf(item), 1)
+    } else
+      switch (item.type) {
+        case 'Equipment':
+          const {bodyPart} = item
+          if (bodyPart === 'hands' || bodyPart === 'misc') {
+            this.equipment[bodyPart].splice(
+              this.equipment[bodyPart].indexOf(item),
+              1
+            )
+            this.equipment.numHands -= item.numHands
+          } else {
+            this.equipment[bodyPart] = null
+          }
+          this.allEquips.splice(this.allEquips.indexOf(item), 1)
+          break
+        case 'Class':
+          this.allEquips.splice(this.allEquips.indexOf(item), 1)
+          this.class = null
+          break
+        case 'Race':
+          this.allEquips.splice(this.allEquips.indexOf(item), 1)
+          this.race = null
+          break
+        default:
+          log('You cannot equip this item!')
+      }
     this.hand.push(item)
     item.remove(this)
+    this.checkRequirements()
   }
 
   cast(cardIdx, target) {
@@ -129,7 +168,8 @@ class Player {
     if (
       card.type === 'Spell' ||
       card.type === 'Curse' ||
-      card.type === 'Boost'
+      card.type === 'Boost' ||
+      card.type === 'Buff'
     ) {
       card.effect(target)
       card.discard()
