@@ -1,114 +1,62 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import {withRouter, Link} from 'react-router-dom'
 import socket from '../socket'
-import axios from 'axios'
+import {createUserName} from '../store/userReducer'
+import {joinRoom} from '../store/roomReducer'
 
-class Lobby extends Component {
-  constructor() {
-    super()
-    this.state = {
-      newRoom: '',
-      allRooms: []
-    }
+class Room extends Component {
+  constructor(props) {
+    super(props)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleSubmit(evt) {
     evt.preventDefault()
-    // const newRoom = evt.target.newRoom.value
-    let newRoomState = {
-      name: '',
-      players: []
-    }
-    newRoomState.name = evt.target.newRoom.value
-    // Burning Question: How can we control whether to init players array/name or update existing room?
-
-    // this.setState({ newRoom: '' })
-    // console.log('newRoom', newRoom)
-    // let listWithAddedRooms = this.state.allRooms.concat(newRoom)
-    // console.log('listwithaddedrooms', listWithAddedRooms)
-    // this.setState({ newRoom: '', allRooms: listWithAddedRooms })
-    // console.log('afer state', this.state)
-    // this.setState({newRoom: newRoom.name, allRooms: [newRoom]})
-    const payload = newRoomState
-    console.log('payload after state', payload)
-    socket.emit('roomMade', payload)
-    socket.on('get rooms', data => {
-      console.log('rooms received from server socket', data)
-      this.setState({newRoom: data})
-      console.log('after setting state..', this.state)
-    })
+    const newUser = evt.target.newUser.value
+    this.props.addPlayer(newUser)
+    socket.emit('new player', newUser)
   }
 
   handleChange(evt) {
     evt.preventDefault()
-
-    const roomToBe = evt.target.value
-    this.setState({newRoom: roomToBe})
+    const newUser = evt.target.value
+    this.setState({user: newUser})
   }
 
   componentDidMount() {
-    // console.log('before mount state', this.state)
-    // socket.on('get rooms', (rooms) => {
-    //   this.setState({ allRooms: rooms })
-    // })
-    // socket.on('initalRoom', rooms => {
-    //   this.setState({allRooms: rooms})
-    // })
+    socket.on('initialRoom', rooms => {
+      this.props.addUserToRoom(rooms)
+    })
 
-    axios
-      .get('/api/lobby')
-      .then(res => res.data)
-      .then(foundLobby => {
-        this.setState({allRooms: foundLobby})
-      })
-      .catch(err => console.error('Not found'))
+    socket.on('room updated', room => {
+      this.props.addUserToRoom(room)
+    })
   }
 
   render() {
-    console.log(this.state)
-    const {allRooms} = this.state
-    // console.log('render this.state', allRooms)
+    const {room} = this.props
+    console.log(this.props.room, 'PROPS_____________')
     return (
       <div>
-        <h1>Welcome to the Lobby</h1>
+        <h1>GAMEROOM</h1>
+        {/* <div>{room.map((user, idx) => <li key={idx}>{user}</li>)}</div> */}
+        <li>{this.props.room[0]}</li>
         <div>
-          <div>
-            {allRooms.length ? (
-              <div>
-                <ul>
-                  {allRooms.map((room, idx) => (
-                    <li key={idx}>
-                      {console.log('allRooms map', allRooms)}
-                      ROOM NAME: {room.name}
-                      <ul>
-                        players:{' '}
-                        {room.players &&
-                          room.plays.map(player => <li>{player}</li>)}
-                      </ul>
-                    </li>
-                  ))}
-                </ul>ß
-              </div>
-            ) : (
-              <div>
-                <h1>No Rooms Create a Room to Play</h1>
-              </div>
-            )}
-          </div>
+          <div />
           <div>
             <form onSubmit={this.handleSubmit}>
               <div>
-                <label htmlFor="newRoom">Create Room</label>
+                <label htmlFor="newUser">ADD USER</label>
                 <input
                   type="text"
-                  name="newRoom"
-                  value={this.state.newRoom}
+                  name="newUser"
+                  value={this.props.newUser}
                   onChange={this.handleChange}
                 />
               </div>
-              <button>Create Room</button>
-              <button>Refresh Room</button>
+              <button>START GAME</button>
             </form>
           </div>
         </div>
@@ -117,4 +65,22 @@ class Lobby extends Component {
   }
 }
 
-export default Lobby
+const mapStateToProps = state => {
+  return {
+    user: state.user,
+    room: state.room
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addPlayer: user => {
+      dispatch(createUserName(user))
+    },
+    addUserToRoom: room => {
+      dispatch(joinRoom(room))
+    }
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Room))
