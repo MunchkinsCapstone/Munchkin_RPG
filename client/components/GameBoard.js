@@ -20,7 +20,19 @@ export default class GameBoard extends Component {
           isActive: false
         }
       },
-      players: ['Yang', 'Oz', 'Graham', 'Raymond']
+      players: [
+        'Yang',
+        'Oz',
+        'Graham',
+        'Raymond',
+        'Dan',
+        'Corey',
+        'Josh',
+        'Roxie',
+        'Bruce',
+        'Xifeng',
+        'Noelle'
+      ]
     }
     this.startGame = this.startGame.bind(this)
     this.endTurn = this.endTurn.bind(this)
@@ -113,6 +125,14 @@ export default class GameBoard extends Component {
     })
   }
 
+  equipToHireling = (player, card) => {
+    const {game} = this.state
+    player.equipToHireling(card)
+    this.setState({
+      game
+    })
+  }
+
   cast = (player, cardIdx, target) => {
     const {game} = this.state
     player.cast(cardIdx, target)
@@ -153,6 +173,7 @@ export default class GameBoard extends Component {
                     unequip={this.unequip}
                     cast={this.cast}
                     lookForTrouble={this.lookForTrouble}
+                    equipToHireling={this.equipToHireling}
                   />
                 )
               })}

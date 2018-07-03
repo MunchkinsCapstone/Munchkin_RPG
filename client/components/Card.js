@@ -31,6 +31,12 @@ class Card extends React.Component {
     this.handleClose()
   }
 
+  equipToHireling = () => {
+    const {equipToHireling, player, card} = this.props
+    equipToHireling(player, card)
+    this.handleClose()
+  }
+
   cast = target => {
     return () => {
       const {cast, player, cardIdx} = this.props
@@ -68,17 +74,30 @@ class Card extends React.Component {
               Discard
             </button>
           )}
-          {(card.type === 'Equipment' ||
-            card.type === 'Race' ||
-            card.type === 'Class') && (
-            <button
-              type="button"
-              className="btn-primary use-button"
-              onClick={this.toggleEquip}
-            >
-              {equipped ? 'Unequip' : 'Equip'}
-            </button>
-          )}
+          {(card.name !== 'Hireling' || !equipped) &&
+            (card.type === 'Equipment' ||
+              card.type === 'Race' ||
+              card.type === 'Class') && (
+              <button
+                type="button"
+                className="btn-primary use-button"
+                onClick={this.toggleEquip}
+              >
+                {equipped ? 'Unequip' : 'Equip'}
+              </button>
+            )}
+          {card.type === 'Equipment' &&
+            player.hireling &&
+            !player.hireling.equipment && (
+              <button
+                style={{top: '10em'}}
+                type="button"
+                className="btn-primary use-button"
+                onClick={this.equipToHireling}
+              >
+                Equip to Hireling
+              </button>
+            )}
           {card.type === 'Boost' &&
             card.requirement(player) && (
               <button
