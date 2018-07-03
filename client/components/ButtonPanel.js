@@ -1,15 +1,9 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 
 export const ButtonPanel = props => {
-  const {game, startGame, knockKnock, fight, flee, lootRoom, endTurn} = props
-  if (!game.isActive)
-    return (
-      <div className="flexContainer">
-        <button type="button" className="btn btn-dark" onClick={startGame}>
-          Start Game
-        </button>
-      </div>
-    )
+  const { game, startGame, knockKnock, fight, flee, lootRoom, endTurn } = props
+  console.log("GAME IN PANEL", )
+
   if (game.battle.isActive)
     return (
       <div className="flexContainer">
@@ -48,6 +42,15 @@ export const ButtonPanel = props => {
         </button>
       </div>
     )
+  else {
+    return (
+      <div className="flexContainer">
+        <button type="button" className="btn btn-dark" onClick={startGame}>
+          Start Game
+        </button>
+      </div>
+    )
+  }
 }
 
 export default ButtonPanel
