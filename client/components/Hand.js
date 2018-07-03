@@ -2,7 +2,15 @@ import React from 'react'
 import Card from './Card'
 
 const Hand = props => {
-  const {hand, player, discard, equip, cast} = props
+  const {
+    hand,
+    player,
+    discard,
+    equip,
+    cast,
+    lookForTrouble,
+    equipToHireling
+  } = props
   return (
     <div>
       <button
@@ -35,6 +43,8 @@ const Hand = props => {
                       cardIdx={index}
                       player={player}
                       cast={cast}
+                      lookForTrouble={lookForTrouble}
+                      equipToHireling={equipToHireling}
                     />
                   )
                 })

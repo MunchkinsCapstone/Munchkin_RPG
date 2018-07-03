@@ -3,6 +3,9 @@ import PlayerCard from './PlayerCard'
 import ChatLog from './ChatLog'
 import Battle from './Battle'
 import ButtonPanel from './ButtonPanel'
+import ImageMapper from 'react-image-mapper'
+import socket from '../socket'
+
 let {log, Game} = require('../gameLogic')
 
 export default class GameBoard extends Component {
@@ -38,6 +41,7 @@ export default class GameBoard extends Component {
     this.setState({
       game
     })
+    // socket.emit('startGame', game)
   }
 
   knockKnock() {
@@ -52,6 +56,13 @@ export default class GameBoard extends Component {
     const audioNode = document.getElementById('boardAudio')
     console.log('Hello audio!!', audioNode)
     audioNode.play()
+    // socket.on('gameStarted', game => {
+    //   console.log(game)
+    //   this.setState({
+    //     game
+    //   })
+    //   console.log(this.state, 'after payload<><><><><><><><><>')
+    // })
   }
 
   fight() {
@@ -111,6 +122,14 @@ export default class GameBoard extends Component {
     })
   }
 
+  equipToHireling = (player, card) => {
+    const {game} = this.state
+    player.equipToHireling(card)
+    this.setState({
+      game
+    })
+  }
+
   cast = (player, cardIdx, target) => {
     const {game} = this.state
     player.cast(cardIdx, target)
@@ -119,8 +138,22 @@ export default class GameBoard extends Component {
     })
   }
 
+  lookForTrouble = monster => {
+    const {game} = this.state
+    game.startBattle(monster)
+    const {hand} = game.currentPlayer
+    hand.splice(hand.indexOf(monster), 1)
+    this.setState({
+      game
+    })
+  }
+
   render() {
     const {game} = this.state
+    const MAP = {
+      name: 'door',
+      areas: [{shape: 'rect', coords: [28, 503, 128, 564]}]
+    }
     return (
       <div className="container">
         <div className="row">
@@ -136,6 +169,8 @@ export default class GameBoard extends Component {
                     equip={this.equip}
                     unequip={this.unequip}
                     cast={this.cast}
+                    lookForTrouble={this.lookForTrouble}
+                    equipToHireling={this.equipToHireling}
                   />
                 )
               })}
@@ -151,11 +186,22 @@ export default class GameBoard extends Component {
               <Battle battle={game.battle} />
             ) : (
               <div>
-                <img
+                <ImageMapper
+                  src={
+                    'http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg'
+                  }
+                  map={MAP}
+                  onClick={
+                    game.phase === 1
+                      ? this.knockKnock
+                      : game.phase === 2 ? this.lootRoom : null
+                  }
+                />
+                {/* <img
                   alt="gameboard"
                   style={{width: '100%'}}
                   src="http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg"
-                />
+                /> */}
                 <audio autoPlay loop id="boardAudio">
                   <source src="./music/theJourney.mp3" type="audio/mp3" />
                 </audio>

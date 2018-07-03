@@ -31,11 +31,22 @@ class Card extends React.Component {
     this.handleClose()
   }
 
+  equipToHireling = () => {
+    const {equipToHireling, player, card} = this.props
+    equipToHireling(player, card)
+    this.handleClose()
+  }
+
   cast = target => {
     return () => {
       const {cast, player, cardIdx} = this.props
       cast(player, cardIdx, target)
     }
+  }
+
+  lookForTrouble = () => {
+    const {lookForTrouble, card} = this.props
+    lookForTrouble(card)
   }
 
   render() {
@@ -60,20 +71,34 @@ class Card extends React.Component {
               className="btn-danger discard-button"
               onClick={this.discard}
             >
-              discard
+              Discard
             </button>
           )}
-          {(card.type === 'Equipment' ||
-            card.type === 'Race' ||
-            card.type === 'Class') && (
-            <button
-              type="button"
-              className="btn-primary use-button"
-              onClick={this.toggleEquip}
-            >
-              {equipped ? 'unequip' : 'equip'}
-            </button>
-          )}
+          {(card.name !== 'Hireling' || !equipped) &&
+            (card.type === 'Equipment' ||
+              card.type === 'Race' ||
+              card.type === 'Class') && (
+              <button
+                type="button"
+                className="btn-primary use-button"
+                onClick={this.toggleEquip}
+              >
+                {equipped ? 'Unequip' : 'Equip'}
+              </button>
+            )}
+          {card.type === 'Equipment' &&
+            player.hireling &&
+            !player.hireling.equipment &&
+            !equipped && (
+              <button
+                style={{top: '10em', left: '0em', width: '6em'}}
+                type="button"
+                className="btn-primary use-button"
+                onClick={this.equipToHireling}
+              >
+                Equip to Hireling
+              </button>
+            )}
           {card.type === 'Boost' &&
             card.requirement(player) && (
               <button
@@ -81,7 +106,18 @@ class Card extends React.Component {
                 className="btn-success use-button"
                 onClick={this.cast(player)}
               >
-                use
+                Use
+              </button>
+            )}
+          {card.type === 'Monster' &&
+            player.isActive &&
+            player.game.phase === 2 && (
+              <button
+                type="button"
+                className="btn-danger use-button"
+                onClick={this.lookForTrouble}
+              >
+                Fight!
               </button>
             )}
           {card.type === 'Buff' &&
@@ -90,17 +126,18 @@ class Card extends React.Component {
                 <button
                   type="button"
                   className="btn-success use-button"
+                  style={{top: '3em', left: '2em', width: '6em'}}
                   onClick={this.cast(player.game.battle.buffs.player)}
                 >
-                  buff player
+                  Buff Player
                 </button>
                 <button
                   type="button"
-                  className="btn-warning use-button"
-                  style={{top: '2em'}}
+                  className="btn-danger use-button"
+                  style={{top: '8.5em', left: '2em', width: '6em'}}
                   onClick={this.cast(player.game.battle.buffs.monster)}
                 >
-                  buff monster
+                  Buff Monster
                 </button>
               </div>
             )}

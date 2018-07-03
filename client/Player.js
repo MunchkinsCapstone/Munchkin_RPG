@@ -21,6 +21,8 @@ class Player {
       hands: [],
       numHands: 0
     }
+    this.halfBreed = true
+    this.super = false
     this.allEquips = []
     this.hand = []
     this.checkRequirements = this.checkRequirements.bind(this)
@@ -32,6 +34,8 @@ class Player {
     this.inBattle = false
     this.didKillMonster = false
     this.hireling = null
+    this.lose = this.lose.bind(this)
+    this.discard = this.discard.bind(this)
   }
 
   get attack() {
@@ -42,14 +46,22 @@ class Player {
     this.hand.push(deck.draw())
   }
 
-  discard(cardIdx) {
+  discard = cardIdx => {
     this.hand[cardIdx].discard()
     this.hand.splice(cardIdx, 1)
   }
 
-  lose(card) {
-    this.unequip(card)
-    this.discard(this.hand.indexOf(card))
+  lose = card => {
+    if (card) {
+      if (this.hireling && card === this.hireling.card) {
+        this.lose(this.hireling.equipment)
+        this.hireling = null
+      }
+      if (this.allEquips.indexOf(card) > -1) {
+        this.unequip(card)
+      }
+      this.discard(this.hand.indexOf(card))
+    }
   }
 
   gift(cardIdx, recipient) {
@@ -62,7 +74,11 @@ class Player {
     let i = 0
     while (i < this.allEquips.length) {
       let item = this.allEquips[i]
-      if (item.requirement && !item.requirement(this)) {
+      if (
+        item.requirement &&
+        !item.requirement(this) &&
+        item !== this.hireling.equipment
+      ) {
         this.unequip(item)
       } else i++
     }
@@ -71,7 +87,7 @@ class Player {
   equip(cardIdx) {
     const item = this.hand[cardIdx]
     if (item.name === 'Hireling') {
-      this.hireling = item
+      this.hireling = {card: item, equipment: null}
       this.game.hireling = {player: this, card: item}
       this.allEquips.push(item)
       item.effect(this)
@@ -129,38 +145,46 @@ class Player {
 
   unequip(item) {
     if (!item) return null
-    if (item.name === 'Hireling') {
-      this.hireling = null
-      this.allEquips.splice(this.allEquips.indexOf(item), 1)
-    } else
-      switch (item.type) {
-        case 'Equipment':
-          const {bodyPart} = item
-          if (bodyPart === 'hands' || bodyPart === 'misc') {
-            this.equipment[bodyPart].splice(
-              this.equipment[bodyPart].indexOf(item),
-              1
-            )
-            this.equipment.numHands -= item.numHands
-          } else {
-            this.equipment[bodyPart] = null
-          }
-          this.allEquips.splice(this.allEquips.indexOf(item), 1)
-          break
-        case 'Class':
-          this.allEquips.splice(this.allEquips.indexOf(item), 1)
-          this.class = null
-          break
-        case 'Race':
-          this.allEquips.splice(this.allEquips.indexOf(item), 1)
-          this.race = null
-          break
-        default:
-          log('You cannot equip this item!')
-      }
+    switch (item.type) {
+      case 'Equipment':
+        const {bodyPart} = item
+        if (bodyPart === 'hands' || bodyPart === 'misc') {
+          this.equipment[bodyPart].splice(
+            this.equipment[bodyPart].indexOf(item),
+            1
+          )
+          this.equipment.numHands -= item.numHands
+        } else {
+          this.equipment[bodyPart] = null
+        }
+        this.allEquips.splice(this.allEquips.indexOf(item), 1)
+        break
+      case 'Class':
+        this.allEquips.splice(this.allEquips.indexOf(item), 1)
+        this.class = null
+        break
+      case 'Race':
+        this.allEquips.splice(this.allEquips.indexOf(item), 1)
+        this.race = null
+        break
+      default:
+        log('You cannot equip this item!')
+    }
+    if (this.hireling && item === this.hireling.equipment)
+      this.hireling.equipment = null
     this.hand.push(item)
     item.remove(this)
     this.checkRequirements()
+  }
+
+  equipToHireling = card => {
+    if (card.type === 'Equipment') {
+      this.hireling.equipment = card
+      card.effect(this)
+      const cardIdx = this.hand.indexOf(card)
+      this.hand.splice(cardIdx, 1)
+      this.allEquips.push(card)
+    }
   }
 
   cast(cardIdx, target) {
@@ -183,14 +207,23 @@ class Player {
     if (this.level === 10) this.game.endGame(this.name)
   }
 
+  levelDown = () => {
+    if (this.level > 1) this.level--
+    log(this.name + ' lost a level!')
+  }
+
   die() {
-    let i = 0
-    while (this.hand.length) {
-      let player = this.game.players[i]
-      if (player !== this) player.draw(this.hand.pop())
-      i++
+    while (this.allEquips.length) {
+      this.unequip(this.allEquips[0])
     }
-    Object.assign(this, new Player(this.name))
+    const players = this.game.playerOrder
+    let i = players.indexOf(this)
+    while (this.hand.length) {
+      i = (i + 1) % players.length
+      let player = players[i]
+      if (player !== this) player.hand.push(this.hand.pop())
+    }
+    this.level = 1
   }
 }
 
