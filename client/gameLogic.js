@@ -46,10 +46,11 @@ class Game {
   knockKnock() {
     log('*knock* *knock*')
     const card = doors.draw()
-    if (card.type === 'Monster') this.startBattle(card)
-    else if (card.type === 'Curse') {
-      card.effect(player)
-      card.discard()
+    if (card.type === 'Monster') {
+      this.startBattle(card)
+      // } else if (card.type === 'Curse') {
+      //   card.effect(this.currentPlayer)
+      //   card.discard()
     } else {
       log(`You found: ${card.name}`)
       this.currentPlayer.hand.push(card)
@@ -72,7 +73,6 @@ class Game {
     if (this.currentPlayer.hand.length > this.currentPlayer.maxInventory) {
       return log('You are carrying too many items!')
     } else {
-      this.currentPlayer.didKillMonster = false
       this.currentPlayer.isActive = false
       this.players.push(this.currentPlayer)
       this.startTurn()
@@ -92,19 +92,16 @@ class Battle {
   constructor(monster, game) {
     this.monster = monster
     this.game = game
-    this.player = this.game.currentPlayer
-    this.player.inBattle = true
+    this.players = [this.game.currentPlayer]
+    this.players[0].inBattle = true
     this.buffs = {
-      player: [],
+      players: [],
       monster: [],
       getTotal: side => {
         return this.buffs[side]
           .map(buff => buff.bonus)
           .reduce((num1, num2) => num1 + num2, 0)
       }
-    }
-    this.getAttack = combatant => {
-      return this[combatant].attack + this.buffs.getTotal(combatant)
     }
     this.isActive = true
     this.end = this.end.bind(this)
@@ -115,47 +112,62 @@ class Battle {
     log(`Level: ${monster.level}`)
   }
 
+  get playerAttack() {
+    return this.players.reduce((total, player) => (total += player.attack), 0)
+  }
+
+  get playerTotal() {
+    return this.playerAttack + this.buffs.getTotal('players')
+  }
+
+  get monsterTotal() {
+    return this.monster.level + this.buffs.getTotal('monster')
+  }
+
   flee() {
-    // this.combatants.forEach(combatant => {
-    const roll = rollDie()
-    if (roll + this.player.run < 5) {
-      log(`${this.player.name} failed to escape!`)
-      this.monster.badStuff(this.player)
-    } else log(`${this.player.name} got away safely!`)
-    // })
+    this.players.forEach(player => {
+      const roll = rollDie()
+      if (roll + player.run < 5) {
+        log(`${player.name} failed to escape!`)
+        this.monster.badStuff(player)
+      } else log(`${player.name} got away safely!`)
+    })
     this.end()
   }
 
   resolve() {
-    const playerAttack =
-      this.getAttack('player') + this.buffs.getTotal('player')
-    const monsterAttack =
-      this.getAttack('monster') + this.buffs.getTotal('monster')
-    if (!!this.player.class && this.player.class === 'Warrior') playerAttack++
-    if (playerAttack > monsterAttack) {
+    if (
+      this.players.some(
+        player => player.class && player.class.name === 'Warrior'
+      )
+    ) {
+      this.playerTotal++
+    }
+    if (this.playerTotal > this.monsterTotal) {
       this.monster.die()
       log(`The ${this.monster.name} has been slain!`)
-      this.player.levelUp()
-      this.player.didKillMonster = true
+      this.players[0].levelUp()
       for (let i = 0; i < this.monster.treasures; i++) {
-        this.player.draw(treasures)
+        this.players[0].draw(treasures)
       }
     } else {
-      log(`${this.player.name} was defeated!`)
-      this.monster.badStuff(this.player)
+      this.players.forEach(player => {
+        log(`${player.name} was defeated!`)
+        this.monster.badStuff(player)
+      })
     }
     this.end()
   }
 
   end() {
     this.monster.discard()
-    this.buffs.player.forEach(buff => {
+    this.buffs.players.forEach(buff => {
       buff.discard()
     })
     this.buffs.monster.forEach(buff => {
       buff.discard()
     })
-    this.player.inBattle = false
+    this.players.forEach(player => (player.inBattle = false))
     this.game.battle = {isActive: false}
     this.game.phase = 3
   }

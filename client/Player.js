@@ -32,10 +32,10 @@ class Player {
     this.die = this.die.bind(this)
     this.game = game
     this.inBattle = false
-    this.didKillMonster = false
     this.hireling = null
     this.lose = this.lose.bind(this)
     this.discard = this.discard.bind(this)
+    this.assist = this.assist.bind(this)
   }
 
   get attack() {
@@ -201,6 +201,10 @@ class Player {
     } else log('You cannot cast this item as a spell!')
   }
 
+  assist = () => {
+    this.game.battle.players.push(this)
+    this.inBattle = true
+  }
   levelUp() {
     this.level++
     log(this.name + ' went up one level!')

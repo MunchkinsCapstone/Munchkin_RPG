@@ -127,7 +127,7 @@ class Card extends React.Component {
                   type="button"
                   className="btn-success use-button"
                   style={{top: '3em', left: '2em', width: '6em'}}
-                  onClick={this.cast(player.game.battle.buffs.player)}
+                  onClick={this.cast(player.game.battle.buffs.players)}
                 >
                   Buff Player
                 </button>

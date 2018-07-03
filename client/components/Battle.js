@@ -5,12 +5,11 @@ const Battle = props => {
   const monster = battle.monster
   const player = battle.player
   return (
-    <div>
+    <div className="battle">
       <div className="row">
         <div className="col-12">
           <img
             className="monster-view"
-            style={{width: '100%'}}
             src={'/cardImages/' + monster.imageUrl}
             alt="https://i.pinimg.com/736x/6f/c0/50/6fc050ee0177c09195b3bb067898b403--big-daddy-custom-cards.jpg"
           />
@@ -19,14 +18,14 @@ const Battle = props => {
       <hr />
       <div className="row battle-stats">
         <div className="col-6" style={{textAlign: 'center'}}>
-          <h3>{player.name}</h3>
-          <h5>Attack : {player.attack}</h5>
+          <h3>{battle.players.map(player => player.name).join(',\n')}</h3>
+          <h5>Attack : {battle.playerAttack}</h5>
           <div style={{display: 'flex', flexDirection: 'row'}}>
             <button className="btn btn-success">Buffs :</button>
-            <h5>{' ' + battle.buffs.getTotal('player')}</h5>
+            <h5>{' ' + battle.buffs.getTotal('players')}</h5>
           </div>
           <hr />
-          <h4>TOTAL : {battle.getAttack('player')}</h4>
+          <h4>TOTAL : {battle.playerTotal}</h4>
         </div>
         <div
           style={{
@@ -42,7 +41,7 @@ const Battle = props => {
             <h5>{' ' + battle.buffs.getTotal('monster')}</h5>
           </div>
           <hr />
-          <h4>TOTAL : {battle.getAttack('monster')}</h4>
+          <h4>TOTAL : {battle.monsterTotal}</h4>
         </div>
       </div>
       <audio autoPlay loop>
