@@ -4,6 +4,7 @@ import ChatLog from './ChatLog'
 import Battle from './Battle'
 import ButtonPanel from './ButtonPanel'
 import ImageMapper from 'react-image-mapper'
+import socket from '../socket'
 
 let {log, Game} = require('../gameLogic')
 
@@ -20,19 +21,7 @@ export default class GameBoard extends Component {
           isActive: false
         }
       },
-      players: [
-        'Yang',
-        'Oz',
-        'Graham',
-        'Raymond',
-        'Dan',
-        'Corey',
-        'Josh',
-        'Roxie',
-        'Bruce',
-        'Xifeng',
-        'Noelle'
-      ]
+      players: ['Yang', 'Oz', 'Graham', 'Raymond']
     }
     this.startGame = this.startGame.bind(this)
     this.endTurn = this.endTurn.bind(this)
@@ -52,6 +41,7 @@ export default class GameBoard extends Component {
     this.setState({
       game
     })
+    // socket.emit('startGame', game)
   }
 
   knockKnock() {
@@ -66,6 +56,13 @@ export default class GameBoard extends Component {
     const audioNode = document.getElementById('boardAudio')
     console.log('Hello audio!!', audioNode)
     audioNode.play()
+    // socket.on('gameStarted', game => {
+    //   console.log(game)
+    //   this.setState({
+    //     game
+    //   })
+    //   console.log(this.state, 'after payload<><><><><><><><><>')
+    // })
   }
 
   fight() {

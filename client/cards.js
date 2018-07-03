@@ -549,10 +549,10 @@ const equipments = [
     'Hireling.jpeg',
     'misc',
     user => {
-      //
+      user.bonus++
     },
     user => {
-      //
+      user.bonus--
     }
   ),
   new Equipment(

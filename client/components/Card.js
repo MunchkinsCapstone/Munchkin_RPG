@@ -88,9 +88,10 @@ class Card extends React.Component {
             )}
           {card.type === 'Equipment' &&
             player.hireling &&
-            !player.hireling.equipment && (
+            !player.hireling.equipment &&
+            !equipped && (
               <button
-                style={{top: '10em'}}
+                style={{top: '10em', left: '0em', width: '6em'}}
                 type="button"
                 className="btn-primary use-button"
                 onClick={this.equipToHireling}

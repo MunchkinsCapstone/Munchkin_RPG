@@ -74,7 +74,11 @@ class Player {
     let i = 0
     while (i < this.allEquips.length) {
       let item = this.allEquips[i]
-      if (item.requirement && !item.requirement(this)) {
+      if (
+        item.requirement &&
+        !item.requirement(this) &&
+        item !== this.hireling.equipment
+      ) {
         this.unequip(item)
       } else i++
     }
