@@ -148,6 +148,14 @@ export default class GameBoard extends Component {
     })
   }
 
+  assist = player => {
+    const {game} = this.state
+    player.assist()
+    this.setState({
+      game
+    })
+  }
+
   render() {
     const {game} = this.state
     const MAP = {
@@ -155,10 +163,10 @@ export default class GameBoard extends Component {
       areas: [{shape: 'rect', coords: [28, 503, 128, 564]}]
     }
     return (
-      <div className="container">
-        <div className="row">
+      <div className="gameboard-container">
+        <div>
           {game.isActive ? (
-            <div className="col-5">
+            <div>
               {game.playerOrder.map(player => {
                 return (
                   <PlayerCard
@@ -171,6 +179,7 @@ export default class GameBoard extends Component {
                     cast={this.cast}
                     lookForTrouble={this.lookForTrouble}
                     equipToHireling={this.equipToHireling}
+                    assist={this.assist}
                   />
                 )
               })}
@@ -181,46 +190,46 @@ export default class GameBoard extends Component {
               src="http://www.worldofmunchkin.com/lite/img/backcover_lg.jpg"
             />
           )}
-          <div className="col-4">
-            {game.battle.isActive ? (
-              <Battle battle={game.battle} />
-            ) : (
-              <div>
-                <ImageMapper
-                  src={
-                    'http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg'
-                  }
-                  map={MAP}
-                  onClick={
-                    game.phase === 1
-                      ? this.knockKnock
-                      : game.phase === 2 ? this.lootRoom : null
-                  }
-                />
-                {/* <img
+        </div>
+        <div>
+          {game.battle.isActive ? (
+            <Battle battle={game.battle} />
+          ) : (
+            <div>
+              <ImageMapper
+                src={
+                  'http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg'
+                }
+                map={MAP}
+                onClick={
+                  game.phase === 1
+                    ? this.knockKnock
+                    : game.phase === 2 ? this.lootRoom : null
+                }
+              />
+              {/* <img
                   alt="gameboard"
                   style={{width: '100%'}}
                   src="http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg"
                 /> */}
-                <audio autoPlay loop id="boardAudio">
-                  <source src="./music/theJourney.mp3" type="audio/mp3" />
-                </audio>
-              </div>
-            )}
-            <hr />
-            <ButtonPanel
-              game={game}
-              startGame={this.startGame}
-              knockKnock={this.knockKnock}
-              fight={this.fight}
-              flee={this.flee}
-              lootRoom={this.lootRoom}
-              endTurn={this.endTurn}
-            />
-          </div>
-          <div className="col-3">
-            <ChatLog />
-          </div>
+              <audio autoPlay loop id="boardAudio">
+                <source src="./music/theJourney.mp3" type="audio/mp3" />
+              </audio>
+            </div>
+          )}
+          <hr />
+          <ButtonPanel
+            game={game}
+            startGame={this.startGame}
+            knockKnock={this.knockKnock}
+            fight={this.fight}
+            flee={this.flee}
+            lootRoom={this.lootRoom}
+            endTurn={this.endTurn}
+          />
+        </div>
+        <div>
+          <ChatLog />
         </div>
       </div>
     )

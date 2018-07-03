@@ -11,7 +11,8 @@ const PlayerCard = props => {
     unequip,
     cast,
     lookForTrouble,
-    equipToHireling
+    equipToHireling,
+    assist
   } = props
   let color = player === game.currentPlayer ? 'primary' : 'secondary'
   if (player.inBattle) color = 'danger'
@@ -41,9 +42,16 @@ const PlayerCard = props => {
           equipToHireling={equipToHireling}
         />
         <Equipment player={player} discard={discard} unequip={unequip} />
-        <button type="button" className="btn btn-white">
-          Assist
-        </button>
+        {game.battle.isActive &&
+          !player.inBattle && (
+            <button
+              type="button"
+              className="btn btn-white"
+              onClick={() => assist(player)}
+            >
+              Assist
+            </button>
+          )}
         <button type="button" className="btn btn-white">
           Trade
         </button>
