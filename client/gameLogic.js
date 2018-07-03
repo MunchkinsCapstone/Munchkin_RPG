@@ -27,12 +27,12 @@ class Game {
     this.phase = 1
     this.battle = {isActive: false}
     this.hireling = null
-    this.startTurn = this.startTurn.bind(this)
-    this.knockKnock = this.knockKnock.bind(this)
-    this.startBattle = this.startBattle.bind(this)
-    this.drawTreasure = this.drawTreasure.bind(this)
-    this.lootRoom = this.lootRoom.bind(this)
-    this.endTurn = this.endTurn.bind(this)
+    // this.startTurn = this.startTurn.bind(this)
+    // this.knockKnock = this.knockKnock.bind(this)
+    // this.startBattle = this.startBattle.bind(this)
+    // this.drawTreasure = this.drawTreasure.bind(this)
+    // this.lootRoom = this.lootRoom.bind(this)
+    // this.endTurn = this.endTurn.bind(this)
     this.startTurn()
   }
 
@@ -91,7 +91,7 @@ class Game {
 class Battle {
   constructor(monster, game) {
     this.monster = monster
-    this.game = game
+    // this.game = game
     this.players = [this.game.currentPlayer]
     this.players[0].inBattle = true
     this.buffs = {

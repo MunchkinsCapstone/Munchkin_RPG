@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 
 export const ButtonPanel = props => {
-  const { game, startGame, knockKnock, fight, flee, lootRoom, endTurn } = props
-  console.log("GAME IN PANEL", )
+  const {game, startGame, knockKnock, fight, flee, lootRoom, endTurn} = props
 
   if (game.battle.isActive)
     return (

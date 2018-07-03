@@ -30,7 +30,7 @@ class Player {
     this.unequip = this.unequip.bind(this)
     this.levelUp = this.levelUp.bind(this)
     this.die = this.die.bind(this)
-    this.game = game
+    // this.game = game
     this.inBattle = false
     this.hireling = null
     this.lose = this.lose.bind(this)
