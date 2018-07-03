@@ -52,6 +52,18 @@ export default class GameBoard extends Component {
     })
   }
 
+  sendUpdate = () => {
+    const {game} = this.state
+    game.battle.game = null
+    game.playerOrder.forEach(player => (player.game = null))
+  }
+
+  receiveUpdate = payload => {
+    const game = payload
+    game.battle.game = game
+    game.playerOrder.forEach(player => (player.game = game))
+  }
+
   componendDidMount() {
     const audioNode = document.getElementById('boardAudio')
     console.log('Hello audio!!', audioNode)
