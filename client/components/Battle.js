@@ -17,36 +17,32 @@ const Battle = props => {
         </div>
       </div>
       <hr />
-      <div className="row">
-        <div
-          className="col-6"
-          style={{backgroundColor: 'white', textAlign: 'center'}}
-        >
-          <h3>{player.name.toUpperCase()}</h3>
-          <h5>Attack: {player.attack}</h5>
+      <div className="row battle-stats">
+        <div className="col-6" style={{textAlign: 'center'}}>
+          <h3>{player.name}</h3>
+          <h5>Attack : {player.attack}</h5>
           <div style={{display: 'flex', flexDirection: 'row'}}>
-            <button className="btn btn-success">Buffs:</button>
+            <button className="btn btn-success">Buffs :</button>
             <h5>{' ' + battle.buffs.getTotal('player')}</h5>
           </div>
           <hr />
-          <h4>TOTAL: {battle.getAttack('player')}</h4>
+          <h4>TOTAL : {battle.getAttack('player')}</h4>
         </div>
         <div
           style={{
-            backgroundColor: 'white',
             textAlign: 'center',
             borderLeft: '1px solid grey'
           }}
           className="col-6"
         >
-          <h3>{monster.name.toUpperCase()}</h3>
-          <h5>Attack: {monster.attack}</h5>
+          <h3>{monster.name}</h3>
+          <h5>Attack : {monster.attack}</h5>
           <div style={{display: 'flex', flexDirection: 'row'}}>
-            <button className="btn btn-warning">Buffs:</button>
+            <button className="btn btn-warning">Buffs :</button>
             <h5>{' ' + battle.buffs.getTotal('monster')}</h5>
           </div>
           <hr />
-          <h4>TOTAL: {battle.getAttack('monster')}</h4>
+          <h4>TOTAL : {battle.getAttack('monster')}</h4>
         </div>
       </div>
       <audio autoPlay loop>

@@ -38,6 +38,11 @@ class Card extends React.Component {
     }
   }
 
+  lookForTrouble = () => {
+    const {lookForTrouble, card} = this.props
+    lookForTrouble(card)
+  }
+
   render() {
     const {anchorEl} = this.state
     const {card, equipped, player} = this.props
@@ -60,7 +65,7 @@ class Card extends React.Component {
               className="btn-danger discard-button"
               onClick={this.discard}
             >
-              discard
+              Discard
             </button>
           )}
           {(card.type === 'Equipment' ||
@@ -71,7 +76,7 @@ class Card extends React.Component {
               className="btn-primary use-button"
               onClick={this.toggleEquip}
             >
-              {equipped ? 'unequip' : 'equip'}
+              {equipped ? 'Unequip' : 'Equip'}
             </button>
           )}
           {card.type === 'Boost' &&
@@ -81,7 +86,18 @@ class Card extends React.Component {
                 className="btn-success use-button"
                 onClick={this.cast(player)}
               >
-                use
+                Use
+              </button>
+            )}
+          {card.type === 'Monster' &&
+            player.isActive &&
+            player.game.phase === 2 && (
+              <button
+                type="button"
+                className="btn-danger use-button"
+                onClick={this.lookForTrouble}
+              >
+                Fight!
               </button>
             )}
           {card.type === 'Buff' &&
@@ -90,17 +106,18 @@ class Card extends React.Component {
                 <button
                   type="button"
                   className="btn-success use-button"
+                  style={{top: '3em', left: '2em', width: '6em'}}
                   onClick={this.cast(player.game.battle.buffs.player)}
                 >
-                  buff player
+                  Buff Player
                 </button>
                 <button
                   type="button"
-                  className="btn-warning use-button"
-                  style={{top: '2em'}}
+                  className="btn-danger use-button"
+                  style={{top: '8.5em', left: '2em', width: '6em'}}
                   onClick={this.cast(player.game.battle.buffs.monster)}
                 >
-                  buff monster
+                  Buff Monster
                 </button>
               </div>
             )}

@@ -3,7 +3,7 @@ import Hand from './Hand'
 import Equipment from './Equipment'
 
 const PlayerCard = props => {
-  const {player, game, discard, equip, unequip, cast} = props
+  const {player, game, discard, equip, unequip, cast, lookForTrouble} = props
   let color = player === game.currentPlayer ? 'primary' : 'secondary'
   if (player.inBattle) color = 'danger'
   return (
@@ -28,6 +28,7 @@ const PlayerCard = props => {
           discard={discard}
           equip={equip}
           cast={cast}
+          lookForTrouble={lookForTrouble}
         />
         <Equipment player={player} discard={discard} unequip={unequip} />
         <button type="button" className="btn btn-white">

@@ -158,6 +158,7 @@ class Deck {
 
   restock() {
     this.cards = this.cards.concat(shuffle(this.graveYard))
+    this.graveYard = []
   }
 }
 
@@ -168,14 +169,40 @@ class Deck {
 const monsters = [
   new Monster('3,872', '3872Orcs.jpeg', 10, 3, player => {}),
   new Monster('Amazon', 'Amazon.jpeg', 8, 2, player => {}),
-  new Monster('Bigfoot', 'Bigfoot.jpeg', 12, 3, player => {}),
-  new Monster('Bullrog', 'Bullrog.jpeg', 18, 5, player => {}),
-  new Monster('Crabs', 'Crabs.jpeg', 1, 1, player => {}),
-  new Monster('Drooling Slime', 'DroolingSlime.jpeg', 1, 1, player => {}),
-  new Monster('Face Sucker', 'FaceSucker.jpeg', 8, 2, player => {}),
-  new Monster('Floating Nose', 'FloatingNose.jpeg', 10, 3, player => {}),
-  new Monster('Flying Frogs', 'FlyingFrogs.jpeg', 2, 1, player => {}),
-  new Monster('Gazebo', 'Gazebo.jpeg', 8, 2, player => {}),
+  new Monster('Bigfoot', 'Bigfoot.jpeg', 12, 3, player => {
+    player.lose(player.equipment.head)
+  }),
+  new Monster('Bullrog', 'Bullrog.jpeg', 18, 5, player => {
+    player.die()
+  }),
+  new Monster('Crabs', 'Crabs.jpeg', 1, 1, player => {
+    player.lose(player.eqeuipment.torso)
+    player.lose(player.eqeuipment.feet)
+  }),
+  new Monster('Drooling Slime', 'DroolingSlime.jpeg', 1, 1, player => {
+    if (player.equipment.feet) {
+      player.lose(player.equipment.feet)
+    } else player.levelDown()
+  }),
+  new Monster('Face Sucker', 'FaceSucker.jpeg', 8, 2, player => {
+    player.lose(player.equipment.head)
+    player.levelDown()
+  }),
+  new Monster('Floating Nose', 'FloatingNose.jpeg', 10, 3, player => {
+    for (let i = 1; i <= 3; i++) {
+      player.levelDown()
+    }
+  }),
+  new Monster('Flying Frogs', 'FlyingFrogs.jpeg', 2, 1, player => {
+    for (let i = 1; i <= 2; i++) {
+      player.levelDown()
+    }
+  }),
+  new Monster('Gazebo', 'Gazebo.jpeg', 8, 2, player => {
+    for (let i = 1; i <= 3; i++) {
+      player.levelDown()
+    }
+  }),
   new Monster(
     'Gelatinous Octahedron',
     'GelatinousOctahedron.jpeg',
@@ -183,8 +210,17 @@ const monsters = [
     1,
     player => {}
   ),
-  new Monster('Ghoulfiends', 'Ghoulfiends.jpeg', 8, 2, player => {}),
-  new Monster('Harpies', 'Harpies.jpeg', 4, 2, player => {}),
+  new Monster('Ghoulfiends', 'Ghoulfiends.jpeg', 8, 2, player => {
+    const lowestLevel = Math.min(
+      ...player.game.players.map(player => player.level)
+    )
+    player.level = lowestLevel
+  }),
+  new Monster('Harpies', 'Harpies.jpeg', 4, 2, player => {
+    for (let i = 1; i <= 2; i++) {
+      player.levelDown()
+    }
+  }),
   new Monster('Hippogriff', 'Hippogriff.jpeg', 16, 4, player => {}),
   new Monster(
     'Insurance Salesman',
@@ -193,40 +229,88 @@ const monsters = [
     4,
     player => {}
   ),
-  new Monster('King Tut', 'KingTut.jpeg', 16, 4, player => {}),
-  new Monster('Lame Goblin', 'LameGoblin.jpeg', 1, 1, player => {}),
-  new Monster(
-    'Large Angry Chicken',
-    'LargeAngryChicken.jpeg',
-    2,
-    1,
-    player => {}
-  ),
+  new Monster('King Tut', 'KingTut.jpeg', 16, 4, player => {
+    while (player.allEquips.length) {
+      player.lose(player.allEquips[0])
+    }
+    while (player.hand.length) {
+      player.lose(player.hand[0])
+    }
+  }),
+  new Monster('Lame Goblin', 'LameGoblin.jpeg', 1, 1, player => {
+    player.levelDown()
+  }),
+  new Monster('Large Angry Chicken', 'LargeAngryChicken.jpeg', 2, 1, player => {
+    player.levelDown()
+  }),
   new Monster('Lawyers', 'Lawyers.jpeg', 6, 2, player => {}),
   new Monster('Leperchaun', 'Leperchaun.jpeg', 4, 2, player => {}),
-  new Monster('Maul Rat', 'MaulRat.jpeg', 1, 1, player => {}),
-  new Monster('Mr. Bones', 'MrBones.jpeg', 2, 1, player => {}),
+  new Monster('Maul Rat', 'MaulRat.jpeg', 1, 1, player => {
+    player.levelDown()
+  }),
+  new Monster('Mr. Bones', 'MrBones.jpeg', 2, 1, player => {
+    for (let i = 1; i <= 2; i++) {
+      player.levelDown()
+    }
+  }),
   new Monster('Net Troll', 'NetTroll.jpeg', 10, 3, player => {}),
-  new Monster('Pit Bull', 'PitBull.jpeg', 2, 1, player => {}),
+  new Monster('Pit Bull', 'PitBull.jpeg', 2, 1, player => {
+    for (let i = 1; i <= 2; i++) {
+      player.levelDown()
+    }
+  }),
   new Monster('Platycore', 'Platycore.jpeg', 6, 2, player => {}),
-  new Monster('Plutonium Dragon', 'PlutoniumDragon.jpeg', 20, 5, player => {}),
+  new Monster('Plutonium Dragon', 'PlutoniumDragon.jpeg', 20, 5, player => {
+    player.die()
+  }),
   new Monster('Potted Plant', 'PottedPlant.jpeg', 1, 1, player => {}),
-  new Monster('Pukachu', 'Pukachu.jpeg', 6, 2, player => {}),
-  new Monster('Shrieking Geek', 'ShriekingGeek.jpeg', 6, 2, player => {}),
+  new Monster('Pukachu', 'Pukachu.jpeg', 6, 2, player => {
+    while (player.hand.length) {
+      player.lose(player.hand[0])
+    }
+  }),
+  new Monster('Shrieking Geek', 'ShriekingGeek.jpeg', 6, 2, player => {
+    player.lose(player.race)
+    player.lose(player.class)
+  }),
   new Monster('Snails On Speed', 'SnailsOnSpeed.jpeg', 6, 2, player => {}),
-  new Monster('Squidzilla', 'Squidzilla.jpeg', 18, 4, player => {}),
-  new Monster('Stoned Golem', 'StonedGolem.jpeg', 14, 4, player => {}),
-  new Monster('Tongue Demon', 'TongueDemon.jpeg', 12, 3, player => {}),
-  new Monster('Undead Horse', 'UndeadHorse.jpeg', 4, 2, player => {}),
+  new Monster('Squidzilla', 'Squidzilla.jpeg', 18, 4, player => {
+    player.die()
+  }),
+  new Monster('Stoned Golem', 'StonedGolem.jpeg', 14, 4, player => {
+    player.die()
+  }),
+  new Monster('Tongue Demon', 'TongueDemon.jpeg', 12, 3, player => {
+    let j = 2
+    if (player.race.name === 'Elf') j++
+    for (let i = 1; i <= j; i++) {
+      player.levelDown()
+    }
+  }),
+  new Monster('Undead Horse', 'UndeadHorse.jpeg', 4, 2, player => {
+    for (let i = 1; i <= 2; i++) {
+      player.levelDown()
+    }
+  }),
   new Monster(
     'Unspeakably Awful Indescribable Horror',
     'UnspeakablyAwfulIndescribableHorror.jpeg',
-    6,
-    2,
-    player => {}
+    14,
+    4,
+    player => {
+      if (player.class && player.class.name === 'Wizard')
+        player.lose(player.class)
+      else player.die()
+    }
   ),
-  new Monster('Wannabe Vampire', 'WannabeVampire.jpeg', 12, 3, player => {}),
-  new Monster('Wight Brothers', 'WightBrothers.jpeg', 16, 4, player => {})
+  new Monster('Wannabe Vampire', 'WannabeVampire.jpeg', 12, 3, player => {
+    for (let i = 1; i <= 3; i++) {
+      player.levelDown()
+    }
+  }),
+  new Monster('Wight Brothers', 'WightBrothers.jpeg', 16, 4, player => {
+    player.level = 1
+  })
 ]
 
 const modifiers = [
@@ -924,7 +1008,9 @@ const spells = [
 const curses = [
   new Curse('Change Class', 'ChangeClass.jpeg', player => {}),
   new Curse('Change Race', 'ChangeRace.jpeg', player => {}),
-  new Curse('Change Sex', 'ChangeSex.jpeg', player => {}),
+  new Curse('Change Sex', 'ChangeSex.jpeg', player => {
+    player.sex = player.sex === 'Female' ? 'Male' : 'Female'
+  }),
   new Curse('Chicken On Your Head', 'ChickenOnYourHead.jpeg', player => {}),
   new Curse('Duck of Doom', 'DuckOfDoom.jpeg', player => {}),
   new Curse('Income Tax', 'IncomeTax.jpeg', player => {}),
@@ -932,58 +1018,33 @@ const curses = [
   new Curse('Lose 1 Small Item', 'Lose1SmallItem1.jpeg', player => {}),
   new Curse('Lose 1 Small Item', 'Lose1SmallItem2.jpeg', player => {}),
   new Curse('Lose a Level', 'LoseALevel1.jpeg', player => {
-    if (player.level > 1) player.level--
+    if (player.level > 1) player.levelDown()
   }),
   new Curse('Lose a Level', 'LoseALevel2.jpeg', player => {
-    if (player.level > 1) player.level--
+    if (player.level > 1) player.levelDown()
   }),
   new Curse('Lose the Armor You Are Wearing', 'LoseArmor.jpeg', player => {
-    const armor = player.equipment.torso
-    if (armor) {
-      armor.discard()
-      player.allEquips.splice(player.allEquips.indexOf(armor), 1)
-      player.equipment.torso = null
-    }
+    player.lose(player.equipment.torso)
   }),
   new Curse('Lose Your Class', 'LoseClass.jpeg', player => {
-    const cl4ss = player.class
-    if (cl4ss) {
-      cl4ss.discard()
-      player.allEquips.splice(player.allEquips.indexOf(cl4ss), 1)
-      player.class = null
-    }
+    player.lose(player.class)
   }),
   new Curse(
     'Lose the Footgear You Are Wearing',
     'LoseFootgear.jpeg',
     player => {
-      const footgear = player.equipment.feet
-      if (footgear) {
-        footgear.discard()
-        player.allEquips.splice(player.allEquips.indexOf(footgear), 1)
-        player.equipment.feet = null
-      }
+      player.lose(player.equipment.feet)
     }
   ),
   new Curse(
     'Lose the Headgear You Are Wearing',
     'LoseHeadgear.jpeg',
     player => {
-      const headgear = player.equipment.head
-      if (headgear) {
-        headgear.discard()
-        player.allEquips.splice(player.allEquips.indexOf(headgear), 1)
-        player.equipment.head = null
-      }
+      player.lose(player.equipment.head)
     }
   ),
   new Curse('Lose Your Race', 'LoseRace.jpeg', player => {
-    const race = player.race
-    if (race) {
-      race.discard()
-      player.allEquips.splice(player.allEquips.indexOf(race), 1)
-      player.race = null
-    }
+    player.lose(player.race)
   }),
   new Curse('Lose Two Cards', 'LoseTwoCards.jpeg', player => {}),
   new Curse('Malign Mirror', 'MalignMirror.jpeg', player => {}),

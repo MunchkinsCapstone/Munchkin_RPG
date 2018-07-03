@@ -3,6 +3,8 @@ import PlayerCard from './PlayerCard'
 import ChatLog from './ChatLog'
 import Battle from './Battle'
 import ButtonPanel from './ButtonPanel'
+import ImageMapper from 'react-image-mapper'
+
 let {log, Game} = require('../gameLogic')
 
 export default class GameBoard extends Component {
@@ -119,8 +121,22 @@ export default class GameBoard extends Component {
     })
   }
 
+  lookForTrouble = monster => {
+    const {game} = this.state
+    game.startBattle(monster)
+    const {hand} = game.currentPlayer
+    hand.splice(hand.indexOf(monster), 1)
+    this.setState({
+      game
+    })
+  }
+
   render() {
     const {game} = this.state
+    const MAP = {
+      name: 'door',
+      areas: [{shape: 'rect', coords: [28, 503, 128, 564]}]
+    }
     return (
       <div className="container">
         <div className="row">
@@ -136,6 +152,7 @@ export default class GameBoard extends Component {
                     equip={this.equip}
                     unequip={this.unequip}
                     cast={this.cast}
+                    lookForTrouble={this.lookForTrouble}
                   />
                 )
               })}
@@ -151,11 +168,22 @@ export default class GameBoard extends Component {
               <Battle battle={game.battle} />
             ) : (
               <div>
-                <img
+                <ImageMapper
+                  src={
+                    'http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg'
+                  }
+                  map={MAP}
+                  onClick={
+                    game.phase === 1
+                      ? this.knockKnock
+                      : game.phase === 2 ? this.lootRoom : null
+                  }
+                />
+                {/* <img
                   alt="gameboard"
                   style={{width: '100%'}}
                   src="http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg"
-                />
+                /> */}
                 <audio autoPlay loop id="boardAudio">
                   <source src="./music/theJourney.mp3" type="audio/mp3" />
                 </audio>

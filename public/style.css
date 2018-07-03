@@ -70,9 +70,19 @@ body {
   }
 }
 
-@font-face {
+/* @font-face {
   font-family: 'IM Fell English SC';
   src: url('http://fonts.googleapis.com/css?family=IM+Fell+English+SC');
+} */
+
+@font-face {
+  font-family: 'Windlass';
+  src: local('./fonts/Windlass.tff') format('truetype');
+}
+
+@font-face {
+  font-family: 'Caslon Antique';
+  src: local('./fonts/CaslonAntique.tff') format('truetype');
 }
 
 body {
@@ -80,7 +90,7 @@ body {
   background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
-  font-family: 'IM Fell English SC';
+  font-family: 'Windlass';
 }
 
 ButtonPanel .flexContainer {
@@ -188,7 +198,7 @@ body {
   background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
-  font-family: 'IM Fell English SC';
+  font-family: 'Windlass';
 }
 
 ButtonPanel .flexContainer {
@@ -288,7 +298,6 @@ ButtonPanel button {
   position: absolute;
   top: 0;
   left: 0;
-  border: 1px forestgreen solid;
 }
 
 .card-view:hover .use-button {
@@ -303,4 +312,10 @@ ButtonPanel button {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.battle-stats {
+  padding: 1em;
+  size: fit-content;
+  background-color: beige;
 }

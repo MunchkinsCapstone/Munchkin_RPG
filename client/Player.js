@@ -21,6 +21,8 @@ class Player {
       hands: [],
       numHands: 0
     }
+    this.halfBreed = true
+    this.super = false
     this.allEquips = []
     this.hand = []
     this.checkRequirements = this.checkRequirements.bind(this)
@@ -48,8 +50,12 @@ class Player {
   }
 
   lose(card) {
-    this.unequip(card)
-    this.discard(this.hand.indexOf(card))
+    if (card) {
+      if (this.allEquips.indexOf(card) > -1) {
+        this.unequip(card)
+      }
+      this.discard(this.hand.indexOf(card))
+    }
   }
 
   gift(cardIdx, recipient) {
@@ -183,14 +189,23 @@ class Player {
     if (this.level === 10) this.game.endGame(this.name)
   }
 
+  levelDown = () => {
+    if (this.level > 1) this.level--
+    log(this.name + ' lost a level!')
+  }
+
   die() {
-    let i = 0
-    while (this.hand.length) {
-      let player = this.game.players[i]
-      if (player !== this) player.draw(this.hand.pop())
-      i++
+    while (this.allEquips.length) {
+      this.unequip(this.allEquips[0])
     }
-    Object.assign(this, new Player(this.name))
+    const players = this.game.playerOrder
+    let i = players.indexOf(this)
+    while (this.hand.length) {
+      i = (i + 1) % players.length
+      let player = players[i]
+      if (player !== this) player.hand.push(this.hand.pop())
+    }
+    this.level = 1
   }
 }
 
