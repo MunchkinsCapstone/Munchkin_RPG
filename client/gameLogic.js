@@ -48,9 +48,9 @@ class Game {
     const card = doors.draw()
     if (card.type === 'Monster') {
       this.startBattle(card)
-      // } else if (card.type === 'Curse') {
-      //   card.effect(this.currentPlayer)
-      //   card.discard()
+    } else if (card.type === 'Curse') {
+      card.effect(this.currentPlayer)
+      card.discard()
     } else {
       log(`You found: ${card.name}`)
       this.currentPlayer.hand.push(card)

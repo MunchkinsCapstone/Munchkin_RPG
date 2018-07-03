@@ -947,7 +947,11 @@ const boosts = [
     player => player.game.hireling
   ),
   new Boost('Potion of General Studliness', 'PotionOfGeneralStudliness.jpeg'),
-  new Boost('Whine at the GM', 'WhineAtGM.jpeg'),
+  new Boost('Whine at the GM', 'WhineAtGM.jpeg', player =>
+    player.game.playerOrder.some(
+      otherPlayer => otherPlayer.level > player.level
+    )
+  ),
   new Boost(
     'Mutilate the Bodies',
     'MutilateTheBodies.jpeg',
