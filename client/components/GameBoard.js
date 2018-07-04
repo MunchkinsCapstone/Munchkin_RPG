@@ -6,7 +6,7 @@ import ButtonPanel from './ButtonPanel'
 import ImageMapper from 'react-image-mapper'
 import socket from '../socket'
 
-let {log, Game} = require('../gameLogic')
+let {log, Game, appendMethods} = require('../gameLogic')
 
 export default class GameBoard extends Component {
   constructor() {
@@ -52,16 +52,16 @@ export default class GameBoard extends Component {
     })
   }
 
-  sendUpdate = () => {
-    const {game} = this.state
+  detachSelf = game => {
     game.battle.game = null
     game.playerOrder.forEach(player => (player.game = null))
+    return game
   }
 
-  receiveUpdate = payload => {
-    const game = payload
+  reattachSelf = game => {
     game.battle.game = game
     game.playerOrder.forEach(player => (player.game = game))
+    return game
   }
 
   componendDidMount() {
@@ -75,10 +75,18 @@ export default class GameBoard extends Component {
     //   })
     //   console.log(this.state, 'after payload<><><><><><><><><>')
     // })
+    const {game} = this.state
+    game = appendMethods.game(game)
+    game.playerOrder.map(player => {
+      return appendMethods.player(player)
+    })
+    game.battle = appendMethods.battle(game.battle)
+    this.setState({game})
   }
 
   fight() {
     const {game} = this.state
+    game.battle = appendMethods.battle(game.battle)
     game.battle.resolve()
     this.setState({
       game
@@ -87,6 +95,7 @@ export default class GameBoard extends Component {
 
   flee() {
     const {game} = this.state
+    game.battle = appendMethods.battle(game.battle)
     game.battle.flee()
     this.setState({
       game

@@ -2,11 +2,6 @@ class Card {
   constructor(name, imageUrl) {
     this.name = name
     this.imageUrl = imageUrl
-    this.discard = this.discard.bind(this)
-  }
-
-  discard() {
-    decks[this.deck].graveYard.unshift(this)
   }
 }
 
@@ -20,13 +15,13 @@ class Monster extends Card {
     this.deck = 'doors'
   }
 
-  get attack() {
-    return this.level
-  }
+  // get attack() {
+  //   return this.level
+  // }
 
-  die() {
-    this.discard()
-  }
+  // die() {
+  //   this.discard()
+  // }
 }
 
 class Item extends Card {
@@ -141,23 +136,6 @@ function shuffle(array) {
 class Deck {
   constructor(cards) {
     this.cards = cards
-    this.graveYard = []
-    this.draw = this.draw.bind(this)
-    this.shuffleCards = this.shuffleCards.bind(this)
-    this.restock = this.restock.bind(this)
-  }
-
-  draw() {
-    if (!this.cards.length) this.restock()
-    return this.cards.shift()
-  }
-
-  shuffleCards() {
-    this.cards = shuffle(this.cards)
-  }
-
-  restock() {
-    this.cards = this.cards.concat(shuffle(this.graveYard))
     this.graveYard = []
   }
 }
@@ -1104,5 +1082,6 @@ module.exports = {
   modifiers,
   doors,
   treasures,
-  shuffle
+  shuffle,
+  decks
 }
