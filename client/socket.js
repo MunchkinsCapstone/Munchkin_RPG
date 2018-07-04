@@ -2,8 +2,15 @@
 
 import io from 'socket.io-client'
 import store from './store'
+import {startGame} from './store/gameReducer'
 
 const socket = io(window.location.origin)
+
+const reattachSelfRef = game => {
+  game.battle.game = game
+  game.playerOrder.forEach(player => (player.game = game))
+  return game
+}
 
 socket.on('connect', () => {
   console.log('Connected!')
@@ -11,7 +18,9 @@ socket.on('connect', () => {
   //   console.log('hearing from socket client', rooms)
   // })
 
-  socket.on('gameStarted', () => {})
+  socket.on('gameBegin', gameObj => {
+    reattachSelfRef(gameObj)
+  })
 
   // socket.on('roomAdded', payload => {})
 
