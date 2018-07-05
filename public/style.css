@@ -308,8 +308,7 @@ ButtonPanel button {
 	padding: 1.2em;
 	display: flex;
 	size: fit-content;
-	background: url('https://i.imgur.com/BDo9tLr.png');
-	/* no-repeat center center; */
+	background: url('https://i.imgur.com/BDo9tLr.png') no-repeat center center;
 	background-size: 100% 100%;
 }
 
