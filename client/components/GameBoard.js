@@ -198,7 +198,7 @@ class GameBoard extends Component {
 							})}
 						</div>
 					) : (
-						<img alt='gameboard' src='http://www.worldofmunchkin.com/lite/img/backcover_lg.jpg' />
+						<img alt='gameRules' src='/images/quick-rules.jpg' />
 					)}
 				</div>
 				<div className='gameboard-middle-col'>
@@ -207,7 +207,7 @@ class GameBoard extends Component {
 					) : (
 						<div>
 							<ImageMapper
-								src={'http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg'}
+								src={'/images/main-gameboard.jpg'}
 								map={MAP}
 								onClick={game && game.phase === 1 ? this.knockKnock : game && game.phase === 2 ? this.lootRoom : null}
 							/>
