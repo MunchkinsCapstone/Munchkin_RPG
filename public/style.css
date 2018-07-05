@@ -308,7 +308,7 @@ ButtonPanel button {
 	padding: 1.2em;
 	display: flex;
 	size: fit-content;
-	background: url('/cardimages/EmptyCard.jpeg');
+	background: url('/cardImages/EmptyCard.jpeg');
 	/* no-repeat center center; */
 	background-size: 100% 100%;
 }
