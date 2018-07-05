@@ -8,6 +8,7 @@ import socket from '../socket';
 import store from '../store';
 import { connect } from 'react-redux';
 import { startGame } from '../store/gameReducer';
+import Snackbar, { openSnackbar } from './Snackbar';
 
 let { log, Game } = require('../gameLogic');
 
@@ -229,6 +230,7 @@ class GameBoard extends Component {
 						lootRoom={this.lootRoom}
 						endTurn={this.endTurn}
 					/>
+					<Snackbar />
 				</div>
 			</div>
 		);
