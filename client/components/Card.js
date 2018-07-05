@@ -51,9 +51,12 @@ class Card extends React.Component {
 
   render() {
     const {anchorEl} = this.state
-    const {card, equipped, player} = this.props
+    const {card, equipped, player, game} = this.props
     const imageUrl = '/cardImages/' + this.props.card.imageUrl
-
+    // if (card.type === 'Boost') {
+    //   debugger
+    //   console.log(card.requirement)
+    // }
     return (
       <div className="card">
         <div className="card-view">
@@ -100,7 +103,7 @@ class Card extends React.Component {
               </button>
             )}
           {card.type === 'Boost' &&
-            card.requirement(player) && (
+            (card.requirement ? card.requirement(player) : true) && (
               <button
                 type="button"
                 className="btn-success use-button"
@@ -111,7 +114,8 @@ class Card extends React.Component {
             )}
           {card.type === 'Monster' &&
             player.isActive &&
-            player.game.phase === 2 && (
+            game.phase === 2 &&
+            !game.battle.isActive && (
               <button
                 type="button"
                 className="btn-danger use-button"
@@ -121,13 +125,13 @@ class Card extends React.Component {
               </button>
             )}
           {card.type === 'Buff' &&
-            player.game.battle.isActive && (
+            game.battle.isActive && (
               <div>
                 <button
                   type="button"
                   className="btn-success use-button"
                   style={{top: '3em', left: '2em', width: '6em'}}
-                  onClick={this.cast(player.game.battle.buffs.players)}
+                  onClick={this.cast(game.battle.buffs.players)}
                 >
                   Buff Player
                 </button>
@@ -135,7 +139,7 @@ class Card extends React.Component {
                   type="button"
                   className="btn-danger use-button"
                   style={{top: '8.5em', left: '2em', width: '6em'}}
-                  onClick={this.cast(player.game.battle.buffs.monster)}
+                  onClick={this.cast(game.battle.buffs.monster)}
                 >
                   Buff Monster
                 </button>

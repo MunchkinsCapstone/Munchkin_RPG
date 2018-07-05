@@ -14,7 +14,7 @@ const PlayerCard = props => {
     equipToHireling,
     assist
   } = props
-  let color = player === game.currentPlayer ? 'primary' : 'secondary'
+  let color = player.isActive ? 'primary' : 'secondary'
   if (player.inBattle) color = 'danger'
   return (
     <div className={`text-white bg-${color} mb-3`}>
@@ -28,7 +28,7 @@ const PlayerCard = props => {
               (player.class ? player.class.name : 'Commoner')}
           </h6>
         </div>
-        <h5>Attack: {player.attack}</h5>
+        <h5>Attack: {player.attack()}</h5>
       </div>
       <div className="card-body player-card-button">
         {console.log('PLAYER: ' + player.name)}
@@ -40,6 +40,7 @@ const PlayerCard = props => {
           cast={cast}
           lookForTrouble={lookForTrouble}
           equipToHireling={equipToHireling}
+          game={game}
         />
         <Equipment player={player} discard={discard} unequip={unequip} />
         {game.battle.isActive &&

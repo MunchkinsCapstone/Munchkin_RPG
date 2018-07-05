@@ -8,6 +8,7 @@ const Hand = props => {
     discard,
     equip,
     cast,
+    game,
     lookForTrouble,
     equipToHireling
   } = props
@@ -45,6 +46,7 @@ const Hand = props => {
                       cast={cast}
                       lookForTrouble={lookForTrouble}
                       equipToHireling={equipToHireling}
+                      game={game}
                     />
                   )
                 })
