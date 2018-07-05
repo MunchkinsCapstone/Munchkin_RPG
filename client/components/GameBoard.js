@@ -23,7 +23,7 @@ class GameBoard extends Component {
           isActive: false
         }
       },
-      players: ['Oz', 'Graham']
+      players: ['Ozal', 'Graham', 'Yang', 'Raymond']
     }
     this.startGame = this.startGame.bind(this)
     this.endTurn = this.endTurn.bind(this)
