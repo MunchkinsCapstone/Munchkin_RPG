@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { ChatFeed, Message } from 'react-chat-ui';
 import { connect } from 'react-redux'
 import { writeMessage, sendMessage } from '../store'
+import socket from '../socket'
 
 const ChatLog = props => {
-	console.log('PROPS', props.chat)
 	const { handleChange, handleSubmit, chat } = props
 
 	return (
@@ -13,7 +13,7 @@ const ChatLog = props => {
 			<h4 style={{ textAlign: 'center' }}>Chatroom & GameLog</h4>
 			<hr />
 			{chat.chatLog.map((message, idx) =>
-				(<h6 key={idx}>{message}</h6>)
+				(<h6 key={idx}>{`${new Date().toLocaleTimeString().slice(0, -6)} ${message}`}</h6>)
 			)}
 			<div className='input-group'>
 				<form onSubmit={handleSubmit}>
@@ -68,8 +68,9 @@ const mapDispatchToProps = dispatch => {
 		},
 		handleSubmit: event => {
 			event.preventDefault()
-			console.log('event', event.target.newMessage.value)
-			dispatch(sendMessage(event.target.newMessage.value))
+			const message = event.target.newMessage.value
+			dispatch(sendMessage(message))
+			socket.emit('new message', message)
 			dispatch(writeMessage(''))
 		}
 	}
