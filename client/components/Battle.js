@@ -16,29 +16,28 @@ const Battle = props => {
         </div>
       </div>
       <hr />
-      <div className="row battle-stats">
+      <div className="row battle-stats" style={{padding: '2em'}}>
         <div className="col-6" style={{textAlign: 'center'}}>
-          <h3>{battle.players.map(player => player.name).join(',\n')}</h3>
+          {/* <h3>{battle.players.map((player) => player.name).join(',\n')}</h3> */}
+          {battle
+            .getPlayers()
+            .map(player => <h3 key={player.name}>{player.name}</h3>)}
+          <hr />
           <h5>Attack : {battle.playerAttack()}</h5>
-          <div style={{display: 'flex', flexDirection: 'row'}}>
-            <button className="btn btn-success">Buffs :</button>
-            <h5>{' ' + battle.buffs.getTotal('players')}</h5>
+          <div>
+            {/* <button className="btn btn-success">Buffs :</button> */}
+            <h5>{'Buffs: ' + battle.buffs.getTotal('players')}</h5>
           </div>
           <hr />
           <h4>TOTAL : {battle.playerTotal()}</h4>
         </div>
-        <div
-          style={{
-            textAlign: 'center',
-            borderLeft: '1px solid grey'
-          }}
-          className="col-6"
-        >
+        <div className="col-6" style={{textAlign: 'center'}}>
           <h3>{monster.name}</h3>
+          <hr />
           <h5>Attack : {monster.level}</h5>
-          <div style={{display: 'flex', flexDirection: 'row'}}>
-            <button className="btn btn-warning">Buffs :</button>
-            <h5>{' ' + battle.buffs.getTotal('monster')}</h5>
+          <div>
+            {/* <button className="btn btn-warning">Buffs :</button> */}
+            <h5>{'Buffs: ' + battle.buffs.getTotal('monster')}</h5>
           </div>
           <hr />
           <h4>TOTAL : {battle.monsterTotal()}</h4>

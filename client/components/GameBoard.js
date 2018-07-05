@@ -8,6 +8,7 @@ import socket from '../socket'
 import store from '../store'
 import {connect} from 'react-redux'
 import {startGameThunk} from '../store/gameReducer'
+import Snackbar, {openSnackbar} from './Snackbar'
 
 let {log, Game, appendMethods} = require('../gameLogic')
 
@@ -211,6 +212,9 @@ class GameBoard extends Component {
             </div>
           )}
           <hr />
+        </div>
+        <div>
+          <ChatLog />
           <ButtonPanel
             game={game}
             startGame={this.startGame}
@@ -220,9 +224,7 @@ class GameBoard extends Component {
             lootRoom={this.lootRoom}
             endTurn={this.endTurn}
           />
-        </div>
-        <div>
-          <ChatLog />
+          <Snackbar />
         </div>
       </div>
     )

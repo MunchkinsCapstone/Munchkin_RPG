@@ -14,7 +14,7 @@ const reattachSelfRef = game => {
 }
 
 socket.on('connect', () => {
-  console.log('Connected!')
+  // console.log('Connected!')
   // socket.on('get rooms', (rooms) => {
   //   console.log('hearing from socket client', rooms)
   // })
@@ -47,7 +47,7 @@ socket.on('connect', () => {
           allCards.find(otherCard => otherCard.imageUrl === card.imageUrl)
         )
       )
-      game.battle.buffs.players = game.battle.buffs.monster.map(card =>
+      game.battle.buffs.players = game.battle.buffs.players.map(card =>
         appendMethods.card(
           allCards.find(otherCard => otherCard.imageUrl === card.imageUrl)
         )

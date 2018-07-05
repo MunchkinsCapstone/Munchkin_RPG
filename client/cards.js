@@ -289,49 +289,49 @@ const monsters = [
 ]
 
 const modifiers = [
-  new Modifier(
-    'Ancient',
-    'Ancient.jpeg',
-    monster => {
-      monster.level += 10
-    },
-    monster => {
-      monster.level -= 10
-    }
-  ),
-  new Modifier(
-    'Baby',
-    'Baby.jpeg',
-    monster => {
-      monster.shrinkage = Math.min(monster.level - 1, 5)
-      monster.level -= monster.shrinkage
-      monster.treasures--
-    },
-    monster => {
-      monster.level += monster.shrinkage
-      monster.treasures++
-    }
-  ),
-  new Modifier(
-    'Enraged',
-    'Enraged.jpeg',
-    monster => {
-      monster.level += 5
-    },
-    monster => {
-      monster.level -= 5
-    }
-  ),
-  new Modifier(
-    'Intelligent',
-    'Intelligent.jpeg',
-    monster => {
-      monster.level += 5
-    },
-    monster => {
-      monster.level -= 5
-    }
-  )
+  // new Modifier(
+  // 	'Ancient',
+  // 	'Ancient.jpeg',
+  // 	(monster) => {
+  // 		monster.level += 10;
+  // 	},
+  // 	(monster) => {
+  // 		monster.level -= 10;
+  // 	}
+  // ),
+  // new Modifier(
+  // 	'Baby',
+  // 	'Baby.jpeg',
+  // 	(monster) => {
+  // 		monster.shrinkage = Math.min(monster.level - 1, 5);
+  // 		monster.level -= monster.shrinkage;
+  // 		monster.treasures--;
+  // 	},
+  // 	(monster) => {
+  // 		monster.level += monster.shrinkage;
+  // 		monster.treasures++;
+  // 	}
+  // ),
+  // new Modifier(
+  // 	'Enraged',
+  // 	'Enraged.jpeg',
+  // 	(monster) => {
+  // 		monster.level += 5;
+  // 	},
+  // 	(monster) => {
+  // 		monster.level -= 5;
+  // 	}
+  // ),
+  // new Modifier(
+  // 	'Intelligent',
+  // 	'Intelligent.jpeg',
+  // 	(monster) => {
+  // 		monster.level += 5;
+  // 	},
+  // 	(monster) => {
+  // 		monster.level -= 5;
+  // 	}
+  // )
 ]
 
 const equipments = [
@@ -949,7 +949,7 @@ const classes = [
 
 const buffs = [
   new Buff('Cotion of Ponfusion', 'CotionOfPonfusion.jpeg', 3),
-  new Buff('Doppleganger', 'Doppleganger.jpeg', 0),
+  // new Buff('Doppleganger', 'Doppleganger.jpeg', 0),
   new Buff(
     'Electric Radioactive Acid Potion',
     'ElectricRadioactiveAcidPotion.jpeg',
@@ -967,81 +967,81 @@ const buffs = [
 ]
 
 const spells = [
-  new Spell('Flask of Glue', 'FlaskOfGlue.jpeg', target => {}),
-  new Spell('Friendship Potion', 'FriendshipPotion.jpeg', target => {}),
-  new Spell('Hoard', 'Hoard.jpeg', target => {}),
-  new Spell('Instant Wall', 'InstantWall.jpeg', target => {}),
-  new Spell('Invisibility Potion', 'InvisibilityPotion.jpeg', target => {}),
-  new Spell('Loaded Die', 'LoadedDie.jpeg', target => {}),
-  new Spell('Magic Lamp', 'MagicLamp.jpeg', target => {}),
-  new Spell('Pollymorph Potion', 'PollymorphPotion.jpeg', target => {}),
-  new Spell('Steal a Level', 'StealALevel.jpeg', target => {}),
-  new Spell('Transferral Potion', 'TransferralPotion.jpeg', target => {}),
-  new Spell('Wand of Dowsing', 'WandOfDowsing.jpeg', target => {}),
-  new Spell('Wishing Ring', 'WishingRing1.jpeg', target => {}),
-  new Spell('Wishing Ring', 'WishingRing2.jpeg', target => {})
+  // new Spell('Flask of Glue', 'FlaskOfGlue.jpeg', target => {}),
+  // new Spell('Friendship Potion', 'FriendshipPotion.jpeg', target => {}),
+  // new Spell('Hoard', 'Hoard.jpeg', target => {}),
+  // new Spell('Instant Wall', 'InstantWall.jpeg', target => {}),
+  // new Spell('Invisibility Potion', 'InvisibilityPotion.jpeg', target => {}),
+  // new Spell('Loaded Die', 'LoadedDie.jpeg', target => {}),
+  // new Spell('Magic Lamp', 'MagicLamp.jpeg', target => {}),
+  // new Spell('Pollymorph Potion', 'PollymorphPotion.jpeg', target => {}),
+  // new Spell('Steal a Level', 'StealALevel.jpeg', target => {}),
+  // new Spell('Transferral Potion', 'TransferralPotion.jpeg', target => {}),
+  // new Spell('Wand of Dowsing', 'WandOfDowsing.jpeg', target => {}),
+  // new Spell('Wishing Ring', 'WishingRing1.jpeg', target => {}),
+  // new Spell('Wishing Ring', 'WishingRing2.jpeg', target => {})
 ]
 
 const curses = [
-  new Curse('Change Class', 'ChangeClass.jpeg', player => {}),
-  new Curse('Change Race', 'ChangeRace.jpeg', player => {}),
-  new Curse('Change Sex', 'ChangeSex.jpeg', player => {
-    player.sex = player.sex === 'Female' ? 'Male' : 'Female'
-  }),
-  new Curse('Chicken On Your Head', 'ChickenOnYourHead.jpeg', player => {}),
-  new Curse('Duck of Doom', 'DuckOfDoom.jpeg', player => {}),
-  new Curse('Income Tax', 'IncomeTax.jpeg', player => {}),
-  new Curse('Lose 1 Big Item', 'Lose1BigItem.jpeg', player => {}),
-  new Curse('Lose 1 Small Item', 'Lose1SmallItem1.jpeg', player => {}),
-  new Curse('Lose 1 Small Item', 'Lose1SmallItem2.jpeg', player => {}),
-  new Curse('Lose a Level', 'LoseALevel1.jpeg', player => {
-    if (player.level > 1) player.levelDown()
-  }),
-  new Curse('Lose a Level', 'LoseALevel2.jpeg', player => {
-    if (player.level > 1) player.levelDown()
-  }),
-  new Curse('Lose the Armor You Are Wearing', 'LoseArmor.jpeg', player => {
-    player.lose(player.equipment.torso)
-  }),
-  new Curse('Lose Your Class', 'LoseClass.jpeg', player => {
-    player.lose(player.class)
-  }),
-  new Curse(
-    'Lose the Footgear You Are Wearing',
-    'LoseFootgear.jpeg',
-    player => {
-      player.lose(player.equipment.feet)
-    }
-  ),
-  new Curse(
-    'Lose the Headgear You Are Wearing',
-    'LoseHeadgear.jpeg',
-    player => {
-      player.lose(player.equipment.head)
-    }
-  ),
-  new Curse('Lose Your Race', 'LoseRace.jpeg', player => {
-    player.lose(player.race)
-  }),
-  new Curse('Lose Two Cards', 'LoseTwoCards.jpeg', player => {}),
-  new Curse('Malign Mirror', 'MalignMirror.jpeg', player => {}),
-  new Curse('Truly Obnoxious Curse', 'TrulyObnoxiousCurse.jpeg', player => {}),
-  new Curse('Lose Your Class', 'LoseClass.jpeg', player => {})
+  // new Curse('Change Class', 'ChangeClass.jpeg', player => {}),
+  // new Curse('Change Race', 'ChangeRace.jpeg', player => {}),
+  // new Curse('Change Sex', 'ChangeSex.jpeg', player => {
+  //   player.sex = player.sex === 'Female' ? 'Male' : 'Female'
+  // }),
+  // new Curse('Chicken On Your Head', 'ChickenOnYourHead.jpeg', player => {}),
+  // new Curse('Duck of Doom', 'DuckOfDoom.jpeg', player => {}),
+  // new Curse('Income Tax', 'IncomeTax.jpeg', player => {}),
+  // new Curse('Lose 1 Big Item', 'Lose1BigItem.jpeg', player => {}),
+  // new Curse('Lose 1 Small Item', 'Lose1SmallItem1.jpeg', player => {}),
+  // new Curse('Lose 1 Small Item', 'Lose1SmallItem2.jpeg', player => {}),
+  // new Curse('Lose a Level', 'LoseALevel1.jpeg', player => {
+  //   if (player.level > 1) player.levelDown()
+  // }),
+  // new Curse('Lose a Level', 'LoseALevel2.jpeg', player => {
+  //   if (player.level > 1) player.levelDown()
+  // }),
+  // new Curse('Lose the Armor You Are Wearing', 'LoseArmor.jpeg', player => {
+  //   player.lose(player.equipment.torso)
+  // }),
+  // new Curse('Lose Your Class', 'LoseClass.jpeg', player => {
+  //   player.lose(player.class)
+  // }),
+  // new Curse(
+  //   'Lose the Footgear You Are Wearing',
+  //   'LoseFootgear.jpeg',
+  //   player => {
+  //     player.lose(player.equipment.feet)
+  //   }
+  // ),
+  // new Curse(
+  //   'Lose the Headgear You Are Wearing',
+  //   'LoseHeadgear.jpeg',
+  //   player => {
+  //     player.lose(player.equipment.head)
+  //   }
+  // ),
+  // new Curse('Lose Your Race', 'LoseRace.jpeg', player => {
+  //   player.lose(player.race)
+  // }),
+  // new Curse('Lose Two Cards', 'LoseTwoCards.jpeg', player => {}),
+  // new Curse('Malign Mirror', 'MalignMirror.jpeg', player => {}),
+  // new Curse('Truly Obnoxious Curse', 'TrulyObnoxiousCurse.jpeg', player => {}),
+  // new Curse('Lose Your Class', 'LoseClass.jpeg', player => {})
 ]
 
 const charms = [
-  new Charm('Cheat!', 'Cheat.jpeg'),
-  new Charm('Divine Intervention', 'DivineIntervention.jpeg'),
-  new Charm('Half-Breed', 'HalfBreed1.jpeg'),
-  new Charm('Half-Breed', 'HalfBreed2.jpeg'),
-  new Charm('Help Me Out Here!', 'HelpMeOutHere.jpeg'),
-  new Charm('Illusion', 'Illusion.jpeg'),
-  new Charm('Mate', 'Mate.jpeg'),
-  new Charm('Out to Lunch', 'OutToLunch.jpeg'),
-  new Charm('Super Munckin', 'SuperMunchkin1.jpeg'),
-  new Charm('Super Munckin', 'SuperMunchkin2.jpeg'),
-  new Charm('Wandering Monster', 'WanderingMonster1.jpeg'),
-  new Charm('Wandering Monster', 'WanderingMonster2.jpeg')
+  // new Charm('Cheat!', 'Cheat.jpeg'),
+  // new Charm('Divine Intervention', 'DivineIntervention.jpeg'),
+  // new Charm('Half-Breed', 'HalfBreed1.jpeg'),
+  // new Charm('Half-Breed', 'HalfBreed2.jpeg'),
+  // new Charm('Help Me Out Here!', 'HelpMeOutHere.jpeg'),
+  // new Charm('Illusion', 'Illusion.jpeg'),
+  // new Charm('Mate', 'Mate.jpeg'),
+  // new Charm('Out to Lunch', 'OutToLunch.jpeg'),
+  // new Charm('Super Munckin', 'SuperMunchkin1.jpeg'),
+  // new Charm('Super Munckin', 'SuperMunchkin2.jpeg'),
+  // new Charm('Wandering Monster', 'WanderingMonster1.jpeg'),
+  // new Charm('Wandering Monster', 'WanderingMonster2.jpeg')
 ]
 
 const doors = new Deck(

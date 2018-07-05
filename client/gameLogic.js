@@ -1,6 +1,8 @@
 const chalk = require('chalk')
 const log = x => console.log(chalk.green(x))
 const Player = require('./Player')
+import {openSnackbar} from './components/Snackbar'
+import {SnackbarContent} from '@material-ui/core'
 
 let {
   Deck,
@@ -35,6 +37,7 @@ const appendMethods = {
         //   card.discard()
       } else {
         log(`You found: ${card.name}`)
+        openSnackbar(`You drew the ${card.name} card.`)
         game.players[game.turn].hand.push(card)
       }
       game.phase = 2
@@ -48,6 +51,12 @@ const appendMethods = {
     game.lootRoom = () => {
       game.players[game.turn].draw(doors)
       log(game.players[game.turn].hand.map(card => card.name))
+      openSnackbar(
+        `You looted the ${
+          game.players[game.turn].hand[game.players[game.turn].hand.length - 1]
+            .name
+        } card.`
+      )
       game.phase = 3
     }
 
@@ -56,6 +65,11 @@ const appendMethods = {
         game.players[game.turn].hand.length >
         game.players[game.turn].maxInventory
       ) {
+        openSnackbar(
+          `You are carrying too many items! Please discard or use ${game
+            .players[game.turn].hand.length -
+            game.players[game.turn].maxInventory} more cards.`
+        )
         return log('You are carrying too many items!')
       } else {
         game.players[game.turn].isActive = false
@@ -66,6 +80,7 @@ const appendMethods = {
 
     game.startBattle = monster => {
       game.battle = appendMethods.battle(new Battle(monster, game))
+      openSnackbar(`You encountered a ${monster.name}!`)
     }
 
     game.endGame = playerName => {
@@ -94,20 +109,20 @@ const appendMethods = {
       return battle.monster.level + battle.buffs.getTotal('monster')
     }
 
-    if (battle.buffs)
-      battle.buffs.getTotal = side => {
-        return battle.buffs[side]
-          .map(buff => buff.bonus)
-          .reduce((num1, num2) => num1 + num2, 0)
-      }
+    battle.buffs.getTotal = side => {
+      return battle.buffs[side]
+        .map(buff => buff.bonus)
+        .reduce((num1, num2) => num1 + num2, 0)
+    }
 
     battle.flee = () => {
       battle.getPlayers().forEach(player => {
         const roll = rollDie()
         if (roll + player.run < 5) {
+          openSnackbar(`${player.name} failed to escape!`)
           log(`${player.name} failed to escape!`)
           battle.monster.badStuff(player)
-        } else log(`${player.name} got away safely!`)
+        } else SnackbarContent(`${player.name} got away safely!`)
       })
       battle.end()
     }
@@ -124,13 +139,16 @@ const appendMethods = {
       }
       if (playerTotal > battle.monsterTotal()) {
         battle.monster.discard()
+        openSnackbar(`The ${battle.monster.name} has been slain!`)
         log(`The ${battle.monster.name} has been slain!`)
         battle.getPlayers()[0].levelUp()
+        log(`You went up one level!`)
         for (let i = 0; i < battle.monster.treasures; i++) {
           battle.getPlayers()[0].draw(treasures)
         }
       } else {
         battle.getPlayers().forEach(player => {
+          openSnackbar(`${player.name} was defeated!`)
           log(`${player.name} was defeated!`)
           battle.monster.badStuff(player)
         })
