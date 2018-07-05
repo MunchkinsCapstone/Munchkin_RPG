@@ -2,11 +2,6 @@ class Card {
   constructor(name, imageUrl) {
     this.name = name
     this.imageUrl = imageUrl
-    this.discard = this.discard.bind(this)
-  }
-
-  discard() {
-    decks[this.deck].graveYard.unshift(this)
   }
 }
 
@@ -20,13 +15,13 @@ class Monster extends Card {
     this.deck = 'doors'
   }
 
-  get attack() {
-    return this.level
-  }
+  // get attack() {
+  //   return this.level
+  // }
 
-  die() {
-    this.discard()
-  }
+  // die() {
+  //   this.discard()
+  // }
 }
 
 class Item extends Card {
@@ -118,11 +113,8 @@ class Boost extends Item {
     super(name, imageUrl, effect)
     this.type = 'Boost'
     this.deck = 'treasures'
-    this.requirement =
-      requirement ||
-      function() {
-        return true
-      }
+    this.requirement = requirement
+    if (requirement === undefined) this.requirement = () => true
   }
 }
 
@@ -142,23 +134,6 @@ class Deck {
   constructor(cards) {
     this.cards = cards
     this.graveYard = []
-    this.draw = this.draw.bind(this)
-    this.shuffleCards = this.shuffleCards.bind(this)
-    this.restock = this.restock.bind(this)
-  }
-
-  draw() {
-    if (!this.cards.length) this.restock()
-    return this.cards.shift()
-  }
-
-  shuffleCards() {
-    this.cards = shuffle(this.cards)
-  }
-
-  restock() {
-    this.cards = this.cards.concat(shuffle(this.graveYard))
-    this.graveYard = []
   }
 }
 
@@ -176,8 +151,8 @@ const monsters = [
     player.die()
   }),
   new Monster('Crabs', 'Crabs.jpeg', 1, 1, player => {
-    player.lose(player.eqeuipment.torso)
-    player.lose(player.eqeuipment.feet)
+    player.lose(player.equipment.torso)
+    player.lose(player.equipment.feet)
   }),
   new Monster('Drooling Slime', 'DroolingSlime.jpeg', 1, 1, player => {
     if (player.equipment.feet) {
@@ -948,9 +923,7 @@ const boosts = [
   ),
   new Boost('Potion of General Studliness', 'PotionOfGeneralStudliness.jpeg'),
   new Boost('Whine at the GM', 'WhineAtGM.jpeg', player =>
-    player.game.playerOrder.some(
-      otherPlayer => otherPlayer.level > player.level
-    )
+    player.game.players.some(otherPlayer => otherPlayer.level > player.level)
   ),
   new Boost(
     'Mutilate the Bodies',
@@ -1091,6 +1064,8 @@ const decks = {
   treasures
 }
 
+const allCards = doors.cards.concat(treasures.cards)
+
 module.exports = {
   Deck,
   Race,
@@ -1104,5 +1079,7 @@ module.exports = {
   modifiers,
   doors,
   treasures,
-  shuffle
+  shuffle,
+  decks,
+  allCards
 }

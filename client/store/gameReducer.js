@@ -6,9 +6,9 @@ const START_GAME = 'START_GAME'
 
 // INITIAL STATE
 const initialGame = {
-  players: ['Yang', 'Oz', 'Graham', 'Raymond'],
+  //   players: ['Yang', 'Oz', 'Graham', 'Raymond'],
   currentPlayer: {},
-  playerOrder: [],
+  players: [],
   isActive: false,
   battle: {
     isActive: false
@@ -27,7 +27,7 @@ export const startGame = gameObj => {
 
 const detachSelfRef = game => {
   game.battle.game = null
-  game.playerOrder.forEach(player => (player.game = null))
+  game.players.forEach(player => (player.game = null))
   return game
 }
 

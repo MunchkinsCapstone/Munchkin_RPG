@@ -9,7 +9,7 @@ import store from '../store'
 import {connect} from 'react-redux'
 import {startGameThunk} from '../store/gameReducer'
 
-let {log, Game} = require('../gameLogic')
+let {log, Game, appendMethods} = require('../gameLogic')
 
 class GameBoard extends Component {
   constructor(props) {
@@ -17,8 +17,6 @@ class GameBoard extends Component {
     this.state = {
       game: {
         players: [],
-        currentPlayer: {},
-        playerOrder: [],
         isActive: false,
         battle: {
           isActive: false
@@ -38,19 +36,32 @@ class GameBoard extends Component {
     this.cast = this.cast.bind(this)
   }
 
+  updateGame = game => {
+    this.props.updateGame(game)
+  }
+
   startGame() {
     if (!this.state.players.length) return log('There are no players!')
     const game = new Game(this.state.players)
-    this.props.beginGame(game)
-    // socket.emit('startGame', game)
+    this.updateGame(game)
   }
 
   knockKnock() {
     const {game} = this.props
     game.knockKnock()
-    this.setState({
-      game
-    })
+    this.updateGame(game)
+  }
+
+  detachSelf = game => {
+    game.battle.game = null
+    game.players.forEach(player => (player.game = null))
+    return game
+  }
+
+  reattachSelf = game => {
+    game.battle.game = game
+    game.players.forEach(player => (player.game = game))
+    return game
   }
 
   componendDidMount() {
@@ -68,93 +79,73 @@ class GameBoard extends Component {
 
   fight() {
     const {game} = this.props
+    game.battle = appendMethods.battle(game.battle)
     game.battle.resolve()
-    this.setState({
-      game
-    })
+    this.updateGame(game)
   }
 
   flee() {
     const {game} = this.props
+    game.battle = appendMethods.battle(game.battle)
     game.battle.flee()
-    this.setState({
-      game
-    })
+    this.updateGame(game)
   }
 
   lootRoom() {
     const {game} = this.props
     game.lootRoom()
-    this.setState({
-      game
-    })
+    this.updateGame(game)
   }
 
   endTurn() {
     const {game} = this.props
     game.endTurn()
-    this.setState({
-      game
-    })
+    this.updateGame(game)
   }
 
   discard(player, cardIdx) {
     const {game} = this.props
     player.discard(cardIdx)
-    this.setState({
-      game
-    })
+    this.updateGame(game)
   }
 
   equip = (player, cardIdx) => {
     const {game} = this.props
     const item = player.hand[cardIdx]
     player.equip(cardIdx)
-    this.setState({
-      game
-    })
+    this.updateGame(game)
   }
 
   unequip = (player, ___, item) => {
     const {game} = this.props
     player.unequip(item)
-    this.setState({
-      game
-    })
+    this.updateGame(game)
   }
 
   equipToHireling = (player, card) => {
     const {game} = this.props
     player.equipToHireling(card)
-    this.setState({
-      game
-    })
+    this.updateGame(game)
   }
 
   cast = (player, cardIdx, target) => {
     const {game} = this.props
     player.cast(cardIdx, target)
-    this.setState({
-      game
-    })
+    this.updateGame(game)
   }
 
   lookForTrouble = monster => {
     const {game} = this.props
     game.startBattle(monster)
-    const {hand} = game.currentPlayer
+    const {hand} = game.players[game.turn]
     hand.splice(hand.indexOf(monster), 1)
-    this.setState({
-      game
-    })
+    this.updateGame(game)
   }
 
   assist = player => {
     const {game} = this.props
     player.assist()
-    this.setState({
-      game
-    })
+    this.updateGame(game)
   }
 
   render() {
@@ -169,7 +160,7 @@ class GameBoard extends Component {
         <div>
           {game && game.isActive ? (
             <div>
-              {game.playerOrder.map(player => {
+              {game.players.map(player => {
                 return (
                   <PlayerCard
                     key={player.name}
@@ -247,7 +238,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    beginGame: gameObj => {
+    updateGame: gameObj => {
       dispatch(startGameThunk(gameObj))
     }
   }

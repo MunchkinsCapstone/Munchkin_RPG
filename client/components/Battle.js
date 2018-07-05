@@ -19,13 +19,13 @@ const Battle = props => {
       <div className="row battle-stats">
         <div className="col-6" style={{textAlign: 'center'}}>
           <h3>{battle.players.map(player => player.name).join(',\n')}</h3>
-          <h5>Attack : {battle.playerAttack}</h5>
+          <h5>Attack : {battle.playerAttack()}</h5>
           <div style={{display: 'flex', flexDirection: 'row'}}>
             <button className="btn btn-success">Buffs :</button>
             <h5>{' ' + battle.buffs.getTotal('players')}</h5>
           </div>
           <hr />
-          <h4>TOTAL : {battle.playerTotal}</h4>
+          <h4>TOTAL : {battle.playerTotal()}</h4>
         </div>
         <div
           style={{
@@ -35,13 +35,13 @@ const Battle = props => {
           className="col-6"
         >
           <h3>{monster.name}</h3>
-          <h5>Attack : {monster.attack}</h5>
+          <h5>Attack : {monster.level}</h5>
           <div style={{display: 'flex', flexDirection: 'row'}}>
             <button className="btn btn-warning">Buffs :</button>
             <h5>{' ' + battle.buffs.getTotal('monster')}</h5>
           </div>
           <hr />
-          <h4>TOTAL : {battle.monsterTotal}</h4>
+          <h4>TOTAL : {battle.monsterTotal()}</h4>
         </div>
       </div>
       <audio autoPlay loop>
