@@ -1,6 +1,7 @@
 const chalk = require('chalk');
 const log = (x) => console.log(chalk.green(x));
 const Player = require('./Player');
+import { openSnackbar } from './components/Snackbar';
 
 let { Deck, equipments, monsters, shuffle, doors, treasures } = require('./cards');
 
@@ -51,6 +52,7 @@ class Game {
 			card.discard();
 		} else {
 			log(`You found: ${card.name}`);
+			openSnackbar(`You drew the ${card.name} card.`);
 			this.currentPlayer.hand.push(card);
 		}
 		this.phase = 2;
