@@ -10,6 +10,9 @@ module.exports = io => {
       io.sockets.emit('gameBegin', game)
       magentaLog('We hit socket on the server side for startGame' + '\n' + game)
     })
+    socket.on('new message', message => {
+      socket.broadcast.emit('sent message', message)
+    })
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)
     })

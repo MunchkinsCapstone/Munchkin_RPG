@@ -6,8 +6,9 @@ import user from './user';
 // import game from './game'
 import handReducer from './handReducer';
 import game from './gameReducer';
+import chat from './chatReducer'
 
-const reducer = combineReducers({ user, game });
+const reducer = combineReducers({ user, game, chat });
 // console.log("THE REDUCER", reducer)
 const middleware = composeWithDevTools(applyMiddleware(thunkMiddleware, createLogger({ collapsed: true })));
 const store = createStore(reducer, middleware);
@@ -15,5 +16,6 @@ const store = createStore(reducer, middleware);
 // console.log("THE STORE", store.getState())
 
 export default store;
-// export * from './user'
-// export * from './gameReducer'
+export * from './user'
+export * from './gameReducer'
+export * from './chatReducer'
