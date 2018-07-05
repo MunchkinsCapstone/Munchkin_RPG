@@ -142,7 +142,7 @@ class Deck {
 //-----------------------------------------------------------------------//
 
 const monsters = [
-  new Monster('3,872', '3872Orcs.jpeg', 10, 3, player => {}),
+  new Monster('3,872 Orcs', '3872Orcs.jpeg', 10, 3, player => {}),
   new Monster('Amazon', 'Amazon.jpeg', 8, 2, player => {}),
   new Monster('Bigfoot', 'Bigfoot.jpeg', 12, 3, player => {
     player.lose(player.equipment.head)
@@ -919,7 +919,7 @@ const boosts = [
   new Boost(
     'Kill the Hireling',
     'KillTheHireling.jpeg',
-    player => player.game.hireling
+    player => player.game && player.game.hireling
   ),
   new Boost('Potion of General Studliness', 'PotionOfGeneralStudliness.jpeg'),
   new Boost('Whine at the GM', 'WhineAtGM.jpeg', player =>

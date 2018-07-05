@@ -2,7 +2,6 @@ const chalk = require('chalk')
 const log = x => console.log(chalk.green(x))
 const Player = require('./Player')
 import {openSnackbar} from './components/Snackbar'
-import {SnackbarContent} from '@material-ui/core'
 
 let {
   Deck,
@@ -25,6 +24,19 @@ const appendMethods = {
       game.phase = 1
       game.players[game.turn].isActive = true
       log(`ACTIVE PLAYER: ${game.players[game.turn].name}`)
+      console.log(
+        'DOORS: ' +
+          doors.cards.map(card => card.name) +
+          '\n' +
+          'TREASURES: ' +
+          treasures.cards.map(card => card.name) +
+          '\n' +
+          'DOOR DISCARDS: ' +
+          doors.graveYard.map(card => card.name) +
+          '\n' +
+          'TREASURE DISCARDS: ' +
+          treasures.graveYard.map(card => card.name)
+      )
     }
 
     game.knockKnock = () => {
@@ -122,7 +134,7 @@ const appendMethods = {
           openSnackbar(`${player.name} failed to escape!`)
           log(`${player.name} failed to escape!`)
           battle.monster.badStuff(player)
-        } else SnackbarContent(`${player.name} got away safely!`)
+        } else openSnackbar(`${player.name} got away safely!`)
       })
       battle.end()
     }
@@ -213,7 +225,7 @@ const appendMethods = {
         if (
           item.requirement &&
           !item.requirement(player) &&
-          item !== player.hireling.equipment
+          (!player.hireling || item !== player.hireling.equipment)
         ) {
           player.unequip(item)
         } else i++

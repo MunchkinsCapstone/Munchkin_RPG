@@ -5,33 +5,36 @@ const SEND_MESSAGE = 'SEND_MESSAGE'
 
 //INITIAL STATE
 const initialState = {
-    newMessage: '',
-    chatLog: []
+  newMessage: '',
+  chatLog: []
 }
 
 //ACTION CREATORS
 export const writeMessage = message => {
-    return {
-        type: WRITE_MESSAGE,
-        message
-    }
+  return {
+    type: WRITE_MESSAGE,
+    message
+  }
 }
 
 export const sendMessage = message => {
-    return {
-        type: SEND_MESSAGE,
-        message
-    }
+  return {
+    type: SEND_MESSAGE,
+    message
+  }
 }
 
 //REDUCER
-export default function (state = initialState, action) {
-    switch (action.type) {
-        case WRITE_MESSAGE:
-            return { ...state, newMessage: action.message }
-        case SEND_MESSAGE:
-            return { ...state, chatLog: [...state.chatLog, action.message] }
-        default:
-            return state;
-    }
+export default function(state = initialState, action) {
+  const messageWithTime = `${new Date().toLocaleTimeString().slice(0, -6)} ${
+    action.message
+  }`
+  switch (action.type) {
+    case WRITE_MESSAGE:
+      return {...state, newMessage: action.message}
+    case SEND_MESSAGE:
+      return {...state, chatLog: [...state.chatLog, messageWithTime]}
+    default:
+      return state
+  }
 }
