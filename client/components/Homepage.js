@@ -18,8 +18,8 @@ class HomePage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isSignedin: false
-      // userName: ''
+      isSignedin: false,
+      userName: ''
     }
     this.uiConfig = {
       signInFlow: 'popup',
@@ -32,12 +32,13 @@ class HomePage extends Component {
 
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged(user => {
-      this.setState({ isSignedin: !!user })
-      console.log('user', user.displayName)
-      this.props.grabUser(user)
+      this.setState({ isSignedin: !!user, userName: user.displayName })
       //deleted userName props in setState
+      this.props.grabUser(user)
       // console.log('user', user.displayName);
     })
+    console.log('props after mount', this.props)
+
   }
   render() {
     console.log('props1', this.props)

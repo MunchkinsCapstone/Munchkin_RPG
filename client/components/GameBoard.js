@@ -7,7 +7,7 @@ import ImageMapper from 'react-image-mapper'
 import socket from '../socket'
 import store from '../store'
 import { connect } from 'react-redux'
-import { startGame } from '../store/gameReducer'
+import { startGame, } from '../store/gameReducer'
 
 let { log, Game } = require('../gameLogic')
 
@@ -47,11 +47,21 @@ class GameBoard extends Component {
 
   knockKnock() {
     const { game } = this.props
+    console.log('before', this.props)
+    console.log('knock ', game)
     game.knockKnock()
     this.setState({
       game
     })
+    console.log('after', this.props)
+    // console.log('new', game.knockKnock())
+    // game.knockDoor(game)
   }
+  // }
+  // const { game } = this.props
+  // // console.log('knock in gb ', game)
+  // game.knockKnock()
+  // this.props.knockDoor(game)
 
   componendDidMount() {
     const audioNode = document.getElementById('boardAudio')
@@ -250,6 +260,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     beginGame: (gameObj) => {
       dispatch(startGame(gameObj))
+    },
+    knockDoor: (gameObj) => {
+      dispatch(knockKnock(gameObj))
     }
   }
 }
