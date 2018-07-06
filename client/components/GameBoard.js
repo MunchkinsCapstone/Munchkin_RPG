@@ -25,7 +25,6 @@ class GameBoard extends Component {
       },
       players: ['Ozal', 'Graham', 'Yang', 'Raymond']
     }
-    this.startGame = this.startGame.bind(this)
     this.endTurn = this.endTurn.bind(this)
     this.knockKnock = this.knockKnock.bind(this)
     this.fight = this.fight.bind(this)
@@ -41,13 +40,13 @@ class GameBoard extends Component {
     this.props.updateGame(game)
   }
 
-  startGame() {
+  startGame = () => {
     if (!this.state.players.length) return log('There are no players!')
     const game = new Game(this.state.players)
     this.updateGame(game)
   }
 
-  knockKnock() {
+  knockKnock = () => {
     const {game} = this.props
     game.knockKnock()
     this.updateGame(game)
@@ -78,21 +77,21 @@ class GameBoard extends Component {
     // })
   }
 
-  fight() {
+  fight = () => {
     const {game} = this.props
     game.battle = appendMethods.battle(game.battle)
     game.battle.resolve()
     this.updateGame(game)
   }
 
-  flee() {
+  flee = () => {
     const {game} = this.props
     game.battle = appendMethods.battle(game.battle)
     game.battle.flee()
     this.updateGame(game)
   }
 
-  lootRoom() {
+  lootRoom = () => {
     const {game} = this.props
     game.lootRoom()
     this.updateGame(game)

@@ -45,6 +45,7 @@
     "express": "^4.14.1",
     "express-session": "^1.15.1",
     "firebase": "^5.1.0",
+    "heroku": "^7.5.11",
     "history": "^4.6.3",
     "jquery": "^3.3.1",
     "morgan": "^1.8.1",
