@@ -56,7 +56,6 @@
     "popper.js": "^1.14.3",
     "prop-types": "^15.5.8",
     "react": "^16.3.1",
-    "react-chat-ui": "^0.3.2",
     "react-dom": "^16.0.0",
     "react-firebaseui": "^3.0.4",
     "react-image-mapper": "0.0.7",

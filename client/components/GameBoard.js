@@ -150,7 +150,7 @@ class GameBoard extends Component {
 
 	render() {
 		const { game } = this.props;
-		console.log('THIS MY GAME YO', game);
+		// console.log('THIS MY GAME YO', game);
 		const MAP = {
 			name: 'door',
 			areas: [ { shape: 'rect', coords: [ 28, 503, 128, 564 ] } ]
@@ -221,7 +221,7 @@ class GameBoard extends Component {
 }
 
 const mapStateToProps = (state) => {
-	console.log('MY STATE IN CONNECT', state);
+	// console.log('MY STATE IN CONNECT', state);
 	return {
 		game: state.game
 	};
