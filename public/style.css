@@ -1,335 +1,345 @@
 ul {
-	width: 300px;
+  width: 300px;
 }
 
 li {
-	color: white;
-	list-style: none;
-	border: 1px solid white;
-	padding: 5px;
-	margin: 5px;
+  color: white;
+  list-style: none;
+  border: 1px solid white;
+  padding: 5px;
+  margin: 5px;
 }
 li:hover {
-	background: pink;
+  background: pink;
 }
 
 .player-card-top {
-	display: flex;
-	justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .player-card-button {
-	display: flex;
-	justify-content: space-evenly;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .modal {
-	color: black;
+  color: black;
 }
 
 .container {
-	display: flex;
-	justify-content: space-evenly;
-	flex-wrap: wrap;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
 .App {
-	text-align: center;
+  text-align: center;
 }
 
 .App-logo {
-	animation: App-logo-spin infinite 20s linear;
-	height: 80px;
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
 }
 
 .App-header {
-	background-color: #222;
-	height: 150px;
-	padding: 20px;
-	color: white;
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
 }
 
 .App-title {
-	font-size: 1.5em;
+  font-size: 1.5em;
 }
 
 .App-intro {
-	font-size: large;
+  font-size: large;
 }
 
 @keyframes App-logo-spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @font-face {
-	font-family: 'Windlass';
-	src: local('./fonts/Windlass.tff') format('truetype');
+  font-family: 'Windlass';
+  src: local('./fonts/Windlass.tff') format('truetype');
 }
 
 @font-face {
-	font-family: 'Caslon Antique';
-	src: local('./fonts/CaslonAntique.tff') format('truetype');
+  font-family: 'Caslon Antique';
+  src: local('./fonts/CaslonAntique.tff') format('truetype');
 }
 
 body {
-	background-image: url('http://staticdelivery.nexusmods.com/mods/161/images/90-1-1352053070.jpg');
-	background-attachment: fixed;
-	background-size: cover;
-	background-repeat: no-repeat;
-	font-family: 'Windlass';
+  background-image: url('http://staticdelivery.nexusmods.com/mods/161/images/90-1-1352053070.jpg');
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-family: 'Windlass';
 }
 
 ButtonPanel .flexContainer {
-	display: flex;
-	justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
 
 ButtonPanel button {
-	margin: 10;
+  margin: 10;
 }
 
 .container {
-	margin-top: 2em;
-	display: flex;
-	align-items: space-between;
-	width: auto;
+  margin-top: 2em;
+  display: flex;
+  align-items: space-between;
+  width: auto;
 }
 
 .chat-log {
-	padding: 5px;
-	height: fit-content;
-	background-color: rgba(211, 211, 211, 0.6);
-	border: gray 3px solid;
+  padding: 5px;
+  height: fit-content;
+  background-color: rgba(211, 211, 211, 0.6);
+  border: gray 3px solid;
 }
 
 .monster-view {
-	border-radius: 2em;
+  border-radius: 2em;
 }
 
 .card-view {
-	border-radius: 1em;
-	transform: scale(1);
-	transition: 0.2s ease-in-out;
+  border-radius: 1em;
+  transform: scale(1);
+  transition: 0.2s ease-in-out;
 }
 
 .card-view:hover {
-	transform: scale(1.3);
-	transition: 0.2s ease-in-out;
-	z-index: 99;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	-webkit-box-shadow: 0px 0px 10 0px rgba(212, 175, 55, 1);
-	-moz-box-shadow: 0px 0px 10 0px rgba(212, 175, 55, 1);
-	box-shadow: 0px 0px 10 0px rgba(212, 175, 55, 1);
+  transform: scale(1.3);
+  transition: 0.2s ease-in-out;
+  z-index: 99;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 10 0px rgba(212, 175, 55, 1);
+  -moz-box-shadow: 0px 0px 10 0px rgba(212, 175, 55, 1);
+  box-shadow: 0px 0px 10 0px rgba(212, 175, 55, 1);
 }
 
 .card,
 .modal-content {
-	background-color: transparent !important;
-	align-items: center;
+  background-color: transparent !important;
+  align-items: center;
 }
 
 .modal,
 .modal-content {
-	align-content: center;
-	max-width: 100%;
+  align-content: center;
+  max-width: 100%;
 }
 
 .card-view:active {
-	transform: translateY(5%);
-	transform: scale(1.28);
+  transform: translateY(5%);
+  transform: scale(1.28);
 }
 
 .App {
-	text-align: center;
+  text-align: center;
 }
 
 .App-logo {
-	animation: App-logo-spin infinite 20s linear;
-	height: 80px;
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
 }
 
 .App-header {
-	background-color: #222;
-	height: 150px;
-	padding: 20px;
-	color: white;
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
 }
 
 .App-title {
-	font-size: 1.5em;
+  font-size: 1.5em;
 }
 
 .App-intro {
-	font-size: large;
+  font-size: large;
 }
 
 @keyframes App-logo-spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 body {
-	background-image: url('https://i.imgur.com/MHWLac7.gif');
-	/* background-attachment: fixed; */
-	/* background-size: contain; */
-	/* background-repeat: repeat; */
-	font-family: 'Windlass';
+  background-image: url('https://i.imgur.com/MHWLac7.gif');
+  /* background-attachment: fixed; */
+  /* background-size: contain; */
+  /* background-repeat: repeat; */
+  font-family: 'Windlass';
 }
 
 ButtonPanel .flexContainer {
-	display: flex;
-	justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
 
 ButtonPanel button {
-	margin: 50px;
+  margin: 50px;
 }
 
 .container {
-	margin-top: 2em;
-	display: flex;
-	flex-direction: row;
-	align-items: space-between;
-	width: fit-content;
+  margin-top: 2em;
+  display: flex;
+  flex-direction: row;
+  align-items: space-between;
+  width: fit-content;
 }
 
 .chat-log {
-	padding: 5px;
-	height: fit-content;
-	background-color: rgba(211, 211, 211, 0.6);
-	border: gray 3px solid;
+  padding: 5px;
+  height: fit-content;
+  background-color: rgba(211, 211, 211, 0.6);
+  border: gray 3px solid;
 }
 
 .monster-view {
-	display: block;
-	border-radius: 2em;
-	height: auto;
-	width: 20vw;
-	margin-right: 0px !important;
+  display: block;
+  border-radius: 2em;
+  height: auto;
+  width: 20vw;
+  margin-right: 0px !important;
 }
 
 .card-view {
-	border-radius: 1em;
-	transform: scale(1);
-	transition: 0.2s ease-in-out;
+  border-radius: 1em;
+  transform: scale(1);
+  transition: 0.2s ease-in-out;
 }
 
 .card-view:hover {
-	transform: scale(1.5) translateY(1em);
-	transition: 0.2s ease-in-out;
-	z-index: 99;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	-webkit-box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
-	-moz-box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
-	box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
-	cursor: pointer;
+  transform: scale(1.5) translateY(1em);
+  transition: 0.2s ease-in-out;
+  z-index: 99;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
+  -moz-box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
+  box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
+  cursor: pointer;
 }
 
 .card-view:active {
-	transform: scale(1.4) translateY(1.2em);
+  transform: scale(1.4) translateY(1.2em);
 }
 
 .card,
 .modal-content {
-	background-color: transparent !important;
-	align-items: center;
+  background-color: transparent !important;
+  align-items: center;
 }
 
 .modal,
 .modal-content {
-	align-content: center;
-	max-width: 100%;
+  align-content: center;
+  max-width: 100%;
 }
 
 .card {
-	width: 10em;
-	margin: 0.01em;
-	margin-bottom: 1em;
+  width: 10em;
+  margin: 0.01em;
+  margin-bottom: 1em;
 }
 
 .discard-button {
-	cursor: pointer;
-	opacity: 0;
-	size: fit-content;
-	transform: scale(0.75);
-	display: flex;
-	align-content: center;
-	border-radius: 0.2em;
-	position: absolute;
-	right: -0.5em;
-	top: -0.25em;
+  cursor: pointer;
+  opacity: 0;
+  size: fit-content;
+  transform: scale(0.75);
+  display: flex;
+  align-content: center;
+  border-radius: 0.2em;
+  position: absolute;
+  right: -0.5em;
+  top: -0.25em;
 }
 
 .card-view:hover .discard-button {
-	opacity: 0.5;
+  opacity: 0.5;
 }
 
 .discard-button:hover {
-	opacity: 1 !important;
+  opacity: 1 !important;
 }
 
 .use-button {
-	border-radius: 0.2em;
-	cursor: pointer;
-	opacity: 0;
-	position: absolute;
-	top: 0;
-	left: 0;
+  border-radius: 0.2em;
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .card-view:hover .use-button {
-	opacity: 0.5;
+  opacity: 0.5;
 }
 
 .use-button:hover {
-	opacity: 1 !important;
+  opacity: 1 !important;
 }
 
 .player-title {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .battle-stats {
-	padding: 1.2em;
-	display: flex;
-	size: fit-content;
-	background: url('https://i.imgur.com/BDo9tLr.png') no-repeat center center;
-	background-size: 100% 100%;
+  padding: 1.2em;
+  display: flex;
+  size: fit-content;
+  background: url('https://i.imgur.com/BDo9tLr.png') no-repeat center center;
+  background-size: 100% 100%;
 }
 
 .gameboard-container {
-	display: flex;
-	justify-content: space-evenly;
-	flex-direction: row;
-	margin: 1em;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  margin: 1em;
 }
 
 .battle {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .gameboard-middle-col {
-	margin-left: 1em;
-	margin-right: 1em;
+  margin-left: 1em;
+  margin-right: 1em;
 }
 
 ChatLog {
-	font-family: 'IM Fell English SC';
+  font-family: 'IM Fell English SC';
+}
+
+.media-list {
+  height: 100%;
+  overflow-y: auto;
+}
+.chat {
+  width: 300px;
+  height: 200px;
+  overflow: 'auto';
 }
