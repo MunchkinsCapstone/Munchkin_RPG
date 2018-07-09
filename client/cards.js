@@ -107,7 +107,9 @@ class Boost extends Item {
     if (name === 'Kill the Hireling')
       effect = player => {
         const {hireling} = player.game
-        hireling.player.lose(hireling.card)
+        player.game.players
+          .find(otherPlayer => otherPlayer.hireling)
+          .lose(hireling.card)
         player.levelUp()
       }
     super(name, imageUrl, effect)
@@ -806,11 +808,11 @@ const equipments = [
     'TubaOfCharm.jpeg',
     'hands',
     user => {
-      user.run += 1
+      user.run += 3
       user.tuba = true
     },
     user => {
-      user.run -= 1
+      user.run -= 3
       user.tuba = false
     },
     1
@@ -1065,6 +1067,11 @@ const decks = {
 }
 
 const allCards = doors.cards.concat(treasures.cards)
+allCardsObj = {}
+allCards.forEach((card, index) => {
+  card.id = index
+  allCardsObj[card.id] = card
+})
 
 module.exports = {
   Deck,
@@ -1081,5 +1088,6 @@ module.exports = {
   treasures,
   shuffle,
   decks,
-  allCards
+  allCards,
+  allCardsObj
 }
