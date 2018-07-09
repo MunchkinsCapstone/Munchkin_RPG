@@ -14,8 +14,7 @@ const PlayerCard = props => {
     cast,
     lookForTrouble,
     equipToHireling,
-    assist,
-    id
+    assist
   } = props
   let color = player.isActive ? 'primary' : 'secondary'
   if (player.inBattle) color = 'danger'
@@ -47,7 +46,6 @@ const PlayerCard = props => {
           lookForTrouble={lookForTrouble}
           equipToHireling={equipToHireling}
           game={game}
-          id={id}
         />
         <Equipment player={player} discard={discard} unequip={unequip} />
         {game.battle.isActive &&

@@ -425,12 +425,13 @@ class Game {
     doors.shuffleCards()
     treasures.shuffleCards()
     this.players = shuffle(
-      playerNames.map(playerName =>
+      playerNames.map((playerName, index) =>
         appendMethods.player(
           new Player(
             playerName,
             ['Male', 'Female'][Math.round(Math.random())],
-            this
+            this,
+            index
           )
         )
       )

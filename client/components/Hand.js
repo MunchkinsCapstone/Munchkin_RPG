@@ -24,7 +24,7 @@ const Hand = props => {
           type="button"
           variant="extendedFab"
           data-toggle="modal"
-          data-target={`.${id}-modal`}
+          data-target={`.${player.id}-modal`}
         >
           <Icon style={{marginRight: '5px'}}>pan_tool</Icon>
           Hand
@@ -32,7 +32,7 @@ const Hand = props => {
       </Badge>
 
       <div
-        className={`modal fade bd-example-modal-lg ${id}-modal`}
+        className={`modal fade bd-example-modal-lg ${player.id}-modal`}
         tabIndex="-1"
         role="dialog"
         aria-labelledby="myLargeModalLabel"

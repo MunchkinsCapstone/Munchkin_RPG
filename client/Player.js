@@ -3,7 +3,8 @@ const log = x => console.log(chalk.green(x))
 const {Race, Class, Equipment} = require('./cards')
 
 class Player {
-  constructor(name, sex, game) {
+  constructor(name, sex, game, id) {
+    this.id = id
     this.name = name
     this.sex = sex
     this.level = 1
