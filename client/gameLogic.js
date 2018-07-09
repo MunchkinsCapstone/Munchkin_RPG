@@ -23,6 +23,7 @@ const appendMethods = {
   game: game => {
     game.startTurn = () => {
       game.phase = 1
+      game.didKillMonster = false
       game.players[game.turn].isActive = true
       // log(`ACTIVE PLAYER: ${game.players[game.turn].name}`)
       // console.log(
@@ -153,6 +154,7 @@ const appendMethods = {
       }
       if (playerTotal > battle.monsterTotal()) {
         battle.monster.discard()
+        battle.game.didKillMonster = true
         openSnackbar(`The ${battle.monster.name} has been slain!`)
         log(`The ${battle.monster.name} has been slain!`)
         battle.getPlayers()[0].levelUp()
@@ -447,6 +449,7 @@ class Game {
       }
     })
     this.isActive = true
+    this.didKillMonster = false
     this.phase = 1
     this.battle = {isActive: false}
     this.hireling = null
