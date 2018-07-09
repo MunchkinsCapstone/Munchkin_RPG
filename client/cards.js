@@ -930,7 +930,7 @@ const boosts = [
   new Boost(
     'Mutilate the Bodies',
     'MutilateTheBodies.jpeg',
-    player => player.didKillMonster
+    player => player.game.didKillMonster
   )
 ]
 
