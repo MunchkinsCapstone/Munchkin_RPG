@@ -97,7 +97,8 @@ const appendMethods = {
     }
 
     game.endGame = playerName => {
-      log(`${playerName} wins!`)
+      openSnackbar(`${playerName} wins!`)
+      game.isOver = true
     }
     return game
   },

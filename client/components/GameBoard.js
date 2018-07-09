@@ -213,15 +213,17 @@ class GameBoard extends Component {
         </div>
         <div>
           <ChatLog />
-          <ButtonPanel
-            game={game}
-            startGame={this.startGame}
-            knockKnock={this.knockKnock}
-            fight={this.fight}
-            flee={this.flee}
-            lootRoom={this.lootRoom}
-            endTurn={this.endTurn}
-          />
+          {!game.isOver && (
+            <ButtonPanel
+              game={game}
+              startGame={this.startGame}
+              knockKnock={this.knockKnock}
+              fight={this.fight}
+              flee={this.flee}
+              lootRoom={this.lootRoom}
+              endTurn={this.endTurn}
+            />
+          )}
           <Snackbar />
         </div>
       </div>

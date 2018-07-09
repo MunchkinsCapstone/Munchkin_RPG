@@ -18,6 +18,7 @@ const PlayerCard = props => {
   } = props
   let color = player.isActive ? 'primary' : 'secondary'
   if (player.inBattle) color = 'danger'
+  if (player.level >= 10) color = 'warning'
   console.log(player)
   return (
     <div className={`text-white bg-${color} mb-3`}>
