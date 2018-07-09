@@ -964,8 +964,8 @@ const buffs = [
   new Buff('Nasty Tasting Sports Drink', 'NastyTastingSportsDrink.jpeg', 2),
   new Buff('Potion of Halitosis', 'PotionOfHalitosis.jpeg', 2),
   new Buff('Pretty Balloons', 'PrettyBalloons.jpeg', 5),
-  new Buff('Sleep Potion', 'SleepPotion.jpeg', 2),
-  new Buff('Yuppie Water', 'YuppieWater.jpeg', 2)
+  new Buff('Sleep Potion', 'SleepPotion.jpeg', 2)
+  // new Buff('Yuppie Water', 'YuppieWater.jpeg', 2)
 ]
 
 const spells = [
