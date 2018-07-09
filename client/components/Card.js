@@ -68,15 +68,16 @@ class Card extends React.Component {
             aria-haspopup="true"
             onClick={this.handleClick}
           />
-          {!equipped && (
-            <button
-              type="button"
-              className="btn-danger discard-button"
-              onClick={this.discard}
-            >
-              Discard
-            </button>
-          )}
+          {!equipped &&
+            game.phase === 3 && (
+              <button
+                type="button"
+                className="btn-danger discard-button"
+                onClick={this.discard}
+              >
+                Discard
+              </button>
+            )}
           {(card.name !== 'Hireling' || !equipped) &&
             (card.type === 'Equipment' ||
               card.type === 'Race' ||
