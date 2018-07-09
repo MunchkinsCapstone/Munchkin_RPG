@@ -42,6 +42,11 @@ const appendMethods = {
     game.knockKnock = () => {
       log('*knock* *knock*')
       const card = doors.draw()
+      game.phase = 2
+      return card
+    }
+
+    game.reactToDoor = card => {
       if (card.type === 'Monster') {
         game.startBattle(card)
         // } else if (card.type === 'Curse') {
@@ -52,7 +57,6 @@ const appendMethods = {
         openSnackbar(`You drew the ${card.name} card.`)
         game.players[game.turn].hand.push(card)
       }
-      game.phase = 2
     }
 
     game.drawTreasure = () => {

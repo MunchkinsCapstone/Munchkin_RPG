@@ -9,6 +9,7 @@ import store from '../store'
 import {connect} from 'react-redux'
 import {startGameThunk} from '../store/gameReducer'
 import Snackbar, {openSnackbar} from './Snackbar'
+import Door from './Door'
 
 let {log, Game, appendMethods} = require('../gameLogic')
 
@@ -49,6 +50,12 @@ class GameBoard extends Component {
   knockKnock = () => {
     const {game} = this.props
     game.knockKnock()
+    this.updateGame(game)
+  }
+
+  reactToDoor = card => {
+    const {game} = this.props
+    game.reactToDoor(card)
     this.updateGame(game)
   }
 
@@ -188,29 +195,35 @@ class GameBoard extends Component {
           {game && game.battle.isActive ? (
             <Battle battle={game.battle} />
           ) : (
-            <div>
-              <ImageMapper
-                src={
-                  'http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg'
-                }
-                map={MAP}
-                onClick={
-                  game && game.phase === 1
-                    ? this.knockKnock
-                    : game && game.phase === 2 ? this.lootRoom : null
-                }
-              />
-              {/* <img
-                  alt="gameboard"
-                  style={{width: '100%'}}
-                  src="http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg"
-                /> */}
-              <audio autoPlay loop id="boardAudio">
-                <source src="./music/theJourney.mp3" type="audio/mp3" />
-              </audio>
-            </div>
+            // <div>
+            //   <ImageMapper
+            //     src={
+            //       'http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg'
+            //     }
+            //     map={MAP}
+            //     onClick={
+            //       game && game.phase === 1
+            //         ? this.knockKnock
+            //         : game && game.phase === 2 ? this.lootRoom : null
+            //     }
+            //   />
+            //   {/* <img
+            //       alt="gameboard"
+            //       style={{width: '100%'}}
+            //       src="http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg"
+            //     /> */}
+            //   <audio autoPlay loop id="boardAudio">
+            //     <source src="./music/theJourney.mp3" type="audio/mp3" />
+            //   </audio>
+            // </div>
+            <Door
+              kick={this.knockKnock}
+              game={game}
+              loot={this.lootRoom}
+              reactToDoor={this.reactToDoor}
+            />
           )}
-          <hr />
+          {/* <hr /> */}
         </div>
         <div>
           <ChatLog />

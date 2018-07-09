@@ -333,3 +333,12 @@ ButtonPanel button {
 ChatLog {
   font-family: 'IM Fell English SC';
 }
+
+#door {
+  cursor: pointer;
+}
+
+.door-card {
+  height: 40vh;
+  position: absolute;
+}
