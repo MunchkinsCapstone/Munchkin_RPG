@@ -142,7 +142,7 @@ const appendMethods = {
 
     battle.resolve = () => {
       console.log(battle)
-      const playerTotal = battle.playerTotal()
+      let playerTotal = battle.playerTotal()
       if (
         battle
           .getPlayers()
