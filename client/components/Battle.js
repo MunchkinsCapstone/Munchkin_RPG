@@ -42,6 +42,7 @@ class Battle extends Component {
               {battle
                 .getPlayers()
                 .map(player => <h3 key={player.name}>{player.name}</h3>)}
+              <hr />
             </div>
             <div
               id="monster-name"
@@ -52,9 +53,9 @@ class Battle extends Component {
               }}
             >
               <h3>{monster.name}</h3>
+              <hr />
             </div>
           </div>
-          <hr />
           <div style={{display: 'table-row'}}>
             <div
               style={{
@@ -63,6 +64,7 @@ class Battle extends Component {
               }}
             >
               <h5>Attack : {battle.playerAttack()}</h5>
+              <hr />
             </div>
             <div
               style={{
@@ -72,6 +74,7 @@ class Battle extends Component {
               }}
             >
               <h5>Attack : {monster.level}</h5>
+              <hr />
             </div>
           </div>
           <div style={{display: 'table-row'}}>
@@ -83,6 +86,7 @@ class Battle extends Component {
             >
               {/* <button className="btn btn-success">Buffs :</button> */}
               <h5>{'Buffs: ' + battle.buffs.getTotal('players')}</h5>
+              <hr />
             </div>
             <div
               style={{
@@ -93,9 +97,9 @@ class Battle extends Component {
             >
               {/* <button className="btn btn-warning">Buffs :</button> */}
               <h5>{'Buffs: ' + battle.buffs.getTotal('monster')}</h5>
+              <hr />
             </div>
           </div>
-          <hr />
           <div style={{display: 'table-row'}}>
             <div
               style={{
@@ -104,6 +108,7 @@ class Battle extends Component {
               }}
             >
               <h4>TOTAL : {battle.playerTotal()}</h4>
+              <hr />
             </div>
             <div
               style={{
@@ -113,6 +118,7 @@ class Battle extends Component {
               }}
             >
               <h4>TOTAL : {battle.monsterTotal()}</h4>
+              <hr />
             </div>
           </div>
           {/* </div> */}
@@ -120,7 +126,6 @@ class Battle extends Component {
             className="col-6"
             style={{textAlign: 'center', display: 'table-cell'}}
           > */}
-          <hr />
           {/* </div> */}
         </div>
         <audio autoPlay loop>

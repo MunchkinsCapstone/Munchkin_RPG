@@ -93,7 +93,7 @@ const appendMethods = {
 
     game.startBattle = monster => {
       game.battle = appendMethods.battle(new Battle(monster, game))
-      openSnackbar(`You encountered a ${monster.name}!`)
+      openSnackbar(`You encountered: ${monster.name}!`)
     }
 
     game.endGame = playerName => {
@@ -426,7 +426,13 @@ class Game {
     treasures.shuffleCards()
     this.players = shuffle(
       playerNames.map(playerName =>
-        appendMethods.player(new Player(playerName, 'Male', this))
+        appendMethods.player(
+          new Player(
+            playerName,
+            ['Male', 'Female'][Math.round(Math.random())],
+            this
+          )
+        )
       )
     )
     this.numPlayers = this.players.length
