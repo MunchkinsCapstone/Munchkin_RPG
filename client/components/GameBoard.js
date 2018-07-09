@@ -160,7 +160,7 @@ class GameBoard extends Component {
         <div>
           {game && game.isActive ? (
             <div>
-              {game.players.map(player => {
+              {game.players.map((player, index) => {
                 return (
                   <PlayerCard
                     key={player.name}
@@ -173,6 +173,7 @@ class GameBoard extends Component {
                     lookForTrouble={this.lookForTrouble}
                     equipToHireling={this.equipToHireling}
                     assist={this.assist}
+                    id={index}
                   />
                 )
               })}
