@@ -307,9 +307,14 @@ ButtonPanel button {
 .battle-stats {
   padding: 1.2em;
   display: flex;
+  flex-direction: column;
   size: fit-content;
   background: url('https://i.imgur.com/BDo9tLr.png') no-repeat center center;
   background-size: 100% 100%;
+}
+
+.table-cell {
+  width: 10vw !important;
 }
 
 .gameboard-container {
@@ -334,12 +339,51 @@ ChatLog {
   font-family: 'IM Fell English SC';
 }
 
+#door {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    height: 0;
+  }
+  to {
+    opacity: 1;
+    height: 40vh;
+  }
+}
+
+.door-card {
+  opacity: 1;
+  transform: translateY(4em);
+  position: fixed;
+  border-radius: 1em;
+  animation-name: fade-in;
+  animation-duration: 1.5s;
+  height: 40vh !important;
+  width: auto;
+}
+
 .media-list {
   height: 100%;
   overflow-y: auto;
 }
+
 .chat {
   width: 300px;
   height: 200px;
   overflow: 'auto';
+}
+
+#door-text {
+  color: yellow;
+  opacity: 0;
+}
+
+#door:hover .hover-text {
+  opacity: 1;
 }

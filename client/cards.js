@@ -1,147 +1,19 @@
-class Card {
-  constructor(name, imageUrl) {
-    this.name = name
-    this.imageUrl = imageUrl
-  }
-}
-
-class Monster extends Card {
-  constructor(name, imageUrl, level, treasures, badStuff) {
-    super(name, imageUrl)
-    this.level = level
-    this.treasures = treasures
-    this.type = 'Monster'
-    this.badStuff = badStuff
-    this.deck = 'doors'
-  }
-
-  // get attack() {
-  //   return this.level
-  // }
-
-  // die() {
-  //   this.discard()
-  // }
-}
-
-class Item extends Card {
-  constructor(name, imageUrl, effect, remove) {
-    super(name, imageUrl)
-    this.effect = effect
-    this.remove = remove
-  }
-}
-
-class Modifier extends Item {
-  constructor(name, imageUrl, effect, remove) {
-    super(name, imageUrl, effect, remove)
-    this.type = 'Modifier'
-    this.deck = 'doors'
-  }
-}
-
-class Equipment extends Item {
-  constructor(name, imageUrl, bodyPart, effect, remove, numHands, requirement) {
-    super(name, imageUrl, effect, remove)
-    this.bodyPart = bodyPart
-    this.type = 'Equipment'
-    this.deck = 'treasures'
-    this.numHands = numHands || 0
-    this.requirement = requirement
-  }
-}
-
-class Spell extends Item {
-  constructor(name, imageUrl, effect) {
-    super(name, imageUrl, effect, null)
-    this.type = 'Spell'
-    this.deck = 'treasures'
-  }
-}
-
-class Buff extends Item {
-  constructor(name, imageUrl, bonus) {
-    super(name, imageUrl)
-    this.type = 'Buff'
-    this.deck = 'treasures'
-    this.effect = buffsArray => buffsArray.push(this)
-    this.bonus = bonus
-  }
-}
-
-class Class extends Item {
-  constructor(name, imageUrl, effect, remove) {
-    super(name, imageUrl, effect, remove)
-    this.type = 'Class'
-    this.deck = 'doors'
-  }
-}
-
-class Race extends Item {
-  constructor(name, imageUrl, effect, remove) {
-    super(name, imageUrl, effect, remove)
-    this.type = 'Race'
-    this.deck = 'doors'
-  }
-}
-
-class Curse extends Item {
-  constructor(name, imageUrl, effect, remove) {
-    super(name, imageUrl, effect, remove)
-    this.type = 'Curse'
-    this.deck = 'doors'
-  }
-}
-
-class Charm extends Item {
-  constructor(name, imageUrl, effect, remove) {
-    super(name, imageUrl, effect, remove)
-    this.type = 'Curse'
-    this.deck = 'doors'
-  }
-}
-
-class Boost extends Item {
-  constructor(name, imageUrl, requirement) {
-    let effect = player => player.levelUp()
-    if (name === 'Kill the Hireling')
-      effect = player => {
-        const {hireling} = player.game
-        player.game.players
-          .find(otherPlayer => otherPlayer.hireling)
-          .lose(hireling.card)
-        player.levelUp()
-      }
-    super(name, imageUrl, effect)
-    this.type = 'Boost'
-    this.deck = 'treasures'
-    this.requirement = requirement
-    if (requirement === undefined) this.requirement = () => true
-  }
-}
-
-function shuffle(array) {
-  let counter = array.length
-  while (counter > 0) {
-    let index = Math.floor(Math.random() * counter)
-    counter--
-    let temp = array[counter]
-    array[counter] = array[index]
-    array[index] = temp
-  }
-  return array
-}
-
-class Deck {
-  constructor(cards) {
-    this.cards = cards
-    this.graveYard = []
-  }
-}
-
-//-----------------------------------------------------------------------//
-//-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-CARDS-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-//
-//-----------------------------------------------------------------------//
+const {
+  Card,
+  Deck,
+  Equipment,
+  Item,
+  Monster,
+  Buff,
+  Spell,
+  Class,
+  Race,
+  Curse,
+  Charm,
+  Modifier,
+  Boost,
+  shuffle
+} = require('./cardLogic')
 
 const monsters = [
   new Monster('3,872 Orcs', '3872Orcs.jpeg', 10, 3, player => {}),
@@ -584,10 +456,10 @@ const equipments = [
     'LimburgerAndAnchovySandwich.jpeg',
     'misc',
     user => {
-      user.bonus += 1
+      user.bonus += 3
     },
     user => {
-      user.bonus -= 1
+      user.bonus -= 3
     },
     0,
     player => !!player.race && player.race.name === 'Halfling'
@@ -951,7 +823,12 @@ const classes = [
 
 const buffs = [
   new Buff('Cotion of Ponfusion', 'CotionOfPonfusion.jpeg', 3),
-  // new Buff('Doppleganger', 'Doppleganger.jpeg', 0),
+  new Buff(
+    'Doppleganger',
+    'Doppleganger.jpeg',
+    0,
+    buffsArray => (buffsArray.double = true)
+  ),
   new Buff(
     'Electric Radioactive Acid Potion',
     'ElectricRadioactiveAcidPotion.jpeg',
@@ -985,50 +862,57 @@ const spells = [
 ]
 
 const curses = [
-  // new Curse('Change Class', 'ChangeClass.jpeg', player => {}),
-  // new Curse('Change Race', 'ChangeRace.jpeg', player => {}),
-  // new Curse('Change Sex', 'ChangeSex.jpeg', player => {
-  //   player.sex = player.sex === 'Female' ? 'Male' : 'Female'
-  // }),
+  new Curse('Change Class', 'ChangeClass.jpeg', player => {}),
+  new Curse('Change Race', 'ChangeRace.jpeg', player => {}),
+  new Curse('Change Sex', 'ChangeSex.jpeg', player => {
+    player.sex = player.sex === 'Female' ? 'Male' : 'Female'
+  }),
   // new Curse('Chicken On Your Head', 'ChickenOnYourHead.jpeg', player => {}),
-  // new Curse('Duck of Doom', 'DuckOfDoom.jpeg', player => {}),
+  new Curse('Duck of Doom', 'DuckOfDoom.jpeg', player => {
+    player.levelDown()
+    player.levelDown()
+  }),
   // new Curse('Income Tax', 'IncomeTax.jpeg', player => {}),
   // new Curse('Lose 1 Big Item', 'Lose1BigItem.jpeg', player => {}),
   // new Curse('Lose 1 Small Item', 'Lose1SmallItem1.jpeg', player => {}),
   // new Curse('Lose 1 Small Item', 'Lose1SmallItem2.jpeg', player => {}),
-  // new Curse('Lose a Level', 'LoseALevel1.jpeg', player => {
-  //   if (player.level > 1) player.levelDown()
-  // }),
-  // new Curse('Lose a Level', 'LoseALevel2.jpeg', player => {
-  //   if (player.level > 1) player.levelDown()
-  // }),
-  // new Curse('Lose the Armor You Are Wearing', 'LoseArmor.jpeg', player => {
-  //   player.lose(player.equipment.torso)
-  // }),
-  // new Curse('Lose Your Class', 'LoseClass.jpeg', player => {
-  //   player.lose(player.class)
-  // }),
-  // new Curse(
-  //   'Lose the Footgear You Are Wearing',
-  //   'LoseFootgear.jpeg',
-  //   player => {
-  //     player.lose(player.equipment.feet)
-  //   }
-  // ),
-  // new Curse(
-  //   'Lose the Headgear You Are Wearing',
-  //   'LoseHeadgear.jpeg',
-  //   player => {
-  //     player.lose(player.equipment.head)
-  //   }
-  // ),
-  // new Curse('Lose Your Race', 'LoseRace.jpeg', player => {
-  //   player.lose(player.race)
-  // }),
+  new Curse('Lose a Level', 'LoseALevel1.jpeg', player => {
+    if (player.level > 1) player.levelDown()
+  }),
+  new Curse('Lose a Level', 'LoseALevel2.jpeg', player => {
+    if (player.level > 1) player.levelDown()
+  }),
+  new Curse('Lose the Armor You Are Wearing', 'LoseArmor.jpeg', player => {
+    player.lose(player.equipment.torso)
+  }),
+  new Curse('Lose Your Class', 'LoseClass.jpeg', player => {
+    player.lose(player.class)
+  }),
+  new Curse(
+    'Lose the Footgear You Are Wearing',
+    'LoseFootgear.jpeg',
+    player => {
+      player.lose(player.equipment.feet)
+    }
+  ),
+  new Curse(
+    'Lose the Headgear You Are Wearing',
+    'LoseHeadgear.jpeg',
+    player => {
+      player.lose(player.equipment.head)
+    }
+  ),
+  new Curse('Lose Your Race', 'LoseRace.jpeg', player => {
+    player.lose(player.race)
+  }),
   // new Curse('Lose Two Cards', 'LoseTwoCards.jpeg', player => {}),
   // new Curse('Malign Mirror', 'MalignMirror.jpeg', player => {}),
-  // new Curse('Truly Obnoxious Curse', 'TrulyObnoxiousCurse.jpeg', player => {}),
-  // new Curse('Lose Your Class', 'LoseClass.jpeg', player => {})
+  new Curse('Truly Obnoxious Curse', 'TrulyObnoxiousCurse.jpeg', player => {
+    const bestItem = player.allEquips.reduce((bestItem, currentItem) => {
+      if (currentItem.bonus > bestItem.bonus) return currentItem
+    })
+    player.lose(bestItem)
+  })
 ]
 
 const charms = [

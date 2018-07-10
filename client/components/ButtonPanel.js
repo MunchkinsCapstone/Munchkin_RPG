@@ -14,31 +14,31 @@ export const ButtonPanel = props => {
         </button>
       </div>
     )
-  if (game.phase === 1)
-    return (
-      <div className="flexContainer">
-        <button type="button" className="btn btn-primary" onClick={knockKnock}>
-          Kick Door
-        </button>
-      </div>
-    )
-  if (game.phase === 2)
-    return (
-      <div className="flexContainer">
-        <button type="button" className="btn btn-success" onClick={lootRoom}>
-          Loot The Room
-        </button>
-      </div>
-    )
-  if (game.phase === 3)
-    return (
-      <div className="flexContainer">
-        <button type="button" className="btn btn-info" onClick={endTurn}>
-          End Turn
-        </button>
-      </div>
-    )
-  else {
+  if (!game.isActive) {
+    //   if (game.phase === 1)
+    //     return (
+    //       <div className="flexContainer">
+    //         <button type="button" className="btn btn-primary" onClick={knockKnock}>
+    //           Kick Door
+    //         </button>
+    //       </div>
+    //     )
+    //   if (game.phase === 2)
+    //     return (
+    //       <div className="flexContainer">
+    //         <button type="button" className="btn btn-success" onClick={lootRoom}>
+    //           Loot The Room
+    //         </button>
+    //       </div>
+    //     )
+    //   if (game.phase === 3)
+    //     return (
+    //       <div className="flexContainer">
+    //         <button type="button" className="btn btn-info" onClick={endTurn}>
+    //           End Turn
+    //         </button>
+    //       </div>
+    //     )
     return (
       <div className="flexContainer">
         <button type="button" className="btn btn-dark" onClick={startGame}>
@@ -46,7 +46,7 @@ export const ButtonPanel = props => {
         </button>
       </div>
     )
-  }
+  } else return null
 }
 
 export default ButtonPanel

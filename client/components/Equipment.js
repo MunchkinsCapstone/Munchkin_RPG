@@ -48,7 +48,7 @@ const Equipment = props => {
                 })
               ) : (
                 <div style={{backgroundColor: 'white'}}>
-                  <h1>You have nothing equipped!</h1>
+                  <h1>You have no items equipped!</h1>
                 </div>
               )}
             </div>

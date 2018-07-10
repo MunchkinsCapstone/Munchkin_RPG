@@ -9,6 +9,7 @@ import store from '../store'
 import {connect} from 'react-redux'
 import {startGameThunk} from '../store/gameReducer'
 import Snackbar, {openSnackbar} from './Snackbar'
+import Door from './Door'
 
 let {log, Game, appendMethods} = require('../gameLogic')
 
@@ -52,6 +53,12 @@ class GameBoard extends Component {
     this.updateGame(game)
   }
 
+  reactToDoor = card => {
+    const {game} = this.props
+    game.reactToDoor(card)
+    this.updateGame(game)
+  }
+
   detachSelf = game => {
     game.battle.game = null
     game.players.forEach(player => (player.game = null))
@@ -68,13 +75,6 @@ class GameBoard extends Component {
     const audioNode = document.getElementById('boardAudio')
     console.log('Hello audio!!', audioNode)
     audioNode.play()
-    // socket.on('gameStarted', game => {
-    //   console.log(game)
-    //   this.setState({
-    //     game
-    //   })
-    //   console.log(this.state, 'after payload<><><><><><><><><>')
-    // })
   }
 
   fight = () => {
@@ -184,30 +184,39 @@ class GameBoard extends Component {
             />
           )}
         </div>
-        <div>
+        <div style={{width: '60vh'}}>
           {game && game.battle.isActive ? (
             <Battle battle={game.battle} />
           ) : (
+            // <div>
+            //   <ImageMapper
+            //     src={
+            //       'http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg'
+            //     }
+            //     map={MAP}
+            //     onClick={
+            //       game && game.phase === 1
+            //         ? this.knockKnock
+            //         : game && game.phase === 2 ? this.lootRoom : null
+            //     }
+            //   />
+            //   {/* <img
+            //       alt="gameboard"
+            //       style={{width: '100%'}}
+            //       src="http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg"
+            //     /> */}
+            // </div>
             <div>
-              <ImageMapper
-                src={
-                  'http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg'
-                }
-                map={MAP}
-                onClick={
-                  game && game.phase === 1
-                    ? this.knockKnock
-                    : game && game.phase === 2 ? this.lootRoom : null
-                }
-              />
-              {/* <img
-                  alt="gameboard"
-                  style={{width: '100%'}}
-                  src="http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg"
-                /> */}
               <audio autoPlay loop id="boardAudio">
                 <source src="./music/theJourney.mp3" type="audio/mp3" />
               </audio>
+              <Door
+                kick={this.knockKnock}
+                game={game}
+                loot={this.lootRoom}
+                reactToDoor={this.reactToDoor}
+                endTurn={this.endTurn}
+              />
             </div>
           )}
         </div>

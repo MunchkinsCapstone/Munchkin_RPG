@@ -25,36 +25,28 @@ const appendMethods = {
       game.phase = 1
       game.didKillMonster = false
       game.players[game.turn].isActive = true
-      // log(`ACTIVE PLAYER: ${game.players[game.turn].name}`)
-      // console.log(
-      //   'DOORS: ' +
-      //     doors.cards.map(card => card.name) +
-      //     '\n' +
-      //     'TREASURES: ' +
-      //     treasures.cards.map(card => card.name) +
-      //     '\n' +
-      //     'DOOR DISCARDS: ' +
-      //     doors.graveYard.map(card => card.name) +
-      //     '\n' +
-      //     'TREASURE DISCARDS: ' +
-      //     treasures.graveYard.map(card => card.name)
-      // )
     }
 
     game.knockKnock = () => {
       log('*knock* *knock*')
       const card = doors.draw()
+      return card
+    }
+
+    game.reactToDoor = card => {
+      const currentPlayer = game.players[game.turn]
       if (card.type === 'Monster') {
         game.startBattle(card)
-        // } else if (card.type === 'Curse') {
-        //   card.effect(game.players[game.turn])
-        //   card.discard()
+      } else if (card.type === 'Curse') {
+        if (!currentPlayer.protected) card.effect(currentPlayer)
+        card.discard()
+        game.phase = 3
       } else {
         log(`You found: ${card.name}`)
         openSnackbar(`You drew the ${card.name} card.`)
-        game.players[game.turn].hand.push(card)
+        currentPlayer.hand.push(card)
+        game.phase = 2
       }
-      game.phase = 2
     }
 
     game.drawTreasure = () => {
@@ -125,9 +117,11 @@ const appendMethods = {
     }
 
     battle.buffs.getTotal = side => {
-      return battle.buffs[side]
+      let attack = battle.buffs[side]
         .map(buff => buff.bonus)
-        .reduce((num1, num2) => num1 + num2, 0)
+        .reduce((total, num) => total + num, 0)
+      if (battle.buffs[side].double) attack = attack * 2
+      return attack
     }
 
     battle.flee = () => {

@@ -36,89 +36,91 @@ class Battle extends Component {
               id="monster-name"
               style={{
                 display: 'table-cell',
-                'padding-right': '5px'
+                paddingRight: '5px'
               }}
             >
               {battle
                 .getPlayers()
                 .map(player => <h3 key={player.name}>{player.name}</h3>)}
-              <hr />
             </div>
             <div
               id="monster-name"
               style={{
                 display: 'table-cell',
-                'border-left': '1px gray solid',
-                'padding-left': '5px'
+                borderLeft: '1px gray solid',
+                paddingLeft: '5px'
               }}
             >
               <h3>{monster.name}</h3>
-              <hr />
             </div>
           </div>
           <div style={{display: 'table-row'}}>
             <div
+              className="table-cell"
               style={{
                 display: 'table-cell',
-                'padding-right': '5px'
+                paddingRight: '5px'
               }}
             >
+              <hr />
               <h5>Attack : {battle.playerAttack()}</h5>
-              <hr />
             </div>
             <div
+              className="table-cell"
               style={{
                 display: 'table-cell',
-                'border-left': '1px gray solid',
-                'padding-left': '5px'
+                borderLeft: '1px gray solid',
+                paddingLeft: '5px'
               }}
             >
+              <hr />
               <h5>Attack : {monster.level}</h5>
-              <hr />
             </div>
           </div>
           <div style={{display: 'table-row'}}>
             <div
+              className="table-cell"
               style={{
                 display: 'table-cell',
-                'padding-right': '5px'
+                paddingRight: '5px'
               }}
             >
-              {/* <button className="btn btn-success">Buffs :</button> */}
+              <hr />
               <h5>{'Buffs: ' + battle.buffs.getTotal('players')}</h5>
-              <hr />
             </div>
             <div
+              className="table-cell"
               style={{
                 display: 'table-cell',
-                'border-left': '1px gray solid',
-                'padding-left': '5px'
+                borderLeft: '1px gray solid',
+                paddingLeft: '5px'
               }}
             >
-              {/* <button className="btn btn-warning">Buffs :</button> */}
-              <h5>{'Buffs: ' + battle.buffs.getTotal('monster')}</h5>
               <hr />
+              <h5>{'Buffs: ' + battle.buffs.getTotal('monster')}</h5>
             </div>
           </div>
           <div style={{display: 'table-row'}}>
             <div
+              className="table-cell"
               style={{
                 display: 'table-cell',
-                'padding-right': '5px'
+                paddingRight: '5px'
               }}
             >
-              <h4>TOTAL : {battle.playerTotal()}</h4>
               <hr />
+              <h4>TOTAL : {battle.playerTotal()}</h4>
             </div>
             <div
+              className="table-cell"
               style={{
                 display: 'table-cell',
-                'border-left': '1px gray solid',
-                'padding-left': '5px'
+                borderLeft: '1px gray solid',
+                paddingLeft: '5px'
               }}
             >
-              <h4>TOTAL : {battle.monsterTotal()}</h4>
               <hr />
+              <h4>TOTAL : {battle.monsterTotal()}</h4>
             </div>
           </div>
           {/* </div> */}
