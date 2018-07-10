@@ -680,11 +680,11 @@ const equipments = [
     'TubaOfCharm.jpeg',
     'hands',
     user => {
-      user.run += 1
+      user.run += 3
       user.tuba = true
     },
     user => {
-      user.run -= 1
+      user.run -= 3
       user.tuba = false
     },
     1
@@ -802,7 +802,7 @@ const boosts = [
   new Boost(
     'Mutilate the Bodies',
     'MutilateTheBodies.jpeg',
-    player => player.didKillMonster
+    player => player.game.didKillMonster
   )
 ]
 
@@ -823,7 +823,12 @@ const classes = [
 
 const buffs = [
   new Buff('Cotion of Ponfusion', 'CotionOfPonfusion.jpeg', 3),
-  // new Buff('Doppleganger', 'Doppleganger.jpeg', 0),
+  new Buff(
+    'Doppleganger',
+    'Doppleganger.jpeg',
+    0,
+    buffsArray => (buffsArray.double = true)
+  ),
   new Buff(
     'Electric Radioactive Acid Potion',
     'ElectricRadioactiveAcidPotion.jpeg',
@@ -836,8 +841,8 @@ const buffs = [
   new Buff('Nasty Tasting Sports Drink', 'NastyTastingSportsDrink.jpeg', 2),
   new Buff('Potion of Halitosis', 'PotionOfHalitosis.jpeg', 2),
   new Buff('Pretty Balloons', 'PrettyBalloons.jpeg', 5),
-  new Buff('Sleep Potion', 'SleepPotion.jpeg', 2),
-  new Buff('Yuppie Water', 'YuppieWater.jpeg', 2)
+  new Buff('Sleep Potion', 'SleepPotion.jpeg', 2)
+  // new Buff('Yuppie Water', 'YuppieWater.jpeg', 2)
 ]
 
 const spells = [
@@ -857,50 +862,57 @@ const spells = [
 ]
 
 const curses = [
-  // new Curse('Change Class', 'ChangeClass.jpeg', player => {}),
-  // new Curse('Change Race', 'ChangeRace.jpeg', player => {}),
-  // new Curse('Change Sex', 'ChangeSex.jpeg', player => {
-  //   player.sex = player.sex === 'Female' ? 'Male' : 'Female'
-  // }),
+  new Curse('Change Class', 'ChangeClass.jpeg', player => {}),
+  new Curse('Change Race', 'ChangeRace.jpeg', player => {}),
+  new Curse('Change Sex', 'ChangeSex.jpeg', player => {
+    player.sex = player.sex === 'Female' ? 'Male' : 'Female'
+  }),
   // new Curse('Chicken On Your Head', 'ChickenOnYourHead.jpeg', player => {}),
-  // new Curse('Duck of Doom', 'DuckOfDoom.jpeg', player => {}),
+  new Curse('Duck of Doom', 'DuckOfDoom.jpeg', player => {
+    player.levelDown()
+    player.levelDown()
+  }),
   // new Curse('Income Tax', 'IncomeTax.jpeg', player => {}),
   // new Curse('Lose 1 Big Item', 'Lose1BigItem.jpeg', player => {}),
   // new Curse('Lose 1 Small Item', 'Lose1SmallItem1.jpeg', player => {}),
   // new Curse('Lose 1 Small Item', 'Lose1SmallItem2.jpeg', player => {}),
-  // new Curse('Lose a Level', 'LoseALevel1.jpeg', player => {
-  //   if (player.level > 1) player.levelDown()
-  // }),
-  // new Curse('Lose a Level', 'LoseALevel2.jpeg', player => {
-  //   if (player.level > 1) player.levelDown()
-  // }),
-  // new Curse('Lose the Armor You Are Wearing', 'LoseArmor.jpeg', player => {
-  //   player.lose(player.equipment.torso)
-  // }),
-  // new Curse('Lose Your Class', 'LoseClass.jpeg', player => {
-  //   player.lose(player.class)
-  // }),
-  // new Curse(
-  //   'Lose the Footgear You Are Wearing',
-  //   'LoseFootgear.jpeg',
-  //   player => {
-  //     player.lose(player.equipment.feet)
-  //   }
-  // ),
-  // new Curse(
-  //   'Lose the Headgear You Are Wearing',
-  //   'LoseHeadgear.jpeg',
-  //   player => {
-  //     player.lose(player.equipment.head)
-  //   }
-  // ),
-  // new Curse('Lose Your Race', 'LoseRace.jpeg', player => {
-  //   player.lose(player.race)
-  // }),
+  new Curse('Lose a Level', 'LoseALevel1.jpeg', player => {
+    if (player.level > 1) player.levelDown()
+  }),
+  new Curse('Lose a Level', 'LoseALevel2.jpeg', player => {
+    if (player.level > 1) player.levelDown()
+  }),
+  new Curse('Lose the Armor You Are Wearing', 'LoseArmor.jpeg', player => {
+    player.lose(player.equipment.torso)
+  }),
+  new Curse('Lose Your Class', 'LoseClass.jpeg', player => {
+    player.lose(player.class)
+  }),
+  new Curse(
+    'Lose the Footgear You Are Wearing',
+    'LoseFootgear.jpeg',
+    player => {
+      player.lose(player.equipment.feet)
+    }
+  ),
+  new Curse(
+    'Lose the Headgear You Are Wearing',
+    'LoseHeadgear.jpeg',
+    player => {
+      player.lose(player.equipment.head)
+    }
+  ),
+  new Curse('Lose Your Race', 'LoseRace.jpeg', player => {
+    player.lose(player.race)
+  }),
   // new Curse('Lose Two Cards', 'LoseTwoCards.jpeg', player => {}),
   // new Curse('Malign Mirror', 'MalignMirror.jpeg', player => {}),
-  // new Curse('Truly Obnoxious Curse', 'TrulyObnoxiousCurse.jpeg', player => {}),
-  // new Curse('Lose Your Class', 'LoseClass.jpeg', player => {})
+  new Curse('Truly Obnoxious Curse', 'TrulyObnoxiousCurse.jpeg', player => {
+    const bestItem = player.allEquips.reduce((bestItem, currentItem) => {
+      if (currentItem.bonus > bestItem.bonus) return currentItem
+    })
+    player.lose(bestItem)
+  })
 ]
 
 const charms = [
@@ -939,8 +951,10 @@ const decks = {
 }
 
 const allCards = doors.cards.concat(treasures.cards)
+allCardsObj = {}
 allCards.forEach((card, index) => {
   card.id = index
+  allCardsObj[card.id] = card
 })
 
 module.exports = {
@@ -958,5 +972,6 @@ module.exports = {
   treasures,
   shuffle,
   decks,
-  allCards
+  allCards,
+  allCardsObj
 }

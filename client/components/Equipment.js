@@ -1,21 +1,29 @@
 import React from 'react'
 import Card from './Card'
+import Badge from '@material-ui/core/Badge'
+import Button from '@material-ui/core/Button'
+import Icon from '@material-ui/core/Icon'
 
 const Equipment = props => {
   const {player, discard, unequip} = props
   return (
     <div>
-      <button
-        type="button"
-        className="btn btn-white"
-        data-toggle="modal"
-        data-target={`.${player.name}-equipment`}
-      >
-        Equipment
-      </button>
+      <Badge color="primary" badgeContent={player.allEquips.length}>
+        <Button
+          className="player-card-buttons"
+          type="button"
+          variant="extendedFab"
+          data-toggle="modal"
+          data-target={`.${player.id}-equipment`}
+          style={{marginLeft: '15px'}}
+        >
+          <Icon style={{marginRight: '5px'}}>build</Icon>
+          Equipment
+        </Button>
+      </Badge>
 
       <div
-        className={`modal fade bd-example-modal-lg ${player.name}-equipment`}
+        className={`modal fade bd-example-modal-lg ${player.id}-equipment`}
         tabIndex="-1"
         role="dialog"
         aria-labelledby="myLargeModalLabel"
@@ -40,7 +48,7 @@ const Equipment = props => {
                 })
               ) : (
                 <div style={{backgroundColor: 'white'}}>
-                  <h1>You have nothing equipped!</h1>
+                  <h1>You have no items equipped!</h1>
                 </div>
               )}
             </div>

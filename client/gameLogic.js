@@ -11,7 +11,8 @@ let {
   doors,
   treasures,
   decks,
-  allCards
+  allCards,
+  allCardsObj
 } = require('./cards')
 
 function rollDie() {
@@ -22,40 +23,29 @@ const appendMethods = {
   game: game => {
     game.startTurn = () => {
       game.phase = 1
+      game.didKillMonster = false
       game.players[game.turn].isActive = true
-      log(`ACTIVE PLAYER: ${game.players[game.turn].name}`)
-      console.log(
-        'DOORS: ' +
-          doors.cards.map(card => card.name) +
-          '\n' +
-          'TREASURES: ' +
-          treasures.cards.map(card => card.name) +
-          '\n' +
-          'DOOR DISCARDS: ' +
-          doors.graveYard.map(card => card.name) +
-          '\n' +
-          'TREASURE DISCARDS: ' +
-          treasures.graveYard.map(card => card.name)
-      )
     }
 
     game.knockKnock = () => {
       log('*knock* *knock*')
       const card = doors.draw()
-      game.phase = 2
       return card
     }
 
     game.reactToDoor = card => {
+      const currentPlayer = game.players[game.turn]
       if (card.type === 'Monster') {
         game.startBattle(card)
-        // } else if (card.type === 'Curse') {
-        //   card.effect(game.players[game.turn])
-        //   card.discard()
+      } else if (card.type === 'Curse') {
+        if (!currentPlayer.protected) card.effect(currentPlayer)
+        card.discard()
+        game.phase = 3
       } else {
         log(`You found: ${card.name}`)
         openSnackbar(`You drew the ${card.name} card.`)
-        game.players[game.turn].hand.push(card)
+        currentPlayer.hand.push(card)
+        game.phase = 2
       }
     }
 
@@ -96,11 +86,12 @@ const appendMethods = {
 
     game.startBattle = monster => {
       game.battle = appendMethods.battle(new Battle(monster, game))
-      openSnackbar(`You encountered a ${monster.name}!`)
+      openSnackbar(`You encountered: ${monster.name}!`)
     }
 
     game.endGame = playerName => {
-      log(`${playerName} wins!`)
+      openSnackbar(`${playerName} wins!`)
+      game.isOver = true
     }
     return game
   },
@@ -126,9 +117,11 @@ const appendMethods = {
     }
 
     battle.buffs.getTotal = side => {
-      return battle.buffs[side]
+      let attack = battle.buffs[side]
         .map(buff => buff.bonus)
-        .reduce((num1, num2) => num1 + num2, 0)
+        .reduce((total, num) => total + num, 0)
+      if (battle.buffs[side].double) attack = attack * 2
+      return attack
     }
 
     battle.flee = () => {
@@ -145,7 +138,7 @@ const appendMethods = {
 
     battle.resolve = () => {
       console.log(battle)
-      const playerTotal = battle.playerTotal()
+      let playerTotal = battle.playerTotal()
       if (
         battle
           .getPlayers()
@@ -155,6 +148,7 @@ const appendMethods = {
       }
       if (playerTotal > battle.monsterTotal()) {
         battle.monster.discard()
+        battle.game.didKillMonster = true
         openSnackbar(`The ${battle.monster.name} has been slain!`)
         log(`The ${battle.monster.name} has been slain!`)
         battle.getPlayers()[0].levelUp()
@@ -205,13 +199,14 @@ const appendMethods = {
 
     player.lose = card => {
       if (card) {
-        if (player.hireling && card === player.hireling.card) {
+        if (player.hireling && card.id === player.hireling.card.id) {
           player.lose(player.hireling.equipment)
           player.hireling = null
         }
-        if (player.allEquips.indexOf(card) > -1) {
+        if (player.allEquips.find(otherCard => otherCard.id === card.id)) {
           player.unequip(card)
         }
+        card = player.hand.find(otherCard => otherCard.id === card.id)
         player.discard(player.hand.indexOf(card))
       }
     }
@@ -229,7 +224,7 @@ const appendMethods = {
         if (
           item.requirement &&
           !item.requirement(player) &&
-          (!player.hireling || item !== player.hireling.equipment)
+          (!player.hireling || item.id !== player.hireling.equipment.id)
         ) {
           player.unequip(item)
         } else i++
@@ -297,6 +292,7 @@ const appendMethods = {
 
     player.unequip = item => {
       if (!item) return null
+      item = player.allEquips.find(card => card.id === item.id)
       switch (item.type) {
         case 'Equipment':
           const {bodyPart} = item
@@ -322,7 +318,7 @@ const appendMethods = {
         default:
           log('You cannot equip player item!')
       }
-      if (player.hireling && item === player.hireling.equipment)
+      if (player.hireling && item.id === player.hireling.equipment.id)
         player.hireling.equipment = null
       player.hand.push(item)
       item.remove(player)
@@ -426,8 +422,15 @@ class Game {
     doors.shuffleCards()
     treasures.shuffleCards()
     this.players = shuffle(
-      playerNames.map(playerName =>
-        appendMethods.player(new Player(playerName, 'Male', this))
+      playerNames.map((playerName, index) =>
+        appendMethods.player(
+          new Player(
+            playerName,
+            ['Male', 'Female'][Math.round(Math.random())],
+            this,
+            index
+          )
+        )
       )
     )
     this.numPlayers = this.players.length
@@ -440,6 +443,7 @@ class Game {
       }
     })
     this.isActive = true
+    this.didKillMonster = false
     this.phase = 1
     this.battle = {isActive: false}
     this.hireling = null
@@ -475,5 +479,6 @@ module.exports = {
   log,
   Game,
   appendMethods,
-  allCards
+  allCards,
+  allCardsObj
 }

@@ -24,7 +24,7 @@ class GameBoard extends Component {
           isActive: false
         }
       },
-      players: ['Ozal', 'Graham', 'Yang', 'Raymond']
+      players: ['Player 1', 'Player 2', 'Player 3', 'Player 4']
     }
     this.endTurn = this.endTurn.bind(this)
     this.knockKnock = this.knockKnock.bind(this)
@@ -75,13 +75,6 @@ class GameBoard extends Component {
     const audioNode = document.getElementById('boardAudio')
     console.log('Hello audio!!', audioNode)
     audioNode.play()
-    // socket.on('gameStarted', game => {
-    //   console.log(game)
-    //   this.setState({
-    //     game
-    //   })
-    //   console.log(this.state, 'after payload<><><><><><><><><>')
-    // })
   }
 
   fight = () => {
@@ -157,7 +150,7 @@ class GameBoard extends Component {
 
   render() {
     const {game} = this.props
-    console.log('THIS MY GAME YO', game)
+    // console.log('THIS MY GAME YO', game);
     const MAP = {
       name: 'door',
       areas: [{shape: 'rect', coords: [28, 503, 128, 564]}]
@@ -191,7 +184,7 @@ class GameBoard extends Component {
             />
           )}
         </div>
-        <div>
+        <div style={{width: '60vh'}}>
           {game && game.battle.isActive ? (
             <Battle battle={game.battle} />
           ) : (
@@ -212,30 +205,34 @@ class GameBoard extends Component {
             //       style={{width: '100%'}}
             //       src="http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg"
             //     /> */}
-            //   <audio autoPlay loop id="boardAudio">
-            //     <source src="./music/theJourney.mp3" type="audio/mp3" />
-            //   </audio>
             // </div>
-            <Door
-              kick={this.knockKnock}
-              game={game}
-              loot={this.lootRoom}
-              reactToDoor={this.reactToDoor}
-            />
+            <div>
+              <audio autoPlay loop id="boardAudio">
+                <source src="./music/theJourney.mp3" type="audio/mp3" />
+              </audio>
+              <Door
+                kick={this.knockKnock}
+                game={game}
+                loot={this.lootRoom}
+                reactToDoor={this.reactToDoor}
+                endTurn={this.endTurn}
+              />
+            </div>
           )}
-          {/* <hr /> */}
         </div>
         <div>
           <ChatLog />
-          <ButtonPanel
-            game={game}
-            startGame={this.startGame}
-            knockKnock={this.knockKnock}
-            fight={this.fight}
-            flee={this.flee}
-            lootRoom={this.lootRoom}
-            endTurn={this.endTurn}
-          />
+          {!game.isOver && (
+            <ButtonPanel
+              game={game}
+              startGame={this.startGame}
+              knockKnock={this.knockKnock}
+              fight={this.fight}
+              flee={this.flee}
+              lootRoom={this.lootRoom}
+              endTurn={this.endTurn}
+            />
+          )}
           <Snackbar />
         </div>
       </div>
@@ -244,7 +241,7 @@ class GameBoard extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log('MY STATE IN CONNECT', state)
+  // console.log('MY STATE IN CONNECT', state);
   return {
     game: state.game
   }

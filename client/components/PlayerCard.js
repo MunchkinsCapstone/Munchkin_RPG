@@ -1,6 +1,8 @@
 import React from 'react'
 import Hand from './Hand'
 import Equipment from './Equipment'
+import Button from '@material-ui/core/Button'
+import Icon from '@material-ui/core/Icon'
 
 const PlayerCard = props => {
   const {
@@ -16,6 +18,8 @@ const PlayerCard = props => {
   } = props
   let color = player.isActive ? 'primary' : 'secondary'
   if (player.inBattle) color = 'danger'
+  if (player.level >= 10) color = 'warning'
+  console.log(player)
   return (
     <div className={`text-white bg-${color} mb-3`}>
       <div className="card-header player-card-top">
@@ -23,7 +27,9 @@ const PlayerCard = props => {
         <div className="player-title">
           <h4>{player.name}</h4>
           <h6>
-            {(player.race ? player.race.name : 'Human') +
+            {(player.sex === 'Male' ? '♂' : '♀') +
+              ' ' +
+              (player.race ? player.race.name : 'Human') +
               ' ' +
               (player.class ? player.class.name : 'Commoner')}
           </h6>
@@ -31,7 +37,7 @@ const PlayerCard = props => {
         <h5>Attack: {player.attack()}</h5>
       </div>
       <div className="card-body player-card-button">
-        {console.log('PLAYER: ' + player.name)}
+        {/* {console.log('PLAYER: ' + player.name)} */}
         <Hand
           hand={player.hand}
           player={player}
@@ -45,17 +51,19 @@ const PlayerCard = props => {
         <Equipment player={player} discard={discard} unequip={unequip} />
         {game.battle.isActive &&
           !player.inBattle && (
-            <button
+            <Button
+              style={{marginLeft: '15px'}}
               type="button"
-              className="btn btn-white"
+              variant="extendedFab"
               onClick={() => assist(player)}
             >
+              <Icon style={{marginRight: '5px'}}>group_add</Icon>
               Assist
-            </button>
+            </Button>
           )}
-        <button type="button" className="btn btn-white">
-          Trade
-        </button>
+        {/* <button type='button' className='btn btn-white'>
+					Trade
+				</button> */}
       </div>
     </div>
   )

@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {ChatFeed, Message} from 'react-chat-ui'
 import {connect} from 'react-redux'
 import {writeMessage, sendMessage} from '../store'
 import socket from '../socket'
@@ -8,10 +7,21 @@ const ChatLog = props => {
   const {handleChange, handleSubmit, chat} = props
 
   return (
-    <div className="chat-log" style={{marginBottom: '1em'}}>
+    <div
+      className="media-list"
+      className="chat-log"
+      style={{marginBottom: '1em'}}
+    >
       <h4 style={{textAlign: 'center'}}>Chatroom & GameLog</h4>
       <hr />
-      {chat.chatLog.map((message, idx) => <h6 key={idx}>{`${message}`}</h6>)}
+      <div className="media-list">
+        <ul className="chat">
+          {chat.chatLog.map((message, idx) => (
+            <li key={idx}>{`${message}`}</li>
+          ))}
+        </ul>
+      </div>
+
       <div className="input-group">
         <form onSubmit={handleSubmit}>
           <input
@@ -67,7 +77,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     handleChange: event => {
-      console.log('typing...', event.target.value)
+      // console.log('typing...', event.target.value);
       dispatch(writeMessage(event.target.value))
     },
     handleSubmit: event => {

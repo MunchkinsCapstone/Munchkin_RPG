@@ -8,7 +8,6 @@ module.exports = io => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
     socket.on('gameStarted', game => {
       io.sockets.emit('gameBegin', game)
-      magentaLog('We hit socket on the server side for startGame' + '\n' + game)
     })
     socket.on('new message', message => {
       socket.broadcast.emit('sent message', message)

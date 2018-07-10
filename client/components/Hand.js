@@ -1,5 +1,9 @@
 import React from 'react'
 import Card from './Card'
+// import Badge from './Badge';
+import Badge from '@material-ui/core/Badge'
+import Button from '@material-ui/core/Button'
+import Icon from '@material-ui/core/Icon'
 
 const Hand = props => {
   const {
@@ -10,21 +14,25 @@ const Hand = props => {
     cast,
     game,
     lookForTrouble,
-    equipToHireling
+    equipToHireling,
+    id
   } = props
   return (
     <div>
-      <button
-        type="button"
-        className="btn btn-white"
-        data-toggle="modal"
-        data-target={`.${player.name}-modal`}
-      >
-        Hand
-      </button>
+      <Badge color="primary" badgeContent={hand.length}>
+        <Button
+          type="button"
+          variant="extendedFab"
+          data-toggle="modal"
+          data-target={`.${player.id}-modal`}
+        >
+          <Icon style={{marginRight: '5px'}}>pan_tool</Icon>
+          Hand
+        </Button>
+      </Badge>
 
       <div
-        className={`modal fade bd-example-modal-lg ${player.name}-modal`}
+        className={`modal fade bd-example-modal-lg ${player.id}-modal`}
         tabIndex="-1"
         role="dialog"
         aria-labelledby="myLargeModalLabel"

@@ -1,63 +1,90 @@
 import React from 'react'
 
 export const Door = props => {
-  const {kick, loot, game, reactToDoor} = props
+  const {kick, loot, game, reactToDoor, endTurn} = props
 
   const kickOpen = () => {
     const door = document.getElementById('door')
-    door.src = '/Door1.png'
-    setTimeout(() => {
-      door.src = '/Door2.png'
-    }, 25)
-    setTimeout(() => {
-      door.src = '/Door3.png'
-    }, 50)
+    const doorText = document.getElementById('door-text')
+    doorText.className = ''
+    door.style.backgroundImage = 'url(./Door3.png)'
     setTimeout(() => {
       const card = game.knockKnock()
       const cardImg = document.createElement('img')
       cardImg.src = '/cardImages/' + card.imageUrl
       cardImg.className = 'door-card'
-      //   document.getElementById('door-container').appendChild(cardImg)
-      door.style.opacity = 0.5
+      door.appendChild(cardImg)
       setTimeout(() => {
         reactToDoor(card)
-      }, 2000)
-    }, 100)
+        door.removeChild(cardImg)
+        doorText.className = 'hover-text'
+      }, 3000)
+    }, 1000)
   }
+
+  let handleClick = kickOpen
 
   if (game.phase === 1)
     return (
-      <div id="door-container">
-        <img
-          id="door"
-          className="closed"
-          src="/Door0.png"
-          style={{height: '60vh'}}
-          onClick={kickOpen}
-        />
+      <div
+        id="door"
+        style={{
+          display: 'flex',
+          height: '60vh',
+          width: '60vh',
+          backgroundImage: 'url(./Door0.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+        onClick={() => {
+          handleClick()
+          handleClick = () => null
+          setTimeout(() => {
+            handleClick = kickOpen
+          }, 2175)
+        }}
+      >
+        <h2 id="door-text" className="hover-text">
+          Kick Door
+        </h2>
       </div>
     )
   else if (game.phase === 2)
     return (
-      <div>
-        <img
-          id="door"
-          className="open3"
-          src="/Door3.png"
-          style={{height: '60vh'}}
-          onClick={loot}
-        />
+      <div
+        id="door"
+        style={{
+          display: 'flex',
+          height: '60vh',
+          width: '60vh',
+          backgroundImage: 'url(./Door3.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+        onClick={loot}
+      >
+        <h2 id="door-text" className="hover-text">
+          Loot the Room
+        </h2>
       </div>
     )
   else if (game.phase === 3)
     return (
-      <div>
-        <img
-          id="door"
-          className="open3"
-          src="/Door3.png"
-          style={{height: '60vh'}}
-        />
+      <div
+        id="door"
+        style={{
+          display: 'flex',
+          height: '60vh',
+          width: '60vh',
+          backgroundImage: 'url(./Door3.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+        onClick={endTurn}
+      >
+        <h2 id="door-text" className="hover-text">
+          End Turn
+        </h2>
       </div>
     )
   else return null

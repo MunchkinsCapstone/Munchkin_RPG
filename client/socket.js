@@ -21,7 +21,6 @@ socket.on('connect', () => {
   socket.on('gameBegin', game => {
     game = appendMethods.game(game)
     game.players = game.players.map(player => {
-      // debugger
       player.hand = player.hand.map(card =>
         appendMethods.card(
           allCards.find(otherCard => otherCard.imageUrl === card.imageUrl)

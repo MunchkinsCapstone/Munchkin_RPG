@@ -52,11 +52,11 @@ class Spell extends Item {
 }
 
 class Buff extends Item {
-  constructor(name, imageUrl, bonus) {
+  constructor(name, imageUrl, bonus, effect) {
     super(name, imageUrl)
     this.type = 'Buff'
     this.deck = 'treasures'
-    this.effect = buffsArray => buffsArray.push(this)
+    this.effect = effect || (buffsArray => buffsArray.push(this))
     this.bonus = bonus
   }
 }
