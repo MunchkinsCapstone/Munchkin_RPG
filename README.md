@@ -1,12 +1,8 @@
 # Munchkin
 
-_Good things come in pairs_
+Munchkin is a 3-6 player online multiple game based on Steve Jackson's popular board game Munchkin. The game was created by a team of four software engineering students of Fullstack Academy as part of their final Capstone project. 
 
-Looking to mix up a backend with express/sequelize and a frontend with react/redux? That's `boilermaker`!
-
-Follow along with the workshop to make your own! This canonical version can serve as a reference, or a starting point all on its own.
-
-## Setup
+## Installation
 
 To use this boilerplate, you'll need to take the following steps:
 
