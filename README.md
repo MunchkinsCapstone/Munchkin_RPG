@@ -1,6 +1,6 @@
 # Munchkin
 
-Munchkin is a 3-6 player online multiple game based on Steve Jackson's popular board game Munchkin. The game was created by a team of four software engineering students at Fullstack Academy as part of their final Capstone project. 
+Munchkin is a 3-6 player online multiple game based on Steve Jackson's popular board game Munchkin. The game was created in three weeks by a team of four software engineering students at Fullstack Academy as part of their final Capstone project. 
 
 ## Installation
 
