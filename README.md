@@ -1,4 +1,4 @@
-# Boilermaker
+# Munchkin
 
 _Good things come in pairs_
 
