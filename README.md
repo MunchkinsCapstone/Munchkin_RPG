@@ -16,3 +16,6 @@ npm install
 `npm run start-dev` will start the game.
 
 The game will be viewable at http://localhost:8080/ in your browser.
+
+## Demo
+You can check out a demo of the game at http://playmunchkin.com/ .
