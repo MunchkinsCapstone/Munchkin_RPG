@@ -4,10 +4,11 @@ Munchkin is a 3-6 player online multiple game based on Steve Jackson's popular b
 
 ## Installation
 
-To run Munchkin on your computer, you'll need to clone our Git repo onto your computer:
+To run Munchkin on your computer, you'll need to clone the Git repo onto your computer and install the dev depenencies:
 
 ```
 git clone https://github.com/MunchkinsCapstone/Munchkin_RPG.git
+npm install
 ```
 
 ## Start
