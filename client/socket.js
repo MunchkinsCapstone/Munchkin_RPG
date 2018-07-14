@@ -1,9 +1,9 @@
 //CLIENT SIDE SOCKET
 
 import io from 'socket.io-client'
-import {startGame} from './store/gameReducer'
-const {appendMethods, allCards} = require('./gameLogic')
-import store, {sendMessage} from './store'
+import { startGame } from './store/gameReducer'
+const { appendMethods, allCards } = require('./gameLogic')
+import store, { sendMessage, receiveUser } from './store'
 
 const socket = io(window.location.origin)
 
@@ -17,6 +17,12 @@ socket.on('connect', () => {
   socket.on('sent message', message => {
     console.log(message)
     store.dispatch(sendMessage(message))
+  })
+  socket.on('received user', newUser => {
+    console.log('client socket', newUser)
+  })
+  socket.on('receivedUser', user => {
+    store.dispatch(receiveUser(user))
   })
   socket.on('gameBegin', game => {
     game = appendMethods.game(game)

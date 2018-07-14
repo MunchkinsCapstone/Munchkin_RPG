@@ -1,18 +1,15 @@
 import React, { Component } from 'react'
 import socket from '../socket'
+import { connect } from 'react-redux'
+import { receiveUser } from '../store/userReducer'
+import { Link } from 'react-router-dom'
 
 class Lobby extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      //   room: {
-      //     users: [],
-      //     status: false,
-      //     name: '',
-      //     max: 4
-      //   },
-      newRoom: '',
-      allRooms: []
+      newUser: '',
+      // allUsers: []
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -22,88 +19,121 @@ class Lobby extends Component {
 
   handleSubmit(evt) {
     evt.preventDefault()
-    const newRoom = evt.target.newRoom.value
-    // this.setState({ newRoom: '' })
-    // console.log('newRoom', newRoom)
-    // let listWithAddedRooms = this.state.allRooms.concat(newRoom)
-    // console.log('listwithaddedrooms', listWithAddedRooms)
-    // this.setState({ newRoom: '', allRooms: listWithAddedRooms })
-    // console.log('afer state', this.state)
-    this.setState({ newRoom: newRoom, allRooms: [newRoom] })
-    const payload = this.state
-    console.log('payload after state', this.state)
-    socket.emit('roomMade', payload)
-    socket.on('get rooms', data => {
-      console.log('rooms received from server socket', data)
-      this.setState({ allRooms: data })
-      console.log('after setting state..', this.state)
+    const newUser = evt.target.newUser.value
+    // this.props.getUser(newUser)
+    // this.setState({ newUser: newUser, allUsers: [newUser] })
+    console.log('payload after state', this.state.newUser)
+    // this.props.getUser(newUser);
+    // localStorage.setItem('name', newUser)
+    // console.log('storage', localStorage)
+    socket.emit('create new user', newUser)
+    socket.on('received user', userArr => {
+      localStorage.setItem('allUsers', JSON.stringify(userArr));
     })
+    let liveArr = JSON.parse(localStorage.getItem('allUsers'))
+    console.log(liveArr)
+
+    // localStorage.setItem(newUser, 'value')
+    // socket.emit('roomMade', payload)
+    // socket.on('get user', data => {
+    //   console.log('user received from server socket', data)
+    //   this.setState({ allUsers: data })
+    //   console.log('after setting state..', this.state)
+    // })
+    console.log('props in submit', this.props)
+  }
+
+  componentDidMount() {
+    console.log('didmount', this.props.user)
+  }
+
+  componentWillMount() {
+    console.log('willmount', this.props.user)
   }
 
   handleChange(evt) {
     evt.preventDefault()
 
     const roomToBe = evt.target.value
-    this.setState({ newRoom: roomToBe })
+    this.setState({ newUser: roomToBe })
   }
 
-  componentDidMount() {
-    // console.log('before mount state', this.state)
-    // socket.on('get rooms', (rooms) => {
-    //   this.setState({ allRooms: rooms })
-    // })
-    socket.on('initalRoom', (rooms) => {
-      this.setState({ allRooms: rooms })
-    })
-    // this.setState({ allRooms: ['ray', 'ed', 'jean'] })
-    // console.log('after state in mount', this.state)
-  }
+  // componentDidMount() {
+  //   // console.log('before mount state', this.state)
+  //   // socket.on('get user', (user) => {
+  //   //   this.setState({ allUsers: user })
+  //   // })
+  //   socket.on('initalRoom', (user) => {
+  //     this.setState({ allUsers: user })
+  //   })
+  //   // this.setState({ allUsers: ['ray', 'ed', 'jean'] })
+  //   // console.log('after state in mount', this.state)
+  // }
 
 
   render() {
-    console.log('<><><><><><><><><><>><>>>><><><><><>')
-    const { allRooms } = this.state
-    console.log('render this.state', allRooms)
+    const { allUsers } = this.state
+    console.log('props', this.props)
     return (
       <div>
         <h1>Welcome to the Lobby</h1>
+
+        <div>
+          {this.props.user ? <p>yes</p> : <p>no</p>}
+        </div>
         <div>
           <div>
-            {allRooms.length ? (
+            {/* {allUsers.length ? (
               <div>
                 <ul>
-                  {allRooms.map((room, idx) => (
+                  {allUsers.map((user, idx) => (
                     <li key={idx}>
-                      {console.log('allRooms map', allRooms)}
-                      ROOM NAME: {room}
+                      user NAME: {user}
                     </li>
                   ))}
                 </ul>
               </div>
             ) : (
                 <div>
-                  <h1>No Rooms Create a Room to Play</h1>
+                  <h1>No user Create a user to Play</h1>
                 </div>
-              )}
+              )} */}
           </div>
           <div>
             <form onSubmit={this.handleSubmit}>
               <div>
-                <label htmlFor="newRoom">Create Room</label>
+                <label htmlFor="newUser">Create user</label>
                 <input
                   type="text"
-                  name="newRoom"
-                  value={this.state.newRoom}
+                  name="newUser"
+                  value={this.state.newUser}
                   onChange={this.handleChange}
                 />
               </div>
-              <button>Create Room</button>
+              <button>Create user</button>
             </form>
           </div>
         </div>
+        <Link to="/">START GAME</Link>
       </div>
     )
   }
 }
 
-export default Lobby
+const mapStateToProps = (state) => {
+  console.log('state', state)
+  return {
+    user: state.users
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUser: user => {
+      console.log('user in mapdispatch', user)
+      dispatch(receiveUser(user))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Lobby)

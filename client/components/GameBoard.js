@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PlayerCard from './PlayerCard'
 import ChatLog from './ChatLog'
 import Battle from './Battle'
@@ -6,12 +6,12 @@ import ButtonPanel from './ButtonPanel'
 import ImageMapper from 'react-image-mapper'
 import socket from '../socket'
 import store from '../store'
-import {connect} from 'react-redux'
-import {startGameThunk} from '../store/gameReducer'
-import Snackbar, {openSnackbar} from './Snackbar'
+import { connect } from 'react-redux'
+import { startGameThunk } from '../store/gameReducer'
+import Snackbar, { openSnackbar } from './Snackbar'
 import Door from './Door'
 
-let {log, Game, appendMethods} = require('../gameLogic')
+let { log, Game, appendMethods } = require('../gameLogic')
 
 class GameBoard extends Component {
   constructor(props) {
@@ -24,7 +24,11 @@ class GameBoard extends Component {
           isActive: false
         }
       },
-      players: ['Player 1', 'Player 2', 'Player 3', 'Player 4']
+      players: JSON.parse(localStorage.getItem('allUsers')).map(obj => {
+        console.log('obj in players', obj)
+        return obj.name
+      })
+
     }
     this.endTurn = this.endTurn.bind(this)
     this.knockKnock = this.knockKnock.bind(this)
@@ -48,13 +52,13 @@ class GameBoard extends Component {
   }
 
   knockKnock = () => {
-    const {game} = this.props
+    const { game } = this.props
     game.knockKnock()
     this.updateGame(game)
   }
 
   reactToDoor = card => {
-    const {game} = this.props
+    const { game } = this.props
     game.reactToDoor(card)
     this.updateGame(game)
   }
@@ -78,82 +82,83 @@ class GameBoard extends Component {
   }
 
   fight = () => {
-    const {game} = this.props
+    const { game } = this.props
     game.battle = appendMethods.battle(game.battle)
     game.battle.resolve()
     this.updateGame(game)
   }
 
   flee = () => {
-    const {game} = this.props
+    const { game } = this.props
     game.battle = appendMethods.battle(game.battle)
     game.battle.flee()
     this.updateGame(game)
   }
 
   lootRoom = () => {
-    const {game} = this.props
+    const { game } = this.props
     game.lootRoom()
     this.updateGame(game)
   }
 
   endTurn() {
-    const {game} = this.props
+    const { game } = this.props
     game.endTurn()
     this.updateGame(game)
   }
 
   discard(player, cardIdx) {
-    const {game} = this.props
+    const { game } = this.props
     player.discard(cardIdx)
     this.updateGame(game)
   }
 
   equip = (player, cardIdx) => {
-    const {game} = this.props
+    const { game } = this.props
     const item = player.hand[cardIdx]
     player.equip(cardIdx)
     this.updateGame(game)
   }
 
   unequip = (player, ___, item) => {
-    const {game} = this.props
+    const { game } = this.props
     player.unequip(item)
     this.updateGame(game)
   }
 
   equipToHireling = (player, card) => {
-    const {game} = this.props
+    const { game } = this.props
     player.equipToHireling(card)
     this.updateGame(game)
   }
 
   cast = (player, cardIdx, target) => {
-    const {game} = this.props
+    const { game } = this.props
     player.cast(cardIdx, target)
     this.updateGame(game)
   }
 
   lookForTrouble = monster => {
-    const {game} = this.props
+    const { game } = this.props
     game.startBattle(monster)
-    const {hand} = game.players[game.turn]
+    const { hand } = game.players[game.turn]
     hand.splice(hand.indexOf(monster), 1)
     this.updateGame(game)
   }
 
   assist = player => {
-    const {game} = this.props
+    const { game } = this.props
     player.assist()
     this.updateGame(game)
   }
 
   render() {
-    const {game} = this.props
+    console.log('gameboard props', this.props)
+    const { game } = this.props
     // console.log('THIS MY GAME YO', game);
     const MAP = {
       name: 'door',
-      areas: [{shape: 'rect', coords: [28, 503, 128, 564]}]
+      areas: [{ shape: 'rect', coords: [28, 503, 128, 564] }]
     }
     return (
       <div className="gameboard-container">
@@ -178,47 +183,47 @@ class GameBoard extends Component {
               })}
             </div>
           ) : (
-            <img
-              alt="gameboard"
-              src="http://www.worldofmunchkin.com/lite/img/backcover_lg.jpg"
-            />
-          )}
+              <img
+                alt="gameboard"
+                src="http://www.worldofmunchkin.com/lite/img/backcover_lg.jpg"
+              />
+            )}
         </div>
-        <div style={{width: '60vh'}}>
+        <div style={{ width: '60vh' }}>
           {game && game.battle.isActive ? (
             <Battle battle={game.battle} />
           ) : (
-            // <div>
-            //   <ImageMapper
-            //     src={
-            //       'http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg'
-            //     }
-            //     map={MAP}
-            //     onClick={
-            //       game && game.phase === 1
-            //         ? this.knockKnock
-            //         : game && game.phase === 2 ? this.lootRoom : null
-            //     }
-            //   />
-            //   {/* <img
-            //       alt="gameboard"
-            //       style={{width: '100%'}}
-            //       src="http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg"
-            //     /> */}
-            // </div>
-            <div>
-              <audio autoPlay loop id="boardAudio">
-                <source src="./music/theJourney.mp3" type="audio/mp3" />
-              </audio>
-              <Door
-                kick={this.knockKnock}
-                game={game}
-                loot={this.lootRoom}
-                reactToDoor={this.reactToDoor}
-                endTurn={this.endTurn}
-              />
-            </div>
-          )}
+              // <div>
+              //   <ImageMapper
+              //     src={
+              //       'http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg'
+              //     }
+              //     map={MAP}
+              //     onClick={
+              //       game && game.phase === 1
+              //         ? this.knockKnock
+              //         : game && game.phase === 2 ? this.lootRoom : null
+              //     }
+              //   />
+              //   {/* <img
+              //       alt="gameboard"
+              //       style={{width: '100%'}}
+              //       src="http://www.worldofmunchkin.com/gameboard/img/cover_lg.jpg"
+              //     /> */}
+              // </div>
+              <div>
+                <audio autoPlay loop id="boardAudio">
+                  <source src="./music/theJourney.mp3" type="audio/mp3" />
+                </audio>
+                <Door
+                  kick={this.knockKnock}
+                  game={game}
+                  loot={this.lootRoom}
+                  reactToDoor={this.reactToDoor}
+                  endTurn={this.endTurn}
+                />
+              </div>
+            )}
         </div>
         <div>
           <ChatLog />
@@ -243,7 +248,8 @@ class GameBoard extends Component {
 const mapStateToProps = state => {
   // console.log('MY STATE IN CONNECT', state);
   return {
-    game: state.game
+    game: state.game,
+    user: state.users
   }
 }
 
