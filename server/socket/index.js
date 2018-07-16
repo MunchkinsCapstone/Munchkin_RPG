@@ -1,22 +1,17 @@
 //SERVER SOCKET
-let rooms = []
 const chalk = require('chalk')
 const magentaLog = x => console.log(chalk.magenta(x))
 let users = []
 
 module.exports = io => {
   io.on('connection', socket => {
-
     console.log(`A socket connection to the server has been made: ${socket.id}`)
     socket.on('gameStarted', game => {
       io.sockets.emit('gameBegin', game)
     })
     socket.on('create new user', newUser => {
       console.log('new user', newUser)
-      users.push({
-        name: newUser,
-        id: users.length
-      })
+      users.push(newUser)
 
       io.sockets.emit('received user', users)
     })
