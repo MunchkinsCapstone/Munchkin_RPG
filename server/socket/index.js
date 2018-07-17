@@ -12,7 +12,7 @@ module.exports = io => {
     socket.on('create new user', newUser => {
       console.log('new user', newUser)
       users.push(newUser)
-
+      console.log('server users', users)
       io.sockets.emit('received user', users)
     })
     socket.on('new message', message => {

@@ -42,6 +42,7 @@ class Lobby extends Component {
     socket.on('received user', userArr => {
       localStorage.setItem('allUsers', JSON.stringify(userArr));
     })
+    this.props.getUser(currentUser)
     this.setState(prevState => (
       { check: !prevState.check, user: currentUser.name }
     ))
@@ -51,15 +52,15 @@ class Lobby extends Component {
 
   handleChange(evt) {
     evt.preventDefault()
-    const roomToBe = evt.target.value
-    this.setState({ newUser: roomToBe })
+    const currUser = evt.target.value
+    this.setState({ user: currUser })
   }
 
 
   render() {
     let liveArr = JSON.parse(localStorage.getItem('allUsers'))
     console.log('liveArr', liveArr)
-    console.log('state', this.state)
+    console.log('array', this.props)
     const currUser = JSON.parse(localStorage.getItem('currentUser'))
     // console.log('livearr length', liveArr.length)
     return (
@@ -77,13 +78,25 @@ class Lobby extends Component {
                       name="newUser"
                       value={this.state.newUser}
                       onChange={this.handleChange}
+                      required="required"
                     />
                   </div>
                   <button>Enter the Dungeon</button>
                 </form>
               </div>
             }
-            if (liveArr.length === 4) {
+            if (this.state.check) {
+              return <span>
+                {
+                  liveArr.map((user, idx) => {
+                    return <div>
+                      <li key={idx}>{user.name}</li>
+                    </div>
+                  })
+                }
+              </span>
+            }
+            if (liveArr.length === 3) {
               return <span>
                 {liveArr.map((user, idx) => {
                   return <div>
@@ -103,6 +116,10 @@ class Lobby extends Component {
                   </div>
                 })}
               </div>
+            } else {
+              return <p>
+                ...too many cooks in the kitchen right now
+              </p>
             }
           })()}
         </div>
@@ -147,7 +164,7 @@ class Lobby extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.users
+    user: state.user
   }
 }
 
