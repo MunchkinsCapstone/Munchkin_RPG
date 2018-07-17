@@ -3,6 +3,7 @@ import socket from '../socket'
 import { connect } from 'react-redux'
 import { receiveUser } from '../store/userReducer'
 import { Link } from 'react-router-dom'
+import ChatLog from './ChatLog'
 
 class Lobby extends Component {
   constructor(props) {
@@ -53,7 +54,6 @@ class Lobby extends Component {
     const roomToBe = evt.target.value
     this.setState({ newUser: roomToBe })
   }
-
 
 
   render() {
@@ -139,6 +139,7 @@ class Lobby extends Component {
             </div>}
         </div>} */}
         {/* <Link to="/">START GAME</Link> */}
+        <ChatLog />
       </div>
     )
   }

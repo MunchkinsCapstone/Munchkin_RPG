@@ -11,6 +11,7 @@ import { startGameThunk } from '../store/gameReducer'
 import Snackbar, { openSnackbar } from './Snackbar'
 import Door from './Door'
 
+
 let { log, Game, appendMethods } = require('../gameLogic')
 
 class GameBoard extends Component {
@@ -155,6 +156,8 @@ class GameBoard extends Component {
   render() {
     console.log('gameboard props', this.props)
     const { game } = this.props
+    console.log('players', this.players)
+
     // console.log('THIS MY GAME YO', game);
     const MAP = {
       name: 'door',
