@@ -15,6 +15,9 @@ module.exports = io => {
       console.log('server users', users)
       io.sockets.emit('received user', users)
     })
+    socket.on('reset users', data => {
+      users = data;
+    })
     socket.on('new message', message => {
       socket.broadcast.emit('sent message', message)
     })

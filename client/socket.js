@@ -19,11 +19,12 @@ socket.on('connect', () => {
     store.dispatch(sendMessage(message))
   })
   socket.on('received user', newUser => {
-    console.log('client socket', newUser)
+    console.log('client socket......', newUser)
   })
   socket.on('receivedUser', user => {
     store.dispatch(receiveUser(user))
   })
+
   socket.on('gameBegin', game => {
     game = appendMethods.game(game)
     game.players = game.players.map(player => {
