@@ -37,12 +37,40 @@ const PlayerCard = (props) => {
 		}
 	};
 
+	let gameBackground = () => {
+		switch (player.level) {
+			case 1:
+				return 'main';
+			case 2:
+				return 'waterfall';
+			case 3:
+				return 'ruins';
+			case 4:
+				return 'shelter';
+			case 5:
+				return 'rain';
+			case 6:
+				return 'shrine';
+			case 7:
+				return 'dessert2';
+			case 8:
+				return 'dessert';
+			case 9:
+				return 'lava';
+			case 10:
+				return 'final';
+			default:
+				return 'main';
+		}
+	};
+
 	return (
 		<div className={`text-white bg-${color} mb-3`}>
 			{player.isActive &&
 			!player.inBattle && (
 				<audio autoPlay loop id='boardAudio' preload='auto'>
 					<source src={`./music/${backgroundMusic()}.mp3`} type='audio/mp3' />
+					{(document.body.style.backgroundImage = `url('./backgrounds/${gameBackground()}.gif')`)}
 				</audio>
 			)}
 			<div className='card-header player-card-top'>
