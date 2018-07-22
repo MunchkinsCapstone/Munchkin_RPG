@@ -44,16 +44,13 @@ class Lobby extends Component {
       this.setState(() => (
         { allUsers: userArr }
       ))
-      console.log('working.....?', this.state)
-      // localStorage.setItem('allUsers', JSON.stringify(userArr));
+      localStorage.setItem('allUsers', JSON.stringify(userArr));
     })
 
     this.props.getUser(currentUser)
     this.setState(prevState => (
       { check: !prevState.check, user: currentUser.name }
     ))
-    // window.location.reload()
-    console.log('submit', this.state)
   }
 
 
@@ -65,19 +62,16 @@ class Lobby extends Component {
 
   handleClick(evt) {
     evt.preventDefault()
-    console.log('clicked.....')
     socket.emit('reset users', []);
+    localStorage.clear();
+    window.location.reload()
   }
 
 
 
   render() {
     let liveArr = this.state.allUsers
-    console.log('liveArr', liveArr)
-    console.log('local state', this.state)
-    console.log('array', this.props)
     const currUser = JSON.parse(localStorage.getItem('currentUser'))
-    // console.log('livearr length', liveArr.length)
     return (
       <div>
         <h1 id="title">Welcome to MUNCHKIN</h1>
@@ -117,28 +111,16 @@ class Lobby extends Component {
                 </form>
               </div>
             }
-            // if (this.state.check === true) {
-            //   console.log('length = 3_________')
-            //   return <span>
-            //     {liveArr.map((user, idx) => {
-            //       return <div>
-            //         <li key={idx}>{user.name}</li>
-            //       </div>
-            //     })}
-            //     <Link to="/">START GAME</Link>
-            //   </span>
-            // }
-            // if (liveArr.length < 3) {
-            //   return <div>
-            //     <h2 className="intro">welcome {currUser.name}</h2>
-            //     <p>...waiting for more players</p>
-            //     {liveArr.map((user, idx) => {
-            //       return <div>
-            //         <li key={idx}>{user.name}</li>
-            //       </div>
-            //     })}
-            //   </div>
-            // }
+            if (liveArr.length === 3) {
+              return <span>
+                {liveArr.map((user, idx) => {
+                  return <div>
+                    <li key={idx}>{user.name}</li>
+                  </div>
+                })}
+                <Link to="/">START GAME</Link>
+              </span>
+            }
             if (currUser) {
               return <div>
                 <h2 className="intro">welcome {currUser.name}</h2>
@@ -159,39 +141,6 @@ class Lobby extends Component {
             }
           })()}
         </div>
-
-        {/* <div>
-          {!this.state.check ?
-            <div>
-              <form onSubmit={this.handleSubmit}>
-                <div>
-                  <label className='lobbyButton' htmlFor="newUser">Create User </label>
-                  <input
-                    type="text"
-                    name="newUser"
-                    value={this.state.newUser}
-                    onChange={this.handleChange}
-                  />
-                </div>
-                <button>Enter the Dungeon</button>
-              </form>
-            </div> : <div>
-              <h2 className="intro">welcome {this.state.user}</h2>
-              {liveArr.length < 4 ? liveArr.map((user, idx) => {
-                return <div>
-                  <li key={idx}>{user.name}</li>
-                </div>
-              }) : <div>
-                  {liveArr.map((user, idx) => {
-                    return <div>
-                      <li key={idx}>{user.name}</li>
-                    </div>
-                  })}
-                  <Link to="/">START GAME</Link>
-                </div>}
-            </div>}
-        </div>} */}
-        {/* <Link to="/">START GAME</Link> */}
         <ChatLog />
         <button onClick={this.handleClick}>reset users</button>
       </div>
@@ -208,7 +157,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getUser: user => {
-      console.log('user in mapdispatch', user)
       dispatch(receiveUser(user))
     }
   }
