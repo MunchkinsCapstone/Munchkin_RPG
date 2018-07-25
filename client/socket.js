@@ -5,13 +5,13 @@ import { startGame } from './store/gameReducer'
 const { appendMethods, allCards } = require('./gameLogic')
 import store, { sendMessage, receiveUser } from './store'
 
-const socket = io(window.location.origin)
+const socket = io(window.location.origin);
 
-const reattachSelfRef = game => {
-  game.battle.game = game
-  game.players.forEach(player => (player.game = game))
-  return game
-}
+const reattachSelfRef = (game) => {
+	game.battle.game = game;
+	game.players.forEach((player) => (player.game = game));
+	return game;
+};
 
 socket.on('connect', () => {
   socket.on('sent message', message => {
@@ -64,4 +64,4 @@ socket.on('connect', () => {
   })
 })
 
-export default socket
+export default socket;

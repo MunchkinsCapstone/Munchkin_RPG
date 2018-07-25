@@ -264,4 +264,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameBoard)
+export default connect(mapStateToProps, mapDispatchToProps)(GameBoard);
