@@ -9,7 +9,7 @@ class Routes extends Component {
 				<Route exact path='/lobby' component={Lobby} />
 				<Route exact path='/home' component={HomePage} />
 				<Route exact path='/game' component={GameBoard} />
-				<Route component={GameBoard} />
+				<Route component={Lobby} />
 			</Switch>
 		);
 	}
