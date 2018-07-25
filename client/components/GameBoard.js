@@ -24,7 +24,10 @@ class GameBoard extends Component {
 					isActive: false
 				}
 			},
-			players: [ 'Player 1', 'Player 2', 'Player 3', 'Player 4' ]
+			players: JSON.parse(localStorage.getItem('allUsers')).map((obj) => {
+				console.log('obj in players', obj);
+				return obj.name;
+			})
 		};
 		this.endTurn = this.endTurn.bind(this);
 		this.knockKnock = this.knockKnock.bind(this);
@@ -71,11 +74,11 @@ class GameBoard extends Component {
 		return game;
 	};
 
-	// componendDidMount() {
-	// 	const audioNode = document.getElementById('boardAudio');
-	// 	console.log('Hello audio!!', audioNode);
-	// 	audioNode.play();
-	// }
+	componendDidMount() {
+		const audioNode = document.getElementById('boardAudio');
+		console.log('Hello audio!!', audioNode);
+		audioNode.play();
+	}
 
 	fight = () => {
 		const { game } = this.props;
@@ -149,7 +152,10 @@ class GameBoard extends Component {
 	};
 
 	render() {
+		console.log('gameboard props', this.props);
 		const { game } = this.props;
+		console.log('players', this.players);
+
 		// console.log('THIS MY GAME YO', game);
 		const MAP = {
 			name: 'door',
@@ -204,9 +210,6 @@ class GameBoard extends Component {
 						//     /> */}
 						// </div>
 						<div>
-							{/* <audio autoPlay loop id="boardAudio">
-                <source src="./music/theJourney.mp3" type="audio/mp3" />
-              </audio> */}
 							<Door
 								kick={this.knockKnock}
 								game={game}
@@ -240,7 +243,8 @@ class GameBoard extends Component {
 const mapStateToProps = (state) => {
 	// console.log('MY STATE IN CONNECT', state);
 	return {
-		game: state.game
+		game: state.game,
+		user: state.users
 	};
 };
 

@@ -1,23 +1,29 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {writeMessage, sendMessage} from '../store'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { writeMessage, sendMessage } from '../store'
 import socket from '../socket'
 
 const ChatLog = props => {
-  const {handleChange, handleSubmit, chat} = props
-
+  const { handleChange, handleSubmit, chat } = props
+  console.log('chatlog', chat.chatLog)
+  console.log('....', props.chat)
   return (
+
     <div
       className="media-list"
       className="chat-log"
-      style={{marginBottom: '1em'}}
+      style={{ marginBottom: '1em' }}
     >
-      <h4 style={{textAlign: 'center'}}>Chatroom & GameLog</h4>
+      <h4 style={{ textAlign: 'center' }}>Chatroom & GameLog</h4>
       <hr />
       <div className="media-list">
         <ul className="chat">
+
           {chat.chatLog.map((message, idx) => (
-            <li key={idx}>{`${message}`}</li>
+            <div>
+              <span>{`${message.user.name}`}</span>
+              <li key={idx}>{`${message.message}`}</li>
+            </div>
           ))}
         </ul>
       </div>
@@ -26,7 +32,7 @@ const ChatLog = props => {
         <form onSubmit={handleSubmit}>
           <input
             onChange={handleChange}
-            value={props.chat.newMessage}
+            value={props.chat.chatLog.message}
             type="text"
             name="newMessage"
             className="form-control"
@@ -78,13 +84,14 @@ const mapDispatchToProps = dispatch => {
   return {
     handleChange: event => {
       // console.log('typing...', event.target.value);
-      dispatch(writeMessage(event.target.value))
+      event.preventDefault()
+      dispatch(writeMessage({ note: event.target.value, user: JSON.parse(localStorage.getItem('currentUser')) }))
     },
     handleSubmit: event => {
       event.preventDefault()
       const message = event.target.newMessage.value
-      dispatch(sendMessage(message))
-      socket.emit('new message', message)
+      dispatch(sendMessage({ note: message, user: JSON.parse(localStorage.getItem('currentUser')) }))
+      socket.emit('new message', { note: message, user: JSON.parse(localStorage.getItem('currentUser')) })
       dispatch(writeMessage(''))
     }
   }

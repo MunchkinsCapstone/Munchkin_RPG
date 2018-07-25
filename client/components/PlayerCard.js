@@ -44,21 +44,21 @@ const PlayerCard = (props) => {
 			case 2:
 				return 'waterfall';
 			case 3:
-				return 'ruins';
+				return 'tree';
 			case 4:
-				return 'shelter';
+				return 'village';
 			case 5:
-				return 'rain';
+				return 'fire';
 			case 6:
-				return 'shrine';
-			case 7:
 				return 'dessert2';
-			case 8:
+			case 7:
 				return 'dessert';
-			case 9:
+			case 8:
 				return 'lava';
-			case 10:
+			case 9:
 				return 'final';
+			case 10:
+				return 'main';
 			default:
 				return 'main';
 		}
