@@ -5,7 +5,7 @@ const SEND_MESSAGE = 'SEND_MESSAGE'
 
 //INITIAL STATE
 const initialState = {
-  newMessage: '',
+  newMessage: {},
   chatLog: []
 }
 
@@ -25,15 +25,22 @@ export const sendMessage = message => {
 }
 
 //REDUCER
-export default function(state = initialState, action) {
-  const messageWithTime = `${new Date().toLocaleTimeString().slice(0, -6)} ${
-    action.message
-  }`
+export default function (state = initialState, action) {
+  console.log('action',
+    action
+  )
   switch (action.type) {
     case WRITE_MESSAGE:
-      return {...state, newMessage: action.message}
+      return { ...state, newMessage: action.message.note }
     case SEND_MESSAGE:
-      return {...state, chatLog: [...state.chatLog, messageWithTime]}
+      return {
+        ...state, chatLog: [...state.chatLog, {
+          user: action.message.user,
+          message: `${new Date().toLocaleTimeString().slice(0, -6)} ${
+            action.message.note
+            }`
+        }]
+      }
     default:
       return state
   }

@@ -387,3 +387,20 @@ ChatLog {
 #door:hover .hover-text {
   opacity: 1;
 }
+
+
+#title {
+  color: purple
+}
+
+.lobbyButton {
+  color: goldenrod
+}
+
+.intro {
+  color: peachpuff
+}
+
+p{
+  color: pink
+}
