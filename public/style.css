@@ -101,10 +101,12 @@ ButtonPanel button {
 }
 
 .chat-log {
-  padding: 5px;
+  padding: 10px;
   height: fit-content;
   background-color: rgba(211, 211, 211, 0.6);
   border: gray 3px solid;
+  margin: auto;
+  width: 40%;
 }
 
 .monster-view {
@@ -337,6 +339,7 @@ ButtonPanel button {
 
 ChatLog {
   font-family: 'IM Fell English SC';
+ 
 }
 
 #door {
@@ -390,7 +393,17 @@ ChatLog {
 
 
 #title {
-  color: purple
+  margin-top: 25px;
+  color: purple;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .lobbyButton {
@@ -403,4 +416,11 @@ ChatLog {
 
 p{
   color: pink
+}
+
+#resetButton{
+  position: absolute;
+  right: 0px;
+  padding: 10px;
+  align-self: flex-end
 }

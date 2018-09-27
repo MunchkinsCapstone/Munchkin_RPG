@@ -68,7 +68,7 @@ class Lobby extends Component {
 		return (
 			<div>
 				<h1 id='title'>Welcome to MUNCHKIN</h1>
-				<div>
+				<div id='container'>
 					{(() => {
 						if (liveArr === null) {
 							return (
@@ -149,7 +149,7 @@ class Lobby extends Component {
 					})()}
 				</div>
 				<ChatLog />
-				<button onClick={this.handleClick}>reset users</button>
+				<button id='resetButton' onClick={this.handleClick}>reset users</button>
 			</div>
 		);
 	}
