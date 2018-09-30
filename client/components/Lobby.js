@@ -67,7 +67,7 @@ class Lobby extends Component {
 		const currUser = JSON.parse(localStorage.getItem('currentUser'));
 		return (
 			<div>
-				<h1 id='title'>Welcome to MUNCHKIN</h1>
+				<h1 id='title'>MUNCHKIN</h1>
 				<div id='container'>
 					{(() => {
 						if (liveArr === null) {

@@ -1,16 +1,34 @@
 ul {
-  width: 300px;
+  width: 200px;
 }
 
 li {
-  color: white;
+  color: black;
+  background-color: bisque;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  text-align: center;
   list-style: none;
-  border: 1px solid white;
+  border: 2px solid black;
   padding: 5px;
   margin: 5px;
 }
 li:hover {
-  background: pink;
+  transform: scale(1.5) translateY(1em);
+  transition: 0.2s ease-in-out;
+  z-index: 99;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
+  -moz-box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
+  box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
+  cursor: pointer;
+  color: black;
+  background-color: rgba(212, 175, 55, 1);
+  text-align: center;
+  border: solid 2px#270b00;
 }
 
 .player-card-top {
@@ -394,16 +412,21 @@ ChatLog {
 
 #title {
   margin-top: 25px;
-  color: purple;
+  padding: 20px;
+  font-size: 120px;
+  color: rgba(40, 13, 2, 0.92);
   display: flex;
   align-items: center;
   justify-content: center;
+  text-shadow: -3px 0 rgba(53, 3, 3, 0.945), 2px 3px rgb(90, 37, 18), 2px -1px rgb(158, 116, 112), 2px -2px rgba(255, 255, 255, 0.945);
 }
+
 
 #container {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 60px
 }
 
 .lobbyButton {
@@ -422,5 +445,11 @@ p{
   position: absolute;
   right: 0px;
   padding: 10px;
-  align-self: flex-end
+  border: grey;
+  background-color: grey;
+  color:white;
+  align-self: flex-end;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }
