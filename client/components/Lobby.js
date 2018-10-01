@@ -118,7 +118,7 @@ class Lobby extends Component {
 									{liveArr.map((user, idx) => {
 										return (
 											<div>
-												<li key={idx}>{user.name}</li>
+												<li class='player_list' key={idx}>{user.name}</li>
 											</div>
 										);
 									})}
@@ -136,7 +136,7 @@ class Lobby extends Component {
 										console.log('user in ...', user);
 										return (
 											<div>
-												<li key={idx}>{user.name}</li>
+												<li class='player_list' key={idx}>{user.name}</li>
 											</div>
 										);
 									})}
