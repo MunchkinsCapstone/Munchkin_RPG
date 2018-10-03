@@ -420,7 +420,7 @@ ChatLog {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px;
+  padding: 20px 60px 30px 60px;
   background-color: rgba(70, 90, 36, 0.8);
   margin: 15px 30%;
   box-shadow: 10px 10px 20px rgba(0,0,0, 0.8);
