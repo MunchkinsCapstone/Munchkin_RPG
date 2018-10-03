@@ -68,13 +68,14 @@ class Lobby extends Component {
 		return (
 			<div>
 				<h1 id='title'>MUNCHKIN</h1>
-				<div id='container'>
+				<div id='logInContainer'>
 					{(() => {
 						if (liveArr === null) {
 							return (
 								<div>
 									<form onSubmit={this.handleSubmit}>
 										<div>
+											<hr />
 											<label className='lobbyButton' htmlFor='newUser'>
 												Create User{' '}
 											</label>
@@ -86,7 +87,9 @@ class Lobby extends Component {
 												required='required'
 											/>
 										</div>
-										<button>Enter the Dungeon</button>
+										<div id='dungeon_button_holder'>
+											<button>Enter the Dungeon</button>
+										</div>
 									</form>
 								</div>
 							);
@@ -94,6 +97,8 @@ class Lobby extends Component {
 						if (!currUser) {
 							return (
 								<div>
+									<img id='descriptive_line' src='https://i.pinimg.com/originals/ce/30/cb/ce30cb2c79aa0919b4b1b0c7bc563e85.png' />
+
 									<form onSubmit={this.handleSubmit}>
 										<div>
 											<label className='lobbyButton' htmlFor='newUser'>
@@ -107,8 +112,9 @@ class Lobby extends Component {
 												required='required'
 											/>
 										</div>
-										<button>Enter the Dungeon</button>
+										<button id='enter_dungeon'>Enter the Dungeon</button>
 									</form>
+
 								</div>
 							);
 						}
@@ -148,7 +154,7 @@ class Lobby extends Component {
 						}
 					})()}
 				</div>
-				<ChatLog />
+				{/* <ChatLog /> */}
 				<button id='resetButton' onClick={this.handleClick}>reset users</button>
 			</div>
 		);

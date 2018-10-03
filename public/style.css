@@ -114,11 +114,11 @@ ButtonPanel button {
 }
 
 .chat-log {
-  padding: 10px;
+  padding: 5px;
   height: fit-content;
   background-color: rgba(211, 211, 211, 0.6);
   border: gray 3px solid;
-  margin: auto;
+  /* margin: 10px 30%; */
 }
 
 .monster-view {
@@ -416,15 +416,20 @@ ChatLog {
 }
 
 
-#container {
+#logInContainer {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px
+  padding: 20px 60px 30px 60px;
+  background-color: rgba(70, 90, 36, 0.8);
+  margin: 15px 30%;
+  box-shadow: 10px 10px 20px rgba(0,0,0, 0.8);
 }
 
 .lobbyButton {
-  color: goldenrod
+  color: rgba(226, 211, 5, 0.945);
+  margin-right: 20px;
+  padding-bottom: 15px;
 }
 
 .intro {
@@ -446,6 +451,8 @@ p{
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
+  top: 100vh;
+  margin: 0, 30px, 30px, 0
 }
 
 #chat_message{
@@ -459,4 +466,22 @@ p{
   color: black;
   text-align: center;
 
+}
+
+#descriptive_line{
+  opacity: .5;
+  width: 100%;
+  margin-bottom: 30px
+}
+
+#enter_dungeon{
+  color: black;
+  background-color: rgb(231, 208, 174);
+  align-content: center
+}
+
+#dungeon_button_holder{
+  margin-left:auto;
+  margin-right:auto;
+  padding-left: 30%
 }
