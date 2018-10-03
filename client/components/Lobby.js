@@ -67,8 +67,8 @@ class Lobby extends Component {
 		const currUser = JSON.parse(localStorage.getItem('currentUser'));
 		return (
 			<div>
-				<h1 id='title'>Welcome to MUNCHKIN</h1>
-				<div>
+				<h1 id='title'>MUNCHKIN</h1>
+				<div id='container'>
 					{(() => {
 						if (liveArr === null) {
 							return (
@@ -118,7 +118,7 @@ class Lobby extends Component {
 									{liveArr.map((user, idx) => {
 										return (
 											<div>
-												<li key={idx}>{user.name}</li>
+												<li class='player_list' key={idx}>{user.name}</li>
 											</div>
 										);
 									})}
@@ -136,7 +136,7 @@ class Lobby extends Component {
 										console.log('user in ...', user);
 										return (
 											<div>
-												<li key={idx}>{user.name}</li>
+												<li class='player_list' key={idx}>{user.name}</li>
 											</div>
 										);
 									})}
@@ -149,7 +149,7 @@ class Lobby extends Component {
 					})()}
 				</div>
 				<ChatLog />
-				<button onClick={this.handleClick}>reset users</button>
+				<button id='resetButton' onClick={this.handleClick}>reset users</button>
 			</div>
 		);
 	}

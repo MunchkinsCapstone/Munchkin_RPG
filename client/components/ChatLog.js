@@ -22,7 +22,7 @@ const ChatLog = props => {
           {chat.chatLog.map((message, idx) => (
             <div>
               <span>{`${message.user.name}`}</span>
-              <li key={idx}>{`${message.message}`}</li>
+              <li id='chat_message' key={idx}>{`${message.message}`}</li>
             </div>
           ))}
         </ul>

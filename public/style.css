@@ -1,16 +1,29 @@
 ul {
-  width: 300px;
+  width: 200px;
 }
 
 li {
-  color: white;
+  color: black;
+  background-color: rgb(231, 208, 174);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  text-align: center;
   list-style: none;
-  border: 1px solid white;
+  border: 2px solid rgb(129, 80, 34);
   padding: 5px;
   margin: 5px;
 }
 li:hover {
-  background: pink;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
+  -moz-box-shadow: 0px 0px 50px 0px rgba(212, 175, 55, 1);
+  color: white;
+  background-color: rgba(66, 28, 2, 0.856);
+  text-align: center;
+  border: solid 2px#270b00;
 }
 
 .player-card-top {
@@ -101,10 +114,12 @@ ButtonPanel button {
 }
 
 .chat-log {
-  padding: 5px;
+  padding: 10px;
   height: fit-content;
   background-color: rgba(211, 211, 211, 0.6);
   border: gray 3px solid;
+  margin: auto;
+  width: 40%;
 }
 
 .monster-view {
@@ -337,6 +352,7 @@ ButtonPanel button {
 
 ChatLog {
   font-family: 'IM Fell English SC';
+ 
 }
 
 #door {
@@ -390,7 +406,22 @@ ChatLog {
 
 
 #title {
-  color: purple
+  margin-top: 25px;
+  padding: 20px;
+  font-size: 120px;
+  color: rgba(40, 13, 2, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: -3px 0 rgba(53, 3, 3, 0.945), 2px 3px rgb(90, 37, 18), 2px -1px rgb(158, 116, 112), 2px -2px rgba(226, 199, 199, 0.945);
+}
+
+
+#container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px
 }
 
 .lobbyButton {
@@ -403,4 +434,29 @@ ChatLog {
 
 p{
   color: pink
+}
+
+#resetButton{
+  position: absolute;
+  right: 0px;
+  padding: 10px;
+  border: grey;
+  background-color: grey;
+  color:white;
+  align-self: flex-end;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+#chat_message{
+  color: white;
+  text-align: left;
+  background-color: rgba(211, 211, 211, 0.6);
+}
+
+.player_list{
+  color: black;
+  text-align: center;
+
 }
