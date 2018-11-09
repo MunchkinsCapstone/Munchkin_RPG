@@ -2,6 +2,10 @@
 
 Munchkin is a 3-6 player online multiple game based on Steve Jackson's popular board game Munchkin. The game was created in three weeks by a team of four software engineering students at Fullstack Academy as part of their final Capstone project. 
 
+# Video Presentation
+
+https://youtu.be/9UhTvKb31Pg
+
 ## Installation
 
 To run Munchkin on your computer, you'll need to clone the Git repo onto your computer and install the dev dependencies:
